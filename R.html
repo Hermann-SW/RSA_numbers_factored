@@ -1,0 +1,16 @@
+<body>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+
+<textarea id="_term_" cols=80 rows=24></textarea>
+
+<script src="RSA_numbers_factored.js"></script>
+
+<script>
+_term_ = document.getElementById("_term_");
+_p_ = print_; // = console.log;
+
+for(r of rsa){
+  if (has_factors(r, [1n,1n])) { print(r); }
+}
+</script>
+</body>
