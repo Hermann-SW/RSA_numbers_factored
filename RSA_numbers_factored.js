@@ -612,6 +612,8 @@ if (typeof navigator != 'undefined')
         log2: log2,
         log10: log10,
 
+        smp: smp,
+        mra: mra,
         trailing: trailing,
         powmod: powmod,
         _test: _test,
