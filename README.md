@@ -13,6 +13,6 @@ Transpilation was done manually, using these templates:
 
 ![Peek_2022-12-18_22-29.gif](Peek_2022-12-18_22-29.gif)
 
-The browser validation corresponds to Python validation (with many asserts):
+The browser validation corresponds to Python validation (both with many asserts):
 
 ![python.validation.png](python.validation.png)
