@@ -1,0 +1,60 @@
+<body>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+<script src="RSA_numbers_factored.js"></script>
+<script>
+function tableCreate(){
+    RSA = new RSA();
+
+    var body = document.body,
+        tbl  = document.createElement('table');
+        // tbl.border = '1';
+
+    for(r of RSA.factored()){
+        if (r[2] % 4n == 3n && r[3] % 4n == 3n)  continue;
+
+        var tr = tbl.insertRow();
+        var td = tr.insertCell();
+        var button;
+        td.appendChild(document.createTextNode('RSA-'+r[0]));
+        // td.style.border = '1px solid black';
+
+        td = tr.insertCell();
+        if (has_factors(r, [1n,1n])){
+            var button = document.createElement("input");
+            button.type = "button";
+            button.value = "n";
+            button.onclick = function(){ alert("n "+r[0]); };
+            td.appendChild(button);
+        } else {
+            td.appendChild(document.createTextNode(" "));
+        }
+
+        td = tr.insertCell();
+        if (r[2] % 4n == 1n){
+            button = document.createElement("input");
+            button.type = "button";
+            button.value = "p";
+            button.onclick = function(){ alert("p "+r[0]); };
+            td.appendChild(button);
+        } else {
+            td.appendChild(document.createTextNode(" "));
+        }
+
+        td = tr.insertCell();
+        if (r[3] % 4n == 1n){
+            button = document.createElement("input");
+            button.type = "button";
+            button.value = "q";
+            button.onclick = function(){ alert("q "+r[0]); };
+            td.appendChild(button);
+        } else {
+            td.appendChild(document.createTextNode(" "));
+        }
+    }
+    body.appendChild(tbl);
+}
+
+tableCreate();
+</script>
+
+</body>
