@@ -1,5 +1,13 @@
 # RSA_numbers_factored.py
 #
+# v1.9
+#   remove not needed anymore RSA().__init__()
+#   add RSA().square_sums()
+#   manual transpilation to RSA_numbers_factored.js
+#   new home in RSA_numbers_factored repo python directory
+#   gist now is pointer to new home only
+#   add HTML demos making use of transpiled RSA_numbers_factored.js
+#
 # v1.8
 #   include Robin Chapman code to determine prime p=1 (mod 4) sum of squares
 #   make few changes, documented in that code section
@@ -371,9 +379,6 @@ rsa=[
 # RSA convenience class
 #
 class RSA:
-    def __init__(self):
-        self.p = None
-
     def __iter__(self):
         self.i = 0
         return self
@@ -432,6 +437,11 @@ class RSA:
         return [ [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2], 
                  [(r[1] +    1) // 2,    (r[1] -    1) // 2]
                ]
+
+    def square_sums(self, x):
+        r = self.get_(x)
+        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
+        return square_sums(square_sum_prod(r))
 
     def validate(self):
         main(rsa)

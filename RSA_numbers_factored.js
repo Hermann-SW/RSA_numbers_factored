@@ -1,4 +1,12 @@
-// RSA_numbers_factored.py
+// RSA_numbers_factored.js
+//
+// v1.9
+//   remove not needed anymore RSA().__init__()
+//   add RSA().square_sums()
+//   manual transpilation to RSA_numbers_factored.js
+//   new home in RSA_numbers_factored repo python directory
+//   gist now is pointer to new home only
+//   add HTML demos making use of transpiled RSA_numbers_factored.js
 //
 // v1.8
 //   include Robin Chapman code to determine prime p=1 (mod 4) sum of squares
@@ -256,7 +264,7 @@ function sq2(p){
 //##############################################################################
 
 function square_sum_prod(n){
-    if (typeof(n) == 'object'){
+    if (typeof n == 'object'){
         var l = square_sum_prod(n[2]);
         return l.concat(square_sum_prod(n[3]));
     }
@@ -301,13 +309,13 @@ function idx(rsa, l){
             break;
         }
     }
-    return (typeof(r) == 'undefined') ? -1n : r;
+    return (typeof r == 'undefined') ? -1n : r;
 }
 function has_factors(r, mod4){
     return (len(r) >= 4) && (
-          (typeof(mod4) == 'undefined')  ||
-         ((typeof(mod4) == 'bigint') && (r[1] % 4n == mod4))  ||
-         ((typeof(mod4) == 'object') && (r[2] % 4n == mod4[0]) && (r[3] % 4n == mod4[1]))
+          (typeof mod4 == 'undefined')  ||
+         ((typeof mod4 == 'bigint') && (r[1] % 4n == mod4))  ||
+         ((typeof mod4 == 'object') && (r[2] % 4n == mod4[0]) && (r[3] % 4n == mod4[1]))
         );
 }
 function has_factors_2(r){
@@ -382,8 +390,8 @@ function main(rsa){
             assert (n == p * q);
             assert (isprime(p));
             assert (isprime(q));
-//            assert (powmod(997, primeprod_totient(p, q), n) == 1n);
-//            assert (powmod(997, primeprod_reduced_totient(p, q), n) == 1n);
+            assert (powmod(997n, primeprod_totient(p, q), n) == 1n);
+            assert (powmod(997n, primeprod_reduced_totient(p, q), n) == 1n);
         }
         if (has_factors_2(r)){
             for(k of Object.keys(pm1))
@@ -514,98 +522,132 @@ var rsa=[
 [2048n,25195908475657893494027183240048398571429282126204032027777137836043662020707595556264018525880784406918290641249515082189298559149176184502808489120072844992687392807287776735971418347270261896375014971824691165077613379859095700097330459748808428401797429100642458691817195118746121515172654632282216869987549182422433637259085141865462043576798423387184774447920739934236584823824281198163815010674810451660377306056201619676256133844143603833904414952634432190114657544454178424020924616515723350778707749817125772467962926386356373289912154831438167899885040445364023527381951378636564391212010397122822120720357n]
 ];
 
-/*
 // RSA convenience class
 //
-class RSA:
-    def __init__(self):
-        self.p = None
+class RSA {
+    *[Symbol.iterator]() {
+        yield* rsa;
+    }
 
-    def __iter__(self):
-        self.i = 0
-        return self
+    index(x){
+        return idx(rsa, x);
+    }
+    get(x){
+        i = this.index(x)
+        assert(i != -1);
+        return rsa[i];
+    }
+    get_(x){
+        if (typeof x == 'object')
+            return x;
+        else
+            return this.get(x);
+    }
+    factored(mod4=undefined){
+        var a=[];
+        for(let r of rsa)  if (has_factors(r, mod4))  a.push(r.slice(0,4));
+        return a;
+    }
+    factored_2(self){
+        var a=[];
+        for(let r of rsa)  if (has_factors_2(r))  a.push(r);
+        return a;
+    }
+    totient(x){
+        r = this.get_(x);
+        assert(has_factors(r));
+        return primeprod_totient(r[2], r[3]);
+    }
+    reduced_totient(x){
+        r = this.get_(x);
+        assert(has_factors(r));
+        return primeprod_reduced_totient(r[2], r[3]);
+    }
+    totient_2(x){
+        r = this.get_(x);
+        assert(has_factors_2(r));
+        return dictprod_totient(r[4], r[5]);
+    }
+    reduced_totient_2(x){
+        r = this.get_(x);
+        assert(has_factors_2(r));
+        return dictprod_reduced_totient(r[4], r[5]);
+    }
+    square_diffs(x){
+        var r = this.get_(x);
+        assert(has_factors(r));
+        return [ [(r[2] + r[3]) >> 1n, abs(r[2] - r[3]) >> 1n], 
+                 [(r[1] +   1n) >> 1n,    (r[1] -   1n) >> 1n]
+               ];
+    }
+    square_sums(x){
+        var r = this.get_(x);
+        assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
+        return square_sums(square_sum_prod(r));
+    }
+    validate(){
+        main(rsa);
+    }
+};
 
-    def __next__(self):
-        if self.i < len(rsa):
-            r = rsa[self.i]
-            self.i += 1
-            return r
-        else:
-            raise StopIteration
 
-    def index(self, x):
-        return idx(rsa, x)
-
-    def get(self, x):
-        i = self.index(x)
-        assert i != -1
-        return rsa[i]
-
-    def get_(self, x):
-        if type(x) == list:
-            return x
-        else:
-            return self.get(x)
-
-    def factored(self, mod4=None):
-        return [r[slice(4)] for r in rsa if has_factors(r, mod4)]
-
-    def factored_2(self):
-        return [r for r in rsa if has_factors_2(r)]
-
-    def totient(self, x):
-        r = self.get_(x)
-        assert has_factors(r)
-        return primeprod_totient(r[2], r[3])
-
-    def reduced_totient(self, x):
-        r = self.get_(x)
-        assert has_factors(r)
-        return primeprod_reduced_totient(r[2], r[3])
-
-    def totient_2(self, x):
-        r = self.get_(x)
-        assert has_factors_2(r)
-        return dictprod_totient(r[4], r[5])
-
-    def reduced_totient_2(self, x):
-        r = self.get_(x)
-        assert has_factors_2(r)
-        return dictprod_reduced_totient(r[4], r[5])
-
-    def square_diffs(self, x):
-        r = self.get_(x)
-        assert has_factors(r)
-        return [ [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2], 
-                 [(r[1] +    1) // 2,    (r[1] -    1) // 2]
-               ]
-
-    def validate(self):
-        main(rsa)
-
- 
-if __name__ == "__main__":
-    R = RSA()
-    r = R.factored_2()[-1]
-    l, n, p, q, pm1, qm1 = r
-    assert (p - 1) * (q - 1) == R.totient(r)
-    assert R.totient_2(r) == R.totient_2(l)
-    assert R.totient_2(r) == dictprod_totient(pm1, qm1)
-    assert pow(65537, R.reduced_totient_2(190), R.reduced_totient(190)) == 1
+if (typeof navigator != 'undefined')
+{
+    assert(typeof process == 'undefined');
+} else if (process.argv.length > 1) {
+    R = new RSA();
+    r = R.factored_2()[len(R.factored_2())-1];
+    [l, n, p, q, pm1, qm1] = r;
+    assert((p - 1n) * (q - 1n) == R.totient(r));
+    assert(R.totient_2(r) == R.totient_2(l));
+    assert(R.totient_2(r) == dictprod_totient(pm1, qm1));
+    assert(powmod(65537n, R.reduced_totient_2(190n), R.reduced_totient(190n)) == 1n);
 
     main(rsa)
+} else {
+    module.exports = {
+        print: print,
+        assert: assert,
+        len: len,
+        abs: abs,
 
-*/
+        log2: log2,
+        log10: log10,
 
-if (typeof(navigator) == 'undefined')
-{
-  module.exports = {
-    bits: bits,
-    digits: digits,
-    sq2: sq2,
-    ras_factors: has_factors,
-    rsa: rsa
-  };
+        trailling: trailling,
+        powmod: powmod,
+        _test: _test,
+        mr: mr,
+        isprime: isprime,
 
-  main(rsa);
+        gcd: gcd,
+        lcm: lcm, 
+
+        bits: bits,
+        digits: digits,
+
+        mods: mods,
+        powmods: powmods,
+        quos: quos,
+        grem: grem,
+        ggcd: ggcd,
+        root4m1: root4m1,
+        sq2: sq2,
+
+        square_sum_prod: square_sum_prod,
+        square_sums_: square_sums_,
+        square_sums: square_sums,
+        idx: idx,
+        has_factors: has_factors,
+        has_factors_2: has_factors_2,
+        primeprod_totient: primeprod_totient,
+        primeprod_reduced_totient: primeprod_reduced_totient,
+        dict_int: dict_int,
+        dict_totient: dict_totient,
+        dict_reduced_totient: dict_reduced_totient,
+        main: main,
+        rsa: rsa,
+
+        RSA: RSA
+    };
 }
