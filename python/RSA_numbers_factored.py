@@ -176,8 +176,10 @@ def square_sums(l, revt=False, revl=False):
     return r
 
 def idx(rsa, l):
-    r = [i for (i,r) in enumerate(rsa) if r[0] == l]
-    return -1 if len(r) == 0 else r[0]
+    for (i,r) in enumerate(rsa):
+        if r[0] == l:
+            return i
+    return -1
 
 def has_factors(r, mod4=None):
     return len(r) >= 4 and (

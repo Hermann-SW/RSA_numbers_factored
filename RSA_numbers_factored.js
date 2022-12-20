@@ -302,14 +302,12 @@ function square_sums(l, revt=false, revl=false){
 }
 
 function idx(rsa, l){
-    var r;
     for(i=0; i<len(rsa); ++i) {
         if (rsa[i][0] == l) {
-            r = i;
-            break;
+            return i;
         }
     }
-    return (typeof r == 'undefined') ? -1n : r;
+    return -1n;
 }
 function has_factors(r, mod4){
     return (len(r) >= 4) && (
@@ -614,7 +612,7 @@ if (typeof navigator != 'undefined')
         log2: log2,
         log10: log10,
 
-        trailling: trailling,
+        trailing: trailing,
         powmod: powmod,
         _test: _test,
         mr: mr,
@@ -644,7 +642,8 @@ if (typeof navigator != 'undefined')
         primeprod_reduced_totient: primeprod_reduced_totient,
         dict_int: dict_int,
         dict_totient: dict_totient,
-        dict_reduced_totient: dict_reduced_totient,
+        dictprod_totient: dictprod_totient,
+        dictprod_reduced_totient: dictprod_reduced_totient,
         main: main,
         rsa: rsa,
 
