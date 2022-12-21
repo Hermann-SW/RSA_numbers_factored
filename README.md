@@ -102,7 +102,7 @@ def main(rsa):
     for t in l:
         assert  t[0]**2 + t[1]**2 == p
 
-    l = square_sums(i)
+    l = square_sums(i)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
     for t in l:
         assert  t[0]**2 + t[1]**2 == p
         assert  t[0] < t[1]
