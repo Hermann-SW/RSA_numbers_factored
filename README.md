@@ -9,10 +9,18 @@ Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-S
 Transpilation was done manually, using these templates:  
 [human_transpiler.templates.md](human_transpiler.templates.md)  
 
-## "validate.html" browser demo screen recording
+## Functionality validation: Python, browser and nodejs demos 
 
+Just executing RSA_numbers_factored.py does functionality validation with lots of asserts:  
+![python.validation.png](python.validation.png)
+
+Below screen recording of browser validation corresponds to above Python validation, just in browser term:  
+https://hermann-sw.github.io/RSA_numbers_factored/validate.html  
 ![Peek_2022-12-18_22-29.gif](Peek_2022-12-18_22-29.gif)
 
-The browser validation corresponds to Python validation (both with many asserts):
+Executing transpiled RSA_numbers_factored.js executes same functionality validation with console.log output:  
+![nodejs.validation.png](nodejs.validation.png)
 
-![python.validation.png](python.validation.png)
+Finally, if redirecting output for JavaScript "print()" implementation to console.log, validation can be done in developer tools browser console as well:  
+![browser_console.validation.png](browser_console.validation.png)
+
