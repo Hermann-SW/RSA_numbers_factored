@@ -24,3 +24,95 @@ Executing transpiled RSA_numbers_factored.js executes same functionality validat
 Finally, if redirecting output for JavaScript "print()" implementation to console.log, validation can be done in developer tools browser console as well:  
 ![browser_console.validation.png](browser_console.validation.png)
 
+Since vallidation code is likely to change (location as well as content) in future, here just current snapshot to get an idea what all gets validated, and how validation output gets created:  
+```python
+class RSA:
+...
+    def validate(self):
+        main(rsa)
+...
+
+def main(rsa):
+    print("\nwith p-1 and q-1 factorizations (n=p*q):",
+          len(['' for r in rsa if len(r) == 6]))
+    br = 6
+    for (i, r) in enumerate(rsa):
+        if has_factors_2(r):
+            (l, n, p, q, pm1, qm1) = r
+        elif has_factors(r):
+            (l, n, p, q) = r
+        else:
+            (l, n) = r
+
+        assert  l == digits(n) or l == bits(n)
+
+        if i > 0:
+            assert n > rsa[i - 1][1]
+
+        if has_factors(r):
+            assert  n == p * q
+            assert  isprime(p)
+            assert  isprime(q)
+            assert  pow(997, primeprod_totient(p, q), n) == 1
+            assert  pow(997, primeprod_reduced_totient(p, q), n) == 1
+
+        if has_factors_2(r):
+            for k in pm1.keys():
+                assert isprime(k)
+
+            for k in qm1.keys():
+                assert isprime(k)
+
+            assert dict_int(pm1) == p - 1
+            assert dict_int(qm1) == q - 1
+
+            assert pow(997, dict_totient(pm1), p - 1) == 1 
+            assert pow(997, dict_totient(qm1), q - 1) == 1 
+
+            assert pow(65537, dictprod_reduced_totient(pm1, qm1),
+                              primeprod_reduced_totient(p, q)     ) == 1 
+
+            # this does only work for RSA number != RSA-190
+            if l != 190:
+                assert pow(65537, dictprod_totient(pm1, qm1),
+                                  primeprod_totient(p, q)     ) == 1 
+
+        if not has_factors_2(r) and has_factors_2(rsa[i - 1]):
+            print("\n\nwithout (p-1) and (q-1) factorizations, but p and q:",
+                  len(['' for r in rsa if len(r) == 4]))
+            br = 3
+
+        if not has_factors(r) and has_factors(rsa[i - 1]):
+            print("\nhave not been factored sofar:", 
+                  len(['' for r in rsa if len(r) == 2]))
+            br = 3
+
+        print("%3d" % l, ("bits  " if l == bits(n) else "digits") +
+         ("," if i < len(rsa)-1 else "(="+str(digits(rsa[-1][1]))+" digits)\n"),
+         end = "\n" if i%7 == br or i == len(rsa) - 1 else "")
+
+
+    i = [2,1,3,2,4,1]
+
+    p = 1
+    for j in range(0, len(i), 2):
+        p *= (i[j]**2 + i[j+1]**2)
+
+    l = square_sums_(i)
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+
+    l = square_sums(i)
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+        assert  t[0] < t[1]
+    for j in range(len(l) - 1):
+        assert  l[j][0] < l[j+1][0]
+
+    l = square_sums(i, revl=True, revt=True)
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+        assert  t[0] > t[1]
+    for j in range(len(l) - 1):
+        assert  l[j][0] > l[j+1][0]
+```
