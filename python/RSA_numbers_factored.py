@@ -290,7 +290,7 @@ def main(rsa):
          end = "\n" if i%7 == br or i == len(rsa) - 1 else "")
 
 
-    i = [2,1,3,2,4,1]
+    i = [2,1,3,2,4,1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
     p = 1
     for j in range(0, len(i), 2):
