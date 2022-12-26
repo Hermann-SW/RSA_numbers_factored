@@ -12,6 +12,26 @@ dictionary
 {2: 3, 41: 1, 149: 1,...}                  {"2": 3n,"41": 1n,"149": 1n,...}
 
 
+list from iterable
+------------------
+Array.from(...)                            list(...)
+
+
+list comprehension / unpacking
+------------------------------
+chain(...s.map(x => sq2(l[x])))            chain(*[sq2(l[x]) for x in s])
+
+
+filter
+------
+r.filter((l,i) => ...);                    [l for i,l in enumerate(r) if ...]
+
+
+assert JS implementation
+------------------------
+assert(2**(k-1) == len(S));                assert 2**(k-1) == len(S)
+
+ 
 complete function sample
 ------------------------
 def dict_int(d):                           function dict_int(d){

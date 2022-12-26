@@ -1,5 +1,9 @@
 # RSA_numbers_factored.py
 #
+#   add uniq arg to RSA().square_sums()
+#   add smp1m4 array of primes =1 (mod 4) less than 1000
+#   add sqtst()
+#
 # v1.9
 #   remove not needed anymore RSA().__init__()
 #   add RSA().square_sums()
@@ -73,6 +77,7 @@
 from math import log2, log10
 from sympy.ntheory import isprime
 from sympy import lcm
+from itertools import combinations, combinations_with_replacement, chain
 
 def bits(n):
     return int(log2(n) + 1)
@@ -168,12 +173,31 @@ def square_sums_(s):
         s.append(b)
         return l
 
-def square_sums(l, revt=False, revl=False):
+def square_sums(l, revt=False, revl=False, uniq=False):
     r = square_sums_(l)
     for i in range(len(r)):
         r[i].sort(reverse=revt)
     r.sort(key=(lambda t: t[0]), reverse=revl)
+    if uniq:
+        return [l for i,l in enumerate(r) if i == 0 or r[i-1][0] != l[0]]
     return r
+
+smp1m4 = [5,13,17,29,37,41,53,61,73,89,97,101,109,113,137,149,157,173,181,193,
+          197,229,233,241,257,269,277,281,293,313,317,337,349,353,373,389,397,
+          401,409,421,433,449,457,461,509,521,541,557,569,577,593,601,613,617,
+          641,653,661,673,677,701,709,733,757,761,769,773,797,809,821,829,853,
+          857,877,881,929,937,941,953,977,997]
+
+def sqtst(l, k, dbg=0):
+    assert len(l) >= k
+    for s in combinations(range(len(l)), k):
+        L = list(chain(*[sq2(l[x]) for x in s]))
+        S = square_sums(L, uniq=True)
+        if dbg >= 1:
+            if dbg >= 3:  print(s)
+            if dbg >= 2:  print(L)
+            print(S)
+        assert 2**(k-1) == len(S)
 
 def idx(rsa, l):
     for (i,r) in enumerate(rsa):

@@ -1,5 +1,10 @@
 // RSA_numbers_factored.js
 //
+//   add uniq arg to RSA().square_sums()
+//   add smp1m4 array of primes =1 (mod 4) less than 1000
+//   add sqtst()
+//   implement itertools combinations, combinations_with_replacement, chain
+//
 // v1.9
 //   remove not needed anymore RSA().__init__()
 //   add RSA().square_sums()
@@ -7,6 +12,9 @@
 //   new home in RSA_numbers_factored repo python directory
 //   gist now is pointer to new home only
 //   add HTML demos making use of transpiled RSA_numbers_factored.js
+//   implement math log2, log10
+//   implement sympy.ntheory isprime
+//   implement sympy lcm, gcd
 //
 // v1.8
 //   include Robin Chapman code to determine prime p=1 (mod 4) sum of squares
@@ -178,22 +186,41 @@ function lcm(a, b){
 // from itertools import combinations, combinations_with_replacement, chain
 //
 // from https://stackoverflow.com/a/54385026/5674289
-// - correct range off-by-1
+// - correct range() off-by-1
+// - add combinations_with_replacement()
 //
 function* range(start, end) {
   for (; start < end; ++start) { yield start; }
 }
 function last(arr) { return arr[arr.length - 1]; }
-function* numericCombinations(n, r, loc = []) {
+function* numericCombinations(n, r, loc = [], wo = 1) {
   const idx = loc.length;
   if (idx === r) {
     yield loc;
     return;
   }
-  for (let next of range(idx ? last(loc) + 1 : 0, n - r + idx + 1)) { yield* numericCombinations(n, r, loc.concat(next)); }
+  for (let next of range(idx ? last(loc) + wo : 0, n)) { yield* numericCombinations(n, r, loc.concat(next), wo); }
 }
 function* combinations(arr, r) {
   for (let idxs of numericCombinations(arr.length, r)) { yield idxs.map(i => arr[i]); }
+}
+function* combinations_with_replacement(arr, r) {
+  for (let idxs of numericCombinations(arr.length, r, [], 0)) { yield idxs.map(i => arr[i]); }
+}
+//
+// from https://github.com/chrisdickinson/iterables-chain
+//
+function * chain () {
+  const iterators = Array.from(arguments)
+  for (var i = 0; i < iterators.length; ++i) {
+    if (!iterators[i] || typeof iterators[i][Symbol.iterator] !== 'function') {
+      throw new TypeError(`expected argument ${i} to be an iterable`)
+    }
+  }
+
+  for (const iter of iterators) {
+    yield * iter
+  }
 }
 //
 ///////////////////////////////////
@@ -311,7 +338,7 @@ function square_sums_(s){
     }
 }
 
-function square_sums(l, revt=false, revl=false){
+function square_sums(l, revt=false, revl=false, uniq=false){
     var r = square_sums_(l);
     for(i=0; i<len(r); ++i){
         r[i].sort(function(a,b){var c = a - b;
@@ -319,7 +346,31 @@ function square_sums(l, revt=false, revl=false){
     }
     r.sort(function(a,b){var c = a[0] - b[0];
                          return (c<0n?-1:c>0n?1:0)*(revl?-1:1);});
+    if (uniq){
+	return r.filter((l,i) => i == 0 || r[i-1][0] != l[0]);
+    }
     return r
+}
+
+var smp1m4 = [5n,13n,17n,29n,37n,41n,53n,61n,73n,89n,97n,101n,109n,113n,137n,
+	      149n,157n,173n,181n,193n,197n,229n,233n,241n,257n,269n,277n,281n,
+	      293n,313n,317n,337n,349n,353n,373n,389n,397n,401n,409n,421n,433n,
+	      449n,457n,461n,509n,521n,541n,557n,569n,577n,593n,601n,613n,617n,
+              641n,653n,661n,673n,677n,701n,709n,733n,757n,761n,769n,773n,797n,
+	      809n,821n,829n,853n,857n,877n,881n,929n,937n,941n,953n,977n,997n];
+
+function sqtst(l, k, dbg=0){
+    assert(len(l) >= k);
+    for(s of combinations(Array.from(range(0, len(l))), k)){
+        L = Array.from(chain(...s.map(x => sq2(l[x]))))
+        S = square_sums(L, false, false, true)
+        if (dbg >= 1){
+            if (dbg >= 3)  print(s);
+            if (dbg >= 2)  print(L);
+            print(S)
+        }
+        assert(2**(k-1) == len(S));
+    }
 }
 
 function idx(rsa, l){
@@ -658,6 +709,12 @@ if (typeof navigator != 'undefined')
         square_sum_prod: square_sum_prod,
         square_sums_: square_sums_,
         square_sums: square_sums,
+        combinations: combinations,
+        combinations_with_replacement: combinations_with_replacement,
+        chain: chain,
+        range: range,
+        smp1m4: smp1m4,
+        sqtst: sqtst,
         idx: idx,
         has_factors: has_factors,
         has_factors_2: has_factors_2,
