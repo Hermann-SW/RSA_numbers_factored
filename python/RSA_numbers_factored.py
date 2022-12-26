@@ -99,14 +99,16 @@ with small changes:
 - made sq2() return tuple with positive numbers; before sq2(13) = (-3,-2)
     '''
     return
-def mods(a, n):
+def mods(a: int, n: int) -> int:
+    '''returns "signed mod", in range -n//2..n//2'''
     assert n > 0
     a = a % n
     if (2 * a > n):
         a -= n
     return a
 
-def powmods(a, r, n):
+def powmods(a: int, r: int, n: int) -> int:
+    '''return "signed" a**r (mod n), in range -n//2..n//2'''
     out = 1
     while r > 0:
         if (r % 2) == 1:
@@ -116,29 +118,30 @@ def powmods(a, r, n):
         a = mods(a * a, n)
     return out
 
-def quos(a, n):
+def quos(a: int, n: int) -> int:
+    '''returns "a//n"'''
     assert n > 0
     return (a - mods(a, n))//n
 
-def grem(w, z):
-    # remainder in Gaussian integers when dividing w by z
+def grem(w: tuple, z: tuple) -> tuple:
+    '''remainder in Gaussian integers when dividing w by z'''
     (w0, w1) = w
     (z0, z1) = z
     n = z0 * z0 + z1 * z1
-    if n == 0:
-        return "division by zero"
+    assert n > 0 and "division by zero"
     u0 = quos(w0 * z0 + w1 * z1, n)
     u1 = quos(w1 * z0 - w0 * z1, n)
     return(w0 - z0 * u0 + z1 * u1,
            w1 - z0 * u1 - z1 * u0)
 
-def ggcd(w, z):
+def ggcd(w: tuple, z: tuple) -> tuple:
+    '''gcd() for gaussian integers'''
     while z != (0,0):
         w, z = z, grem(w, z)
     return w
 
-def root4m1(p):
-    # 4th root of 1 modulo p
+def root4m1(p: int) -> int:
+    '''4th root of 1 modulo p'''
     assert p > 1 and (p % 4) == 1
     k = p//4
     j = 2
@@ -150,7 +153,8 @@ def root4m1(p):
         assert b == 1 and "p not prime"
         j += 1
 
-def sq2(p):
+def sq2(p: int) -> tuple:
+    '''return tuple of two squares summing up to prime p=1 (mod 4)'''
     a = root4m1(p)
     x,y = ggcd((p,0),(a,1))
     return abs(x), abs(y)
