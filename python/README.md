@@ -4,4 +4,5 @@ Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-S
 
 ## RSA_numbers_factored.py documentation  
 
-Will be added here ...
+Generated with lazydocs, can be found here:  
+[docs/RSA_numbers_factored.py.md](docs/RSA_numbers_factored.py.md)
