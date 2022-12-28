@@ -76,6 +76,7 @@ from math import log2, log10
 from sympy.ntheory import isprime
 from sympy import lcm
 from itertools import combinations, combinations_with_replacement, chain
+from typing import Tuple
 
 def SECTION0():
     '''
@@ -92,15 +93,21 @@ def digits(n: int) -> int:
 
 def SECTION1():
     '''
-Robert Chapman 2010 code from https://math.stackexchange.com/a/5883/1084297
-with small changes:
-- asserts instead bad case returns
-- renamed root4() to root4m1() indicating which 4th root gets determined
-- made sq2() return tuple with positive numbers; before sq2(13) = (-3,-2)
+    Robert Chapman 2010 code from https://math.stackexchange.com/a/5883/1084297
+    with small changes:
+    - asserts instead bad case returns
+    - renamed root4() to root4m1() indicating which 4th root gets determined
+    - made sq2() return tuple with positive numbers; before sq2(13) = (-3,-2)
     '''
     return
 def mods(a: int, n: int) -> int:
-    '''returns "signed mod", in range -n//2..n//2'''
+    '''
+    Args:
+        a: any int
+        n: modulus
+    Returns:
+        int: "signed mod" of a (mod n), in range -n//2..n//2
+    '''
     assert n > 0
     a = a % n
     if (2 * a > n):
@@ -141,7 +148,12 @@ def ggcd(w: tuple, z: tuple) -> tuple:
     return w
 
 def root4m1(p: int) -> int:
-    '''4th root of 1 modulo p'''
+    '''
+    Args:
+        p: module
+    Returns:
+        int: sqrt(-1) (mod p)
+    '''
     assert p > 1 and (p % 4) == 1
     k = p//4
     j = 2
@@ -153,8 +165,20 @@ def root4m1(p: int) -> int:
         assert b == 1 and "p not prime"
         j += 1
 
-def sq2(p: int) -> tuple:
-    '''return tuple of two squares summing up to prime p=1 (mod 4)'''
+def sq2(p: int) -> Tuple[int, int]:
+    """
+    Args:
+        p: prime p=1 (mod 4), asserts if not
+    Returns:
+        Tuple[int, int]: the squares of two ints sum up to p
+    Examples:  
+        This is how it is used.
+        >>> print(sq2(233))
+        (13, 8)
+        >>>
+    """
+    assert p % 4 == 1
+
     a = root4m1(p)
     x,y = ggcd((p,0),(a,1))
     return abs(x), abs(y)
@@ -168,8 +192,6 @@ def square_sum_prod(n):
     if type(n) == list:
         l = square_sum_prod(n[2])
         return l + square_sum_prod(n[3])
-
-    assert n % 4 == 1
 
     return list(sq2(n))
 
