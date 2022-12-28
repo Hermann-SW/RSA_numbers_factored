@@ -173,11 +173,13 @@ def sq2(p: int) -> Tuple[int, int]:
         Tuple[int, int]: the squares of two ints sum up to p
     Examples:  
         This is how it is used.
+        ```
         >>> print(sq2(233))
         (13, 8)
         >>>
+        ```
     """
-    assert p % 4 == 1
+    assert p > 1 and p % 4 == 1
 
     a = root4m1(p)
     x,y = ggcd((p,0),(a,1))

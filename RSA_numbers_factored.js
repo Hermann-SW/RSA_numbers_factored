@@ -289,7 +289,6 @@ function ggcd(w, z){
 
 function root4m1(p){
     // 4th root of 1 modulo p
-    assert(p > 1n && (p % 4n) == 1n);
     var k = p/4n;
     var j = 2n;
     while (true){
@@ -304,6 +303,7 @@ function root4m1(p){
 }
 
 function sq2(p){
+    assert(p > 1n && (p % 4n) == 1n);
     var a = root4m1(p);
     var xy = ggcd([p,0n],[a,1n]);
     return [abs(xy[0]), abs(xy[1])];
