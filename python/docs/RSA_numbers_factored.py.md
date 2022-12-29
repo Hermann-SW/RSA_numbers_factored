@@ -3,10 +3,25 @@
 <a href="../../python/RSA_numbers_factored.py#L0"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 # <kbd>module</kbd> `RSA_numbers_factored.py`
+For type hinting:
+```
+IntList2       = NewType('IntList2',       List[Tuple[int, int]])
+IntList4       = NewType('IntList4',       List[Tuple[int, int, int, int]])
 
+RSA_factored_2 = NewType('RSA_factored_2', List[Tuple[int, int, int, int, Dict[int, int], Dict[int, int]]])
+RSA_factored   = NewType('RSA_factored',   IntList4)
+RSA_unfactored = NewType('RSA_unfactored', IntList2)
+
+RSA_number     = NewType('RSA_number',     Union[RSA_factored_2, RSA_factored, RSA_unfactored])
+``` 
+
+
+
+v1.10 
 - add uniq arg to RSA().square_sums() 
 - add smp1m4 array of primes =1 (mod 4) less than 1000 
 - add sqtst() 
+- add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03 
 
 v1.9 
 - remove not needed anymore RSA(). \_\_init\_\_() 
@@ -77,6 +92,12 @@ v0.2
 v0.1 
 - initial version, with bits(), digits(), rsa array and main() testing 
 
+
+
+Small primes =1 (mod 4) less than 1000. 
+
+Array of RSA numbers. 
+
 **Global Variables**
 ---------------
 - **smp1m4**
@@ -84,7 +105,7 @@ v0.1
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L81"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION0`
 
@@ -92,14 +113,12 @@ v0.1
 SECTION0()
 ```
 
-int helper functions  
-
-
+int helper functions 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L86"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L117"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `bits`
 
@@ -113,7 +132,7 @@ returns bit-length of n
 
 **Example:**
 
-
+  Of biggest RSA number.
 ```
      >>> bits(rsa[-1][1])
      2048
@@ -123,7 +142,7 @@ returns bit-length of n
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L99"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L131"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `digits`
 
@@ -137,7 +156,7 @@ returns number of decimal digits of n
 
 **Example:**
 
-
+  Of biggest RSA number.
 ```
      >>> digits(rsa[-1][1])
      617
@@ -147,7 +166,7 @@ returns number of decimal digits of n
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L112"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L145"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION1`
 
@@ -158,12 +177,12 @@ SECTION1()
 Robert Chapman 2010 code from https://math.stackexchange.com/a/5883/1084297 with small changes: 
 - asserts instead bad case returns 
 - renamed root4() to root4m1() indicating which 4th root gets determined 
-- made sq2() return tuple with positive numbers; before sq2(13) = (-3,-2) 
+- made sq2() return tuple with positive numbers; before sq2(13) returned (-3,-2) 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L121"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L154"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `mods`
 
@@ -176,7 +195,7 @@ returns "signed" a (mod n), in range -n//2..n//2
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L129"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L162"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `powmods`
 
@@ -189,7 +208,7 @@ return "signed" a**r (mod n), in range -n//2..n//2
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L140"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L173"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `quos`
 
@@ -202,7 +221,7 @@ returns equivalent of "a//n" for signed mod
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L145"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L178"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `grem`
 
@@ -215,7 +234,7 @@ returns remainder in Gaussian integers when dividing w by z
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L156"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L189"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `ggcd`
 
@@ -226,9 +245,25 @@ ggcd(w: Tuple[int, int], z: Tuple[int, int]) → Tuple[int, int]
 returns greatest common divisorfor gaussian integers 
 
 
+
+**Example:**
+
+  Demonstrates how ggcd() can be used to determine sum of squares.
+```
+     >>> powmods(13,2,17)
+
+        -1
+     >>> ggcd((17,0),(13,1))
+     (4, -1)
+     >>> 4**2+(-1)**2
+     17
+     >>>
+``` 
+
+
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L162"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L209"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `root4m1`
 
@@ -241,7 +276,7 @@ returns sqrt(-1) (mod p)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L175"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L222"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `sq2`
 
@@ -271,7 +306,7 @@ sq2(p: int) → Tuple[int, int]
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L195"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L242"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION2`
 
@@ -279,21 +314,17 @@ sq2(p: int) → Tuple[int, int]
 SECTION2()
 ```
 
-Functions dealing with representations of int as sum of two squares  
-
-
+Functions dealing with representations of int as sum of two squares 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L212"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L248"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `square_sum_prod`
 
 ```python
-square_sum_prod(
-    n: Union[int, List[Tuple[int, int, int, int, dict, dict]], List[Tuple[int, int, int, int]], List[Tuple[int, int]]]
-) → Union[List[Tuple[int, int]], List[Tuple[int, int, int, int]]]
+square_sum_prod(n: Union[int, RSA_number]) → Union[IntList2, IntList4]
 ```
 
 
@@ -304,19 +335,18 @@ square_sum_prod(
 
 **Returns:**
  
- - <b>`tuple`</b>:  squares of pairs of ints sum up to prime, prime[s] multiply to n. 
+ - <b>`Union[IntList2, IntList4]`</b>:  squares of pairs of ints sum up to prime, prime[s] multiply to n. 
 
 **Example:**
 
- For prime 233 and RSA-59.
+ For prime 233 and composite number RSA-59.
 ```
     >>> square_sum_prod(233)
     [13, 8]
     >>>
-    >>> square_sum_prod(RSA.get(59))
-    [348414999546339, 281133787033754, 514756770360836, 304082178808739]
-    >>> r = square_sum_prod(RSA.get(59))
-    >>> (r[0]**2 + r[1]**2) * (r[2]**2 + r[3]**2) == RSA.get(59)[1]
+    >>> r = RSA.get(59)
+    >>> s = square_sum_prod(r)
+    >>> (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == r[1]
     True
     >>>
 ``` 
@@ -324,52 +354,130 @@ square_sum_prod(
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L238"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L273"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `square_sums_`
 
 ```python
-square_sums_(s)
+square_sums_(s: List[int]) → List[int]
 ```
 
 
 
+**Args:**
+ 
+ - <b>`s`</b>:  List of int returned by square_sum_prod(). 
 
+**Returns:**
+ 
+ - <b>`List[int]`</b>:  squares of pairs of ints sum up to prime, prime[s] multiply to n. 
+
+**Example:**
+
+ For composite number RSA-59.
+```
+    >>> r = RSA.get(59)
+    >>> s = square_sum_prod(r)
+    >>> square_sums_(s)
+    [[93861205413769670113229603198, 250662312444502854557140314865], [264836754409721537369435955610, 38768728061109707828243001823]]
+    >>> for a,b in square_sums_(s):
+    ...     a**2 + b**2 == r[1]
+    ...
+    True
+    True
+    >>>
+``` 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L252"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L307"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `square_sums`
 
 ```python
-square_sums(l, revt=False, revl=False, uniq=False)
+square_sums(
+    l: List[int],
+    revt: bool = False,
+    revl: bool = False,
+    uniq: bool = False
+) → List[int]
 ```
 
 
 
+**Args:**
+ 
+ - <b>`l`</b>:  List of int. 
+ - <b>`revt`</b>:  sorting direction for tuples. 
+ - <b>`revl`</b>:  sorting direction for list. 
+ - <b>`uniq`</b>:  eliminate duplicates if True. 
 
+**Returns:**
+ 
+ - <b>`List[int]`</b>:  square_sums_(s) sorted (tuples and list), optional duplicates removed. 
+
+**Example:**
+
+ For list corresponding to number 5\*5\*13.
+```
+    >>> s = [2, 1, 2, 1, 3, 2]
+    >>> square_sums(s)
+    [[1, 18], [6, 17], [10, 15], [10, 15]]
+    >>> square_sums(s, revt=True, revl=True)
+    [[18, 1], [17, 6], [15, 10], [15, 10]]
+    >>> square_sums(s, uniq=True)
+    [[1, 18], [6, 17], [10, 15]]
+    >>> for a,b in square_sums(s, uniq=True):
+    ...     assert a**2 + b**2 == 5*5*13
+    ...
+    >>>
+``` 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L267"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L346"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `sqtst`
 
 ```python
-sqtst(l, k, dbg=0)
+sqtst(l: List[int], k: int, dbg: int = 0) → None
 ```
 
 
 
+**Args:**
+ 
+ - <b>`l`</b>:  list of distinct primes =1 (mod 4) 
+ - <b>`k`</b>:  size of subsets, to verify that 2**(k-1) == unique #sum_of_squares 
+ - <b>`dbg`</b>:  0=without debug output, 1-3 with more and more 
 
+**Example:**
+
+
+```
+    >>> smp1m4[slice(3)]
+    [5, 13, 17]
+    >>> sqtst(smp1m4[slice(3)], 2, dbg=3)
+    (0, 1)
+    [2, 1, 3, 2]
+    [[1, 8], [4, 7]]
+    (0, 2)
+    [2, 1, 4, 1]
+    [[2, 9], [6, 7]]
+    (1, 2)
+    [3, 2, 4, 1]
+    [[5, 14], [10, 11]]
+    >>> 
+    >>> sqtst(smp1m4[slice(20)], 7)
+    >>> 
+``` 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L278"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L381"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION3`
 
@@ -377,59 +485,98 @@ sqtst(l, k, dbg=0)
 SECTION3()
 ```
 
-Functions working on "rsa" array  
-
-
+Functions working on "rsa" array 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L283"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L386"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `idx`
 
 ```python
-idx(rsa, l)
+idx(rsa: List[RSA_number], l: int) → int
 ```
 
 
 
+**Args:**
+ 
+ - <b>`rsa`</b>:  list of RSA numbers 
+ - <b>`l`</b>:  bit-length or decimal-digit-length of RSA number 
 
+**Returns:**
+ 
+ - <b>`int`</b>:  index of RSA-l in rsa list, -1 if not found 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L289"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L399"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `has_factors`
 
 ```python
-has_factors(r, mod4=None)
+has_factors(
+    r: Type[RSA_number],
+    mod4: Union[NoneType, int, Tuple[int, int]] = None
+) → bool
 ```
 
 
 
+**Args:**
+ 
+ - <b>`r`</b>:  an RSA number 
+ - <b>`mod4`</b>:  optional resriction or remainder mod 4 for number or its both prome factors 
 
+**Returns:**
+ 
+ - <b>`bool`</b>:  RSA number has factors, and adheres mod 4 restriction(s) 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L296"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L413"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `has_factors_2`
 
 ```python
-has_factors_2(r)
+has_factors_2(r: Type[RSA_number]) → bool
 ```
 
 
 
+**Args:**
+ 
+ - <b>`r`</b>:  an RSA number 
 
+**Returns:**
+ 
+ - <b>`bool`</b>:  RSA number has factors p and q, and factorizations of p-1 and q-1 
+
+**Example:**
+
+
+```
+    >>> r=RSA.get(100)
+    >>> has_factors_2(r)
+    True
+    >>> l,n,p,q,pm1,qm1 = r
+    >>> l
+    100
+    >>> 
+    >>> q
+    40094690950920881030683735292761468389214899724061
+    >>> qm1
+    {2: 2, 5: 1, 41: 1, 2119363: 1, 602799725049211: 1, 38273186726790856290328531: 1}
+    >>>
+``` 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L299"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L437"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION4`
 
@@ -437,14 +584,12 @@ has_factors_2(r)
 SECTION4()
 ```
 
-primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f  
-
-
+primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L303"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L441"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `primeprod_totient`
 
@@ -459,7 +604,7 @@ primeprod_totient(p, q)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L306"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L444"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `primeprod_reduced_totient`
 
@@ -474,7 +619,7 @@ primeprod_reduced_totient(p, q)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L310"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L448"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `SECTION5`
 
@@ -484,14 +629,12 @@ SECTION5()
 
 Functions on factorization dictionaries. 
 
-[as returned by sympy.factorint() (in rsa[x][4] for p-1 and rsa[x][5] for q-1) ]  
-
-
+[as returned by sympy.factorint() (in rsa[x][4] for p-1 and rsa[x][5] for q-1) ] 
 
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L317"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L455"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `dict_int`
 
@@ -506,7 +649,7 @@ dict_int(d)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L324"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L462"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `dict_totient`
 
@@ -521,7 +664,7 @@ dict_totient(d)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L334"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L472"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `dictprod_totient`
 
@@ -536,7 +679,7 @@ dictprod_totient(d1, d2)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L337"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L475"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `dictprod_reduced_totient`
 
@@ -551,7 +694,7 @@ dictprod_reduced_totient(d1, d2)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L343"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L481"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `main`
 
@@ -576,7 +719,7 @@ main(rsa)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L520"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L658"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `factored`
 
@@ -590,7 +733,7 @@ factored(mod4=None)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L523"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L661"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `factored_2`
 
@@ -604,7 +747,7 @@ factored_2()
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L509"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L647"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `get`
 
@@ -618,7 +761,7 @@ get(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L514"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L652"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `get_`
 
@@ -632,7 +775,7 @@ get_(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L506"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L644"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `index`
 
@@ -646,7 +789,7 @@ index(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L531"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L669"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `reduced_totient`
 
@@ -660,7 +803,7 @@ reduced_totient(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L541"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L679"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `reduced_totient_2`
 
@@ -674,7 +817,7 @@ reduced_totient_2(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L546"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L684"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `square_diffs`
 
@@ -688,7 +831,7 @@ square_diffs(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L553"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L691"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `square_sums`
 
@@ -702,7 +845,7 @@ square_sums(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L526"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L664"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `totient`
 
@@ -716,7 +859,7 @@ totient(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L536"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L674"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `totient_2`
 
@@ -730,7 +873,7 @@ totient_2(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L558"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L696"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `validate`
 

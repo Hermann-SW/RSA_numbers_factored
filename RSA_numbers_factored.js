@@ -1,9 +1,11 @@
 // RSA_numbers_factored.js
 //
+// v1.10
 //   add uniq arg to RSA().square_sums()
 //   add smp1m4 array of primes =1 (mod 4) less than 1000
 //   add sqtst()
 //   implement itertools combinations, combinations_with_replacement, chain
+//   add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03
 //
 // v1.9
 //   remove not needed anymore RSA().__init__()
