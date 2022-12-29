@@ -76,7 +76,7 @@ from math import log2, log10
 from sympy.ntheory import isprime
 from sympy import lcm
 from itertools import combinations, combinations_with_replacement, chain
-from typing import Tuple
+from typing import Tuple, List, Union
 
 def SECTION0():
     '''
@@ -84,11 +84,29 @@ int helper functions
     '''
     return
 def bits(n: int) -> int:
-    '''returns number of 1-bits in n'''
+    '''
+    returns bit-length of n
+
+    Example:
+    ```
+        >>> bits(rsa[-1][1])
+        2048
+        >>>
+    ```
+    '''
     return int(log2(n) + 1)
 
 def digits(n: int) -> int:
-    '''returns number of decimal digits of n'''
+    '''
+    returns number of decimal digits of n
+
+    Example:
+    ```
+        >>> digits(rsa[-1][1])
+        617
+        >>>
+    ```
+    '''
     return int(log10(n) + 1)
 
 def SECTION1():
@@ -101,13 +119,7 @@ def SECTION1():
     '''
     return
 def mods(a: int, n: int) -> int:
-    '''
-    Args:
-        a: any int
-        n: modulus
-    Returns:
-        int: "signed mod" of a (mod n), in range -n//2..n//2
-    '''
+    '''returns "signed" a (mod n), in range -n//2..n//2'''
     assert n > 0
     a = a % n
     if (2 * a > n):
@@ -126,12 +138,12 @@ def powmods(a: int, r: int, n: int) -> int:
     return out
 
 def quos(a: int, n: int) -> int:
-    '''returns "a//n"'''
+    '''returns equivalent of "a//n" for signed mod'''
     assert n > 0
     return (a - mods(a, n))//n
 
-def grem(w: tuple, z: tuple) -> tuple:
-    '''remainder in Gaussian integers when dividing w by z'''
+def grem(w: Tuple[int, int], z: Tuple[int, int]) -> Tuple[int, int]:
+    '''returns remainder in Gaussian integers when dividing w by z'''
     (w0, w1) = w
     (z0, z1) = z
     n = z0 * z0 + z1 * z1
@@ -141,19 +153,14 @@ def grem(w: tuple, z: tuple) -> tuple:
     return(w0 - z0 * u0 + z1 * u1,
            w1 - z0 * u1 - z1 * u0)
 
-def ggcd(w: tuple, z: tuple) -> tuple:
-    '''gcd() for gaussian integers'''
+def ggcd(w: Tuple[int, int], z: Tuple[int, int]) -> Tuple[int, int]:
+    '''returns greatest common divisorfor gaussian integers'''
     while z != (0,0):
         w, z = z, grem(w, z)
     return w
 
 def root4m1(p: int) -> int:
-    '''
-    Args:
-        p: module
-    Returns:
-        int: sqrt(-1) (mod p)
-    '''
+    '''returns sqrt(-1) (mod p)'''
     assert p > 1 and (p % 4) == 1
     k = p//4
     j = 2
@@ -168,16 +175,16 @@ def root4m1(p: int) -> int:
 def sq2(p: int) -> Tuple[int, int]:
     """
     Args:
-        p: prime p=1 (mod 4), asserts if not
+        p: assrts if not prime =1 (mod 4).
     Returns:
-        Tuple[int, int]: the squares of two ints sum up to p
-    Examples:  
-        This is how it is used.
-        ```
-        >>> print(sq2(233))
+        Tuple[int, int]: the squares of ints sum up to p.
+    Example:  
+        Determine unique sum of two squares for prime 233.
+    ```
+        >>> sq2(233)
         (13, 8)
         >>>
-        ```
+    ```
     """
     assert p > 1 and p % 4 == 1
 
@@ -190,7 +197,38 @@ def SECTION2():
 Functions dealing with representations of int as sum of two squares
     '''
     return
-def square_sum_prod(n):
+
+IntTuple2 = Tuple[int, int]
+IntTuple4 = Tuple[int, int, int, int]
+IntList2 = List[IntTuple2]
+IntList4 = List[IntTuple4]
+
+RSA_factored_2 = List[Tuple[int, int, int, int, dict, dict]]
+RSA_factored = IntList4
+RSA_unfactored = IntList2
+
+RSA_number = Union[RSA_factored_2, RSA_factored, RSA_unfactored]
+
+def square_sum_prod(n: Union[int, RSA_number]) -> Union[IntList2, IntList4]:
+    """
+    Args:
+        n: int or RSA_number.
+    Returns:
+        tuple: squares of pairs of ints sum up to prime, prime[s] multiply to n.
+    Example:  
+        For prime 233 and RSA-59.
+    ```
+        >>> square_sum_prod(233)
+        [13, 8]
+        >>>
+        >>> square_sum_prod(RSA.get(59))
+        [348414999546339, 281133787033754, 514756770360836, 304082178808739]
+        >>> r = square_sum_prod(RSA.get(59))
+        >>> (r[0]**2 + r[1]**2) * (r[2]**2 + r[3]**2) == RSA.get(59)[1]
+        True
+        >>>
+    ```
+    """
     if type(n) == list:
         l = square_sum_prod(n[2])
         return l + square_sum_prod(n[3])
