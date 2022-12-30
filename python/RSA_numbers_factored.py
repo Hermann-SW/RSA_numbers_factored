@@ -11,6 +11,13 @@ RSA_unfactored = NewType('RSA_unfactored', IntList2)
 RSA_number     = NewType('RSA_number',     Union[RSA_factored_2, RSA_factored, RSA_unfactored])
 ```
 
+RSA number n = RSA-l:
+```
+Unfactored:  l,n
+Factored:    l,n,p,q           (n = p * q)
+Factored_2:  l,n,p,q,pm1,qm1   (n = p * q, Xm1 factorization dict of X-1)
+```
+
 
 v1.10
 - add uniq arg to RSA().square_sums()
@@ -88,11 +95,9 @@ v0.1
 - initial version, with bits(), digits(), rsa array and main() testing
 
 
-Small primes =1 (mod 4) less than 1000.
-
-Array of RSA numbers.
-
-
+Global variable descriptions:
+- small primes =1 (mod 4) less than 1000
+- list of RSA numbers
 '''
 from math import log2, log10
 from sympy.ntheory import isprime
