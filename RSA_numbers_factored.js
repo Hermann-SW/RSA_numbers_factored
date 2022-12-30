@@ -1,11 +1,18 @@
 // RSA_numbers_factored.js
 //
-// v1.10
+// RSA number n = RSA-l:
+// ```
+// RSA_unfactored:  [l,n]
+// RSA_factored:    [l,n,p,q]           (n = p * q)
+// RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
+// ```
+// (v1.10a)
 //   add uniq arg to RSA().square_sums()
 //   add smp1m4 array of primes =1 (mod 4) less than 1000
 //   add sqtst()
 //   implement itertools combinations, combinations_with_replacement, chain
 //   add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03
+//   add sq2d()
 //
 // v1.9
 //   remove not needed anymore RSA().__init__()
@@ -312,6 +319,11 @@ function sq2(p){
 }
 //
 //##############################################################################
+
+function sq2d(p){
+    assert(p > 1n && isprime(p));
+    return [1n + p / 2n, p / 2n];
+}
 
 function square_sum_prod(n){
     if (typeof n == 'object'){
@@ -708,6 +720,7 @@ if (typeof navigator != 'undefined')
         root4m1: root4m1,
         sq2: sq2,
 
+        sq2d: sq2d,
         square_sum_prod: square_sum_prod,
         square_sums_: square_sums_,
         square_sums: square_sums,

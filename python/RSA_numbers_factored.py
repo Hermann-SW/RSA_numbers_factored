@@ -13,17 +13,18 @@ RSA_number     = NewType('RSA_number',     Union[RSA_factored_2, RSA_factored, R
 
 RSA number n = RSA-l:
 ```
-Unfactored:  l,n
-Factored:    l,n,p,q           (n = p * q)
-Factored_2:  l,n,p,q,pm1,qm1   (n = p * q, Xm1 factorization dict of X-1)
+RSA_unfactored:  [l,n]
+RSA_factored:    [l,n,p,q]           (n = p * q)
+RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
 
-v1.10
+(v1.10)
 - add uniq arg to RSA().square_sums()
-- add smp1m4 array of primes =1 (mod 4) less than 1000
+- add smp1m4 list of primes =1 (mod 4) less than 1000
 - add sqtst()
 - add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03
+- add sq2d()
 
 v1.9
 - remove not needed anymore RSA(). \_\_init\_\_()
@@ -50,7 +51,7 @@ v1.7
 - add "RSA().square_diffs()" for returning two pairs
 
 v1.6
-- enable square_sum_prod() functions to deal with primefactors in array
+- enable square_sum_prod() functions to deal with primefactors in list
 - add asserts enforcing "=1 (mod 4)" for square_sum_prod() functions
 - add has_factors_1_1() [returns whether both primefactors are "=1 (mod4)"]
 - add RSA().factored_1_1() based on that
@@ -92,7 +93,7 @@ v0.2
 - added ind(rsa, x) function, returning index in rsa of RSA-x number
 
 v0.1
-- initial version, with bits(), digits(), rsa array and main() testing
+- initial version, with bits(), digits(), rsa list and main() testing
 
 
 Global variable descriptions:
@@ -227,7 +228,7 @@ def root4m1(p: int) -> int:
 def sq2(p: int) -> Tuple[int, int]:
     """
     Args:
-        p: assrts if not prime =1 (mod 4).
+        p: asserts if not prime =1 (mod 4).
     Returns:
         Tuple[int, int]: the squares of ints sum up to p.
     Example:  
@@ -249,6 +250,24 @@ def SECTION2():
     Functions dealing with representations of int as sum of two squares
     '''
     return
+
+def sq2d(p: int) -> Tuple[int, int]:
+    """
+    Args:
+        p: asserts if not odd prime.
+    Returns:
+        Tuple[int, int]: the squares of ints difference is p.
+    Example:  
+        Determine unique difference of two squares for prime 11 (= 6\*\*2 - 5\*\*2).
+    ```
+        >>> sq2d(11)
+        (6, 5)
+        >>>
+    ```
+    """
+    assert p > 1 and isprime(p)
+
+    return 1 + p//2, p//2
 
 def square_sum_prod(n: Union[int, RSA_number]) -> Union[IntList2, IntList4]:
     """
@@ -309,7 +328,7 @@ def square_sums_(s: List[int]) -> List[int]:
         s.append(b)
         return l
 
-def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool = False) -> List[int]:
+def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool = False) -> List[IntList2]:
     """
     Args:
         l: List of int.
@@ -317,9 +336,9 @@ def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool
         revl: sorting direction for list.
         uniq: eliminate duplicates if True.
     Returns:
-        List[int]: square_sums_(s) sorted (tuples and list), optional duplicates removed.
+        List[IntList2]: square_sums_(s) sorted (tuples and list), optional duplicates removed.
     Example:
-        For list corresponding to number 5\*5\*13.
+        For list corresponding to number 5\*5\*13 (5 = 2**2 + 1**2, 13 = 3**2 + 1**2).
     ```
         >>> s = [2, 1, 2, 1, 3, 2]
         >>> square_sums(s)
@@ -350,9 +369,11 @@ smp1m4 = [5,13,17,29,37,41,53,61,73,89,97,101,109,113,137,149,157,173,181,193,
 
 def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
     """
+    Note:
+        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many asserts for all k-element subsets of l
     Args:
         l: list of distinct primes =1 (mod 4)
-        k: size of subsets, to verify that 2**(k-1) == unique #sum_of_squares
+        k: size of subsets
         dbg: 0=without debug output, 1-3 with more and more
     Example:
     ```
@@ -385,7 +406,7 @@ def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
 
 def SECTION3():
     '''
-    Functions working on "rsa" array
+    Functions working on "rsa" list
     '''
     return
 def idx(rsa: List[RSA_number], l: int) -> int:
@@ -568,7 +589,7 @@ def main(rsa):
         assert  l[j][0] > l[j+1][0]
 
 
-# rsa array entries of form (n=p*q):
+# rsa list entries of form (n=p*q):
 #   x, RSA-x = n [, p, q [, (p-1), (q-1) as factorization dictionaries]]
 #
 rsa=[
