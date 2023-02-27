@@ -52,11 +52,11 @@ def isprime(n):
     return True
 
 def gcd(a, b):
-    if (a < b):
-        return gcd(b, a)
-    if (b==0):
-        return a
-    return gcd(b, a%b)
+    while b > 0:
+        c = a % b
+        a = b
+        b = c
+    return a
 
 def lcm(a, b):
     return a * b // gcd(a, b)
@@ -78,7 +78,11 @@ def bits(n: int) -> int:
         >>>
     ```
     '''
-    return int(log2(n) + 1)
+    b = 0
+    while n > 0:
+        n >>= 1
+        b += 1
+    return b
 
 def digits(n: int) -> int:
     '''
@@ -92,7 +96,11 @@ def digits(n: int) -> int:
         >>>
     ```
     '''
-    return int(log10(n) + 1)
+    d = 0
+    while n > 0:
+        n //= 10
+        d += 1
+    return d
 
 def SECTION1():
     '''
