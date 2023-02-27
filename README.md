@@ -24,6 +24,7 @@ Executing transpiled RSA_numbers_factored.js executes same functionality validat
 Finally, if redirecting output for JavaScript "print()" implementation to console.log, validation can be done in developer tools browser console as well:  
 ![browser_console.validation.png](browser_console.validation.png)
 
+## Functionality validation: snapshot 
 Since validation code is likely to change (location as well as content) in future, here just current snapshot to get an idea what all gets validated, and how validation output gets created:  
 ```python
 class RSA:
