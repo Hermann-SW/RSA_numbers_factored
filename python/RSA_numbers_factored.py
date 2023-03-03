@@ -322,6 +322,7 @@ def square_sums_(s: List[int]) -> List[int]:
         a = s.pop()
         l=[]
         for p in square_sums_(s):
+            # Brahmagupta–Fibonacci identity
             l.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
             l.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
         s.append(a)
