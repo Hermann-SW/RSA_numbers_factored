@@ -729,7 +729,6 @@ class RSA:
         Returns:
             Tuple[int, int, int, int]: square sums of tuple elements sum up to RSA number
         Example:
-            For list corresponding to number 5\*5\*13 (5 = 2**2 + 1**2, 13 = 3**2 + 1**2).
         ```
             >>> p,q = 13,29
             >>> n = p*q

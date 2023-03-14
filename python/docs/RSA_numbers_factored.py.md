@@ -909,7 +909,7 @@ square_sums_4(x: Union[int, RSA_number]) → Tuple[int, int, int, int]
 
 **Example:**
 
- For list corresponding to number 5\*5\*13 (5 = 2**2 + 1**2, 13 = 3**2 + 1**2).
+
 ```
     >>> p,q = 13,29
     >>> n = p*q
@@ -955,7 +955,7 @@ totient_2(x)
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L754"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L753"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ### <kbd>function</kbd> `validate`
 
