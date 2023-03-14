@@ -25,6 +25,8 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 - add sqtst()
 - add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03
 - add sq2d()
+- add MicroPython version
+- add square_sums_4()
 
 v1.9
 - remove not needed anymore RSA(). \_\_init\_\_()
@@ -719,6 +721,35 @@ class RSA:
         r = self.get_(x)
         assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
         return square_sums(square_sum_prod(r))
+
+    def square_sums_4(self, x: Union[int, RSA_number]) -> Tuple[int, int, int, int]:
+        """
+        Args:
+            x: RSA_number length or RSA_number
+        Returns:
+            Tuple[int, int, int, int]: square sums of tuple elements sum up to RSA number
+        Example:
+            For list corresponding to number 5\*5\*13 (5 = 2**2 + 1**2, 13 = 3**2 + 1**2).
+        ```
+            >>> p,q = 13,29
+            >>> n = p*q
+            >>> sq4 = RSA.square_sums_4([0,0,p,q])
+            >>> sq4
+            (15, 4, 6, 10)
+            >>> sum([x**2 for x in sq4]) == n
+            True
+            >>> sum([x**2 for x in RSA.square_sums_4(129)]) == RSA.get(129)[1]
+            True
+            >>> RSA.square_sums_4(59)
+            (179348979911745603741332779404, 85487774497975933628103176206, 105946792191696573364448656521, 144715520252806281192691658344)
+            >>> 
+        ```
+        """
+        r = self.get_(x)
+        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
+        p = sq2(r[2])
+        q = sq2(r[3])
+        return p[0]*q[0], p[1]*q[1], p[0]*q[1], p[1]*q[0]
 
     def validate(self):
         main(rsa)
