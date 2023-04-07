@@ -1,4 +1,4 @@
-from RSA_numbers_factored mport *
+from RSA_numbers_factored import *
 
 R = RSA()
 r = R.factored_2()[-1]
