@@ -19,6 +19,6 @@ Version with  emulation of used sympy functionality [RSA_numbers_factored_mp.py]
 
 ### Android
 
-Unmodified RSA_numbers_factored.py works on Android (with [Pydroid3](https://play.google.com/store/search?q=Pydroid3) playstore app, 3 day free trial, 2$/month, 16$/lifetime) as well. Details in [this forum posting](https://forums.raspberrypi.com/viewtopic.php?t=343468&start=25#p2090124)  
+Unmodified RSA_numbers_factored.py works on Android (with [Pydroid3](https://play.google.com/store/search?q=Pydroid3) playstore app, 3 day free trial, 2$/month, 16$/lifetime) as well. Test __name__ == "__main__" does not work in Pydroid3, so new demo [Pydroid3_demo.py](Pydroid3_demo.py) added. Details in [this forum posting](https://forums.raspberrypi.com/viewtopic.php?t=343468&start=25#p2090124)  
 ![Pydroid3 demo](Pydroid3_demo.png)
 
