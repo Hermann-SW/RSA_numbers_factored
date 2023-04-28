@@ -13,6 +13,8 @@
 //   implement itertools combinations, combinations_with_replacement, chain
 //   add lazydocs doc with Makefile fixing Example[s] bugs, docstrings up to and including SECTION03
 //   add sq2d()
+//   add MicroPython version 
+//   add square_sums_4() 
 //
 // v1.9
 //   remove not needed anymore RSA().__init__()
@@ -249,6 +251,7 @@ function digits(n){
 // - asserts instead bad case returns
 // - renamed root4() to root4m1() indicating which 4th root gets determined
 // - made sq2() return tuple with positive numbers; before sq2(13) = (-3,-2)
+// - sq2(p) result can be obtained from sympy.solvers.diophantine.diophantine function diop_DN(): diop_DN(-1, p)[0]
 //
 function mods(a, n){
     assert(n > 0n);
@@ -343,6 +346,7 @@ function square_sums_(s){
         var a = s.pop();
         var l=[];
         for(p of square_sums_(s)){
+            // Brahmagupta–Fibonacci identity
             l.push([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]]);
             l.push([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])]);
         }
@@ -668,6 +672,13 @@ class RSA {
         var r = this.get_(x);
         assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
         return square_sums(square_sum_prod(r));
+    }
+    square_sums_4(x){
+        var r = self.get_(x)
+        assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
+        var p = sq2(r[2])
+        var q = sq2(r[3])
+        return [ p[0]*q[0], p[1]*q[1], p[0]*q[1], p[1]*q[0] ];
     }
     validate(){
         main(rsa);
