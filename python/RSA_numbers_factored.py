@@ -157,6 +157,7 @@ def SECTION1():
     - asserts instead bad case returns
     - renamed root4() to root4m1() indicating which 4th root gets determined
     - made sq2() return tuple with positive numbers; before sq2(13) returned (-3,-2)
+    - sq2(p) result can be obtained from sympy.solvers.diophantine.diophantine function diop_DN(): diop_DN(-1, p)[0]
     '''
     return
 def mods(a: int, n: int) -> int:
