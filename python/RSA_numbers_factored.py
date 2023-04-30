@@ -1,3 +1,5 @@
+# pylint: disable=R0201, C0103, R0912
+#                 no-self-use, invalid-name, too-many-branches
 '''
 For type hinting:
 ```
@@ -27,9 +29,15 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 - add sq2d()
 - add MicroPython version
 - add square_sums_4()
+- avoid redundant return type in "Returns:", now lazydocs Makefile handles that
+- completed documentation, fix small typos, correct some hinting types, new examples
+- Todo: show lazydocs class member functions as "method" and not as "function"
+- New makefile doc|pylint|validate targets
+- "make pylint" clean (top line disable and pylint options)
+- make sure every function/method gets called at least once in validation
 
 v1.9
-- remove not needed anymore RSA(). \_\_init\_\_()
+- remove not needed anymore RSA(). \\_\\_init\\_\\_()
 - add RSA().square_sums()
 - manual transpilation to RSA_numbers_factored.js
 - new home in RSA_numbers_factored repo python directory
@@ -41,7 +49,7 @@ v1.8
 - make few changes, documented in that code section
 - make square_sum_prod base on sq2, eliminate subprocess.Popen()
 - remove RSA().square_sum_prod because not needed anymore
-- remove Popen and Pipe import 
+- remove Popen and Pipe import
 
 v1.7
 - add "mod4" attribute to "has_factors()" and "RAS().factored()"
@@ -63,7 +71,7 @@ v1.5
 - add square_sums() assertions
 
 v1.4
-- add RSA.square_sum_prod(), using Popen() pipe for >1 calls 
+- add RSA.square_sum_prod(), using Popen() pipe for >1 calls
 
 v1.3
 - add square_sum_prod(), for use see:
@@ -103,10 +111,10 @@ Global variable descriptions:
 - list of RSA numbers
 '''
 from math import log2, log10
+from itertools import combinations, chain
+from typing import Tuple, List, Union, Dict, NewType, Type
 from sympy.ntheory import isprime
 from sympy import lcm
-from itertools import combinations, combinations_with_replacement, chain
-from typing import Tuple, List, Union, Dict, NewType, Type
 
 IntList2       = NewType('IntList2',       List[Tuple[int, int]])
 IntList4       = NewType('IntList4',       List[Tuple[int, int, int, int]])
@@ -157,14 +165,14 @@ def SECTION1():
     - asserts instead bad case returns
     - renamed root4() to root4m1() indicating which 4th root gets determined
     - made sq2() return tuple with positive numbers; before sq2(13) returned (-3,-2)
-    - sq2(p) result can be obtained from sympy.solvers.diophantine.diophantine function diop_DN(): diop_DN(-1, p)[0]
+    - sq2(p) result can be obtained from sympy.solvers.diophantine.diophantine by diop_DN(-1, p)[0]
     '''
     return
 def mods(a: int, n: int) -> int:
     '''returns "signed" a (mod n), in range -n//2..n//2'''
     assert n > 0
     a = a % n
-    if (2 * a > n):
+    if 2 * a > n:
         a -= n
     return a
 
@@ -189,7 +197,7 @@ def grem(w: Tuple[int, int], z: Tuple[int, int]) -> Tuple[int, int]:
     (w0, w1) = w
     (z0, z1) = z
     n = z0 * z0 + z1 * z1
-    assert n > 0 and "division by zero"
+    assert n > 0 # and "division by zero"
     u0 = quos(w0 * z0 + w1 * z1, n)
     u1 = quos(w1 * z0 - w0 * z1, n)
     return(w0 - z0 * u0 + z1 * u1,
@@ -197,7 +205,7 @@ def grem(w: Tuple[int, int], z: Tuple[int, int]) -> Tuple[int, int]:
 
 def ggcd(w: Tuple[int, int], z: Tuple[int, int]) -> Tuple[int, int]:
     '''
-    returns greatest common divisorfor gaussian integers
+    returns greatest common divisor for gaussian integers
 
     Example:
         Demonstrates how ggcd() can be used to determine sum of squares.
@@ -225,16 +233,16 @@ def root4m1(p: int) -> int:
         b = mods(a * a, p)
         if b == -1:
             return a
-        assert b == 1 and "p not prime"
+        assert b == 1 # and "p not prime"
         j += 1
 
 def sq2(p: int) -> Tuple[int, int]:
     """
     Args:
-        p: asserts if not prime =1 (mod 4).
+        p: asserts if p is no prime =1 (mod 4).
     Returns:
-        Tuple[int, int]: the squares of ints sum up to p.
-    Example:  
+        _: pair of numbers, their squares summing up to p.
+    Example:
         Determine unique sum of two squares for prime 233.
     ```
         >>> sq2(233)
@@ -259,9 +267,9 @@ def sq2d(p: int) -> Tuple[int, int]:
     Args:
         p: asserts if not odd prime.
     Returns:
-        Tuple[int, int]: the squares of ints difference is p.
-    Example:  
-        Determine unique difference of two squares for prime 11 (= 6\*\*2 - 5\*\*2).
+        _: pair of numbers, with difference of their squares being p.
+    Example:
+        Determine unique difference of two squares for prime 11 (= 6\\*\\*2 - 5\\*\\*2).
     ```
         >>> sq2d(11)
         (6, 5)
@@ -277,36 +285,36 @@ def square_sum_prod(n: Union[int, RSA_number]) -> Union[IntList2, IntList4]:
     Args:
         n: int or RSA_number.
     Returns:
-        Union[IntList2, IntList4]: squares of pairs of ints sum up to prime, prime[s] multiply to n.
-    Example:  
+        _: int list with squares of pairs of ints sum up to prime, prime[s] multiply to n.
+    Example:
         For prime 233 and composite number RSA-59.
     ```
         >>> square_sum_prod(233)
         [13, 8]
         >>>
-        >>> r = RSA.get(59)
+        >>> r = rsa[0]
         >>> s = square_sum_prod(r)
         >>> (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == r[1]
         True
         >>>
     ```
     """
-    if type(n) == list:
+    if isinstance(n, list):
         l = square_sum_prod(n[2])
         return l + square_sum_prod(n[3])
 
     return list(sq2(n))
 
-def square_sums_(s: List[int]) -> List[int]:
+def square_sums_(s: List[int]) -> Type[IntList2]:
     """
     Args:
-        s: List of int returned by square_sum_prod().
+        s: List of int returned by square_sum_prod(n).
     Returns:
-        List[int]: squares of pairs of ints sum up to prime, prime[s] multiply to n.
+        _: List of int pairs, their squares summing up to n.
     Example:
         For composite number RSA-59.
     ```
-        >>> r = RSA.get(59)
+        >>> r = rsa[0]
         >>> s = square_sum_prod(r)
         >>> square_sums_(s)
         [[93861205413769670113229603198, 250662312444502854557140314865], [264836754409721537369435955610, 38768728061109707828243001823]]
@@ -320,19 +328,20 @@ def square_sums_(s: List[int]) -> List[int]:
     """
     if len(s) == 2:
         return [s]
-    else:
-        b = s.pop()
-        a = s.pop()
-        l=[]
-        for p in square_sums_(s):
-            # Brahmagupta–Fibonacci identity
-            l.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
-            l.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
-        s.append(a)
-        s.append(b)
-        return l
 
-def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool = False) -> List[IntList2]:
+    b = s.pop()
+    a = s.pop()
+    l=[]
+    for p in square_sums_(s):
+        # Brahmagupta–Fibonacci identity
+        l.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
+        l.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
+    s.append(a)
+    s.append(b)
+    return l
+
+def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool = False) \
+        -> Type[IntList2]:
     """
     Args:
         l: List of int.
@@ -340,9 +349,10 @@ def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool
         revl: sorting direction for list.
         uniq: eliminate duplicates if True.
     Returns:
-        List[IntList2]: square_sums_(s) sorted (tuples and list), optional duplicates removed.
+        _: square_sums_(l) sorted (tuples and list), optionally with duplicates removed.
     Example:
-        For list corresponding to number 5\*5\*13 (5 = 2**2 + 1**2, 13 = 3**2 + 1**2).
+        For list corresponding to number
+          5\\*5\\*13 (5 = 2\\*\\*2 + 1\\*\\*2, 13 = 3\\*\\*2 + 2\\*\\*2).
     ```
         >>> s = [2, 1, 2, 1, 3, 2]
         >>> square_sums(s)
@@ -358,8 +368,8 @@ def square_sums(l: List[int], revt: bool = False, revl: bool = False, uniq: bool
     ```
     """
     r = square_sums_(l)
-    for i in range(len(r)):
-        r[i].sort(reverse=revt)
+    for t in r:
+        t.sort(reverse=revt)
     r.sort(key=(lambda t: t[0]), reverse=revl)
     if uniq:
         return [l for i,l in enumerate(r) if i == 0 or r[i-1][0] != l[0]]
@@ -374,16 +384,17 @@ smp1m4 = [5,13,17,29,37,41,53,61,73,89,97,101,109,113,137,149,157,173,181,193,
 def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
     """
     Note:
-        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many asserts for all k-element subsets of l
+        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
+        asserts for all k-element subsets of l
     Args:
         l: list of distinct primes =1 (mod 4)
         k: size of subsets
         dbg: 0=without debug output, 1-3 with more and more
     Example:
     ```
-        >>> smp1m4[slice(3)]
+        >>> smp1m4[0:3]
         [5, 13, 17]
-        >>> sqtst(smp1m4[slice(3)], 2, dbg=3)
+        >>> sqtst(smp1m4[0:3], 2, dbg=3)
         (0, 1)
         [2, 1, 3, 2]
         [[1, 8], [4, 7]]
@@ -393,9 +404,9 @@ def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
         (1, 2)
         [3, 2, 4, 1]
         [[5, 14], [10, 11]]
-        >>> 
-        >>> sqtst(smp1m4[slice(20)], 7)
-        >>> 
+        >>>
+        >>> sqtst(smp1m4[0:20], 7)
+        >>>
     ```
     """
     assert len(l) >= k
@@ -403,8 +414,10 @@ def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
         L = list(chain(*[sq2(l[x]) for x in s]))
         S = square_sums(L, uniq=True)
         if dbg >= 1:
-            if dbg >= 3:  print(s)
-            if dbg >= 2:  print(L)
+            if dbg >= 3:
+                print(s)
+            if dbg >= 2:
+                print(L)
             print(S)
         assert 2**(k-1) == len(S)
 
@@ -413,15 +426,15 @@ def SECTION3():
     Functions working on "rsa" list
     '''
     return
-def idx(rsa: List[RSA_number], l: int) -> int:
+def idx(rsa_: List[RSA_number], l: int) -> int:
     """
     Args:
-        rsa: list of RSA numbers
+        rsa_: list of RSA numbers
         l: bit-length or decimal-digit-length of RSA number
     Returns:
-        int: index of RSA-l in rsa list, -1 if not found
+        _: index of RSA-l in rsa list, -1 if not found
     """
-    for (i,r) in enumerate(rsa):
+    for (i,r) in enumerate(rsa_):
         if r[0] == l:
             return i
     return -1
@@ -430,14 +443,14 @@ def has_factors(r: Type[RSA_number], mod4: Union[None, int, Tuple[int, int]] = N
     """
     Args:
         r: an RSA number
-        mod4: optional resriction or remainder mod 4 for number or its both prome factors
+        mod4: optional restriction (remainder mod 4 for number or its both prime factors)
     Returns:
-        bool: RSA number has factors, and adheres mod 4 restriction(s)
+        _: RSA number has factors and adheres mod 4 restriction(s)
     """
     return len(r) >= 4 and (
-               mod4  == None  or
-         (type(mod4) == int and r[1] % 4 == mod4)  or
-         (type(mod4) == tuple and r[2] % 4 == mod4[0] and r[3] % 4 == mod4[1])
+               mod4 is None  or
+         (isinstance(mod4, int) and r[1] % 4 == mod4)  or
+         (isinstance(mod4, tuple) and r[2] % 4 == mod4[0] and r[3] % 4 == mod4[1])
         )
 
 def has_factors_2(r: Type[RSA_number]) -> bool:
@@ -445,16 +458,17 @@ def has_factors_2(r: Type[RSA_number]) -> bool:
     Args:
         r: an RSA number
     Returns:
-        bool: RSA number has factors p and q, and factorizations of p-1 and q-1
+        _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
     Example:
+    For RSA-100
     ```
-        >>> r=RSA.get(100)
+        >>> r=rsa[2]
         >>> has_factors_2(r)
         True
         >>> l,n,p,q,pm1,qm1 = r
         >>> l
         100
-        >>> 
+        >>>
         >>> q
         40094690950920881030683735292761468389214899724061
         >>> qm1
@@ -469,9 +483,21 @@ def SECTION4():
     primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f
     '''
 def primeprod_totient(p, q):
+    """
+    Args:
+        p,q: odd primes.
+    Returns:
+        _: totient(n) with n=p*q.
+    """
     return (p-1)*(q-1)
 
 def primeprod_reduced_totient(p, q):
+    """
+    Args:
+        p,q: odd primes.
+    Returns:
+        _: reduced_totient(n) with n=p*q.
+    """
     return int(lcm(p-1, q-1))
 
 
@@ -483,6 +509,12 @@ def SECTION5():
     '''
     return
 def dict_int(d):
+    """
+    Args:
+        d: factorization dictionary.
+    Returns:
+        _: n with d = sympy.factorint(n).
+    """
     p = 1
     for k in d.keys():
         p *= k ** d[k]
@@ -490,6 +522,12 @@ def dict_int(d):
     return p
 
 def dict_totient(d):
+    """
+    Args:
+        d: factorization dictionary.
+    Returns:
+        _: totient(n) with d = sympy.factorint(n).
+    """
     p = 1
     for k in d.keys():
         p *= ((k - 1) * (k ** (d[k] - 1)))
@@ -500,19 +538,71 @@ def dict_totient(d):
 # functions on pair of factorization dictionaries
 #
 def dictprod_totient(d1, d2):
+    """
+    Args:
+        d1,d2: factorization dictionaries.
+    Returns:
+        _: totient(n) with n=dict_int(d1)*dict_int(d2).
+    """
     return dict_totient(d1) * dict_totient(d2)
 
 def dictprod_reduced_totient(d1, d2):
+    """
+    Args:
+        d1,d2: factorization dictionaries.
+    Returns:
+        _: reduced_totient(n) with n=dict_int(d1)*dict_int(d2).
+    """
     return int(lcm(dict_totient(d1), dict_totient(d2)))
 
+def _validate_squares():
+    """avoid R0915 pylint too-many-statements warning"""
+    s = [2,1,3,2,4,1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
-# simple demo asserting a lot of identities
-#
-def main(rsa):
+    p = 1
+    for j in range(0, len(s), 2):
+        p *= (s[j]**2 + s[j+1]**2)
+
+    l = square_sums_(s)
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+
+    l = square_sums(s)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+        assert  t[0] < t[1]
+    for j in range(len(l) - 1):
+        assert  l[j][0] < l[j+1][0]
+
+    l = square_sums(s, revl=True, revt=True)
+    for t in l:
+        assert  t[0]**2 + t[1]**2 == p
+        assert  t[0] > t[1]
+    for j in range(len(l) - 1):
+        assert  l[j][0] > l[j+1][0]
+
+    sqtst(smp1m4[10:20], 8)
+
+    s = square_sum_prod(rsa[0])
+    assert (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == rsa[0][1]
+
+    assert sq2d(257)[0]**2 - sq2d(257)[1]**2 == 257
+
+    assert sq2(100049)[0]**2 + sq2(100049)[1]**2 == 100049
+
+
+def validate(rsa_):
+    """
+    Assert many identities to assure data consistency and demo output
+      (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
+    Args:
+        rsa_: list of rsa entries.
+    """
     print("\nwith p-1 and q-1 factorizations (n=p*q):",
           len(['' for r in rsa if len(r) == 6]))
     br = 6
-    for (i, r) in enumerate(rsa):
+    assert len(['' for r in rsa_ if len(r) == 6]) == 20
+    for (i, r) in enumerate(rsa_):
         if has_factors_2(r):
             (l, n, p, q, pm1, qm1) = r
         elif has_factors(r):
@@ -523,7 +613,7 @@ def main(rsa):
         assert  l == digits(n) or l == bits(n)
 
         if i > 0:
-            assert n > rsa[i - 1][1]
+            assert n > rsa_[i - 1][1]
 
         if has_factors(r):
             assert  n == p * q
@@ -542,56 +632,35 @@ def main(rsa):
             assert dict_int(pm1) == p - 1
             assert dict_int(qm1) == q - 1
 
-            assert pow(997, dict_totient(pm1), p - 1) == 1 
-            assert pow(997, dict_totient(qm1), q - 1) == 1 
+            assert pow(997, dict_totient(pm1), p - 1) == 1
+            assert pow(997, dict_totient(qm1), q - 1) == 1
 
             assert pow(65537, dictprod_reduced_totient(pm1, qm1),
-                              primeprod_reduced_totient(p, q)     ) == 1 
+                              primeprod_reduced_totient(p, q)     ) == 1
 
             # this does only work for RSA number != RSA-190
             if l != 190:
                 assert pow(65537, dictprod_totient(pm1, qm1),
-                                  primeprod_totient(p, q)     ) == 1 
+                                  primeprod_totient(p, q)     ) == 1
 
-        if not has_factors_2(r) and has_factors_2(rsa[i - 1]):
+        if not has_factors_2(r) and has_factors_2(rsa_[i - 1]):
             print("\n\nwithout (p-1) and (q-1) factorizations, but p and q:",
-                  len(['' for r in rsa if len(r) == 4]))
+                  len(['' for r in rsa_ if len(r) == 4]))
             br = 3
+            assert len(['' for r in rsa_ if len(r) == 4]) == 5
 
-        if not has_factors(r) and has_factors(rsa[i - 1]):
-            print("\nhave not been factored sofar:", 
-                  len(['' for r in rsa if len(r) == 2]))
+        if not has_factors(r) and has_factors(rsa_[i - 1]):
+            print("\nhave not been factored sofar:",
+                  len(['' for r in rsa_ if len(r) == 2]))
             br = 3
+            assert len(['' for r in rsa_ if len(r) == 2]) == 31
 
         print("%3d" % l, ("bits  " if l == bits(n) else "digits") +
-         ("," if i < len(rsa)-1 else "(="+str(digits(rsa[-1][1]))+" digits)\n"),
-         end = "\n" if i%7 == br or i == len(rsa) - 1 else "")
+         ("," if i < len(rsa_)-1 else "(="+str(digits(rsa_[-1][1]))+" digits)\n"),
+         end = "\n" if i%7 == br or i == len(rsa_) - 1 else "")
 
 
-    i = [2,1,3,2,4,1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
-
-    p = 1
-    for j in range(0, len(i), 2):
-        p *= (i[j]**2 + i[j+1]**2)
-
-    l = square_sums_(i)
-    for t in l:
-        assert  t[0]**2 + t[1]**2 == p
-
-    l = square_sums(i)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
-    for t in l:
-        assert  t[0]**2 + t[1]**2 == p
-        assert  t[0] < t[1]
-    for j in range(len(l) - 1):
-        assert  l[j][0] < l[j+1][0]
-
-    l = square_sums(i, revl=True, revt=True)
-    for t in l:
-        assert  t[0]**2 + t[1]**2 == p
-        assert  t[0] > t[1]
-    for j in range(len(l) - 1):
-        assert  l[j][0] > l[j+1][0]
-
+    _validate_squares()
 
 # rsa list entries of form (n=p*q):
 #   x, RSA-x = n [, p, q [, (p-1), (q-1) as factorization dictionaries]]
@@ -656,69 +725,184 @@ rsa=[
 ]
 
 
-# RSA convenience class
-#
-class RSA:
+class RSA():
+    """RSA convenience class."""
+    def __init__(self):
+        """avoid W0201 pylint warning"""
+        self.i = 0
+
     def __iter__(self):
+        """for iteration over RSA"""
         self.i = 0
         return self
 
     def __next__(self):
+        """for iteration over RSA"""
         if self.i < len(rsa):
             r = rsa[self.i]
             self.i += 1
             return r
-        else:
-            raise StopIteration
 
-    def index(self, x):
+        raise StopIteration
+
+    def index(self, x: int) -> int:
+        """
+        Args:
+            x: bit-length or decimal-digit-length of RSA number.
+        Returns:
+            _: index of RSA-x in rsa list, -1 if not found.
+        """
         return idx(rsa, x)
 
-    def get(self, x):
+    def get(self, x: int) -> Type[RSA_number]:
+        """
+        Args:
+            x: RSA number length.
+        Returns:
+            _: RSA-x from rsa list, asserts if not found.
+        """
         i = self.index(x)
         assert i != -1
         return rsa[i]
 
-    def get_(self, x):
-        if type(x) == list:
+    def get_(self, x: Union[int, RSA_number]) -> Type[RSA_number]:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: identity or RSA-x from rsa list.
+        """
+        if isinstance(x, list):
             return x
-        else:
-            return self.get(x)
 
-    def factored(self, mod4=None):
-        return [r[slice(4)] for r in rsa if has_factors(r, mod4)]
+        return self.get(x)
 
-    def factored_2(self):
+    def factored(self, mod4: Union[None, int, Tuple[int, int]] = None) -> Type[IntList4]:
+        """
+        Args:
+            mod4: optional restriction (remainder mod 4 for number or its both prime factors).
+        Returns:
+            _: list of RSA_number being factored and satisfying mod4 restriction
+        Example:
+        ```
+            >>> len(rsa)
+            56
+            >>> len(RSA.factored())
+            25
+            >>> len(RSA.factored(mod4=3))
+            13
+            >>> len(RSA.factored(mod4=1))
+            12
+            >>> len(RSA.factored(mod4=(1,1)))
+            5
+            >>> len(RSA.factored(mod4=(3,3)))
+            7
+            >>>
+            ...
+        ```
+        """
+        return [r[0:4] for r in rsa if has_factors(r, mod4)]
+
+    def factored_2(self) -> List[RSA_number]:
+        """
+        Args:
+            _: none.
+        Returns:
+            _: list of RSA_number with factorization dictionaries.
+        Example:
+        Factored RSA_number without factorization dictionaries.
+        ```
+            >>> set([r[0] for r in RSA.factored()]) - set([r[0] for r in RSA.factored_2()])
+            {768, 230, 232, 240, 250}
+            >>>
+        ```
+        """
         return [r for r in rsa if has_factors_2(r)]
 
-    def totient(self, x):
+    def totient(self, x: Union[int, RSA_number]) -> int:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: totient(x).
+        """
         r = self.get_(x)
         assert has_factors(r)
         return primeprod_totient(r[2], r[3])
 
-    def reduced_totient(self, x):
+    def reduced_totient(self, x: Union[int, RSA_number]) -> int:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: reduced_totient(x).
+        """
         r = self.get_(x)
         assert has_factors(r)
         return primeprod_reduced_totient(r[2], r[3])
 
-    def totient_2(self, x):
+    def totient_2(self, x: Union[int, RSA_number]) -> int:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: apply totient function to totient(x).
+        """
         r = self.get_(x)
         assert has_factors_2(r)
         return dictprod_totient(r[4], r[5])
 
-    def reduced_totient_2(self, x):
+    def reduced_totient_2(self, x: Union[int, RSA_number]) -> int:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: apply reduced_totient function to reduced_totient(x).
+        """
         r = self.get_(x)
         assert has_factors_2(r)
         return dictprod_reduced_totient(r[4], r[5])
 
-    def square_diffs(self, x):
+    def square_diffs(self, x: Union[int, RSA_number]) -> Type[IntList2]:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: two differences of squares resulting in x.
+        Example:
+        ```
+            >>> t = RSA.get(250)
+            >>> n = t[1]
+            >>> [a,b],[c,d] = RSA.square_diffs(t)
+            >>> (a**2 - b**2) == n and (c**2 - d**2) == n
+            True
+            >>>
+        ```
+        """
         r = self.get_(x)
         assert has_factors(r)
-        return [ [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2], 
+        return [ [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2],
                  [(r[1] +    1) // 2,    (r[1] -    1) // 2]
                ]
 
-    def square_sums(self, x):
+    def square_sums(self, x: Union[int, RSA_number]) -> Type[IntList2]:
+        """
+        Args:
+            x: RSA number length or RSA_number.
+        Returns:
+            _: two different sums of squares resulting in x.
+        Example:
+        ```
+            >>> t = RSA.get(129)
+            >>> n = t[1]
+            >>> [a,b],[c,d] = RSA.square_sums(t)
+            >>> (a**2 + b**2) == n and (c**2 + d**2) == n
+            True
+            >>> len({a,b,c,d})
+            4
+            >>>
+        ```
+        """
         r = self.get_(x)
         assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
         return square_sums(square_sum_prod(r))
@@ -728,7 +912,7 @@ class RSA:
         Args:
             x: RSA_number length or RSA_number
         Returns:
-            Tuple[int, int, int, int]: square sums of tuple elements sum up to RSA number
+            _: square sums of tuple elements sum up to RSA number
         Example:
         ```
             >>> p,q = 13,29
@@ -742,7 +926,7 @@ class RSA:
             True
             >>> RSA.square_sums_4(59)
             (179348979911745603741332779404, 85487774497975933628103176206, 105946792191696573364448656521, 144715520252806281192691658344)
-            >>> 
+            >>>
         ```
         """
         r = self.get_(x)
@@ -751,17 +935,60 @@ class RSA:
         q = sq2(r[3])
         return p[0]*q[0], p[1]*q[1], p[0]*q[1], p[1]*q[0]
 
-    def validate(self):
-        main(rsa)
+    def validate(self) -> None:
+        """
+        Note: Assert many identities to assure data consistency and demo output
+              (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
+        Example:
+        ```
+            $ python RSA_numbers_factored.py
 
- 
+            with p-1 and q-1 factorizations (n=p*q): 20
+             59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
+            140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
+            190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,
+
+            without (p-1) and (q-1) factorizations, but p and q: 5
+            230 digits,232 digits,768 bits  ,240 digits,250 digits,
+
+            have not been factored sofar: 31
+            260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
+            1024 bits  ,310 digits,320 digits,330 digits,340 digits,350 digits,360 digits,
+            370 digits,380 digits,390 digits,400 digits,410 digits,420 digits,430 digits,
+            440 digits,450 digits,460 digits,1536 bits  ,470 digits,480 digits,490 digits,
+            500 digits,617 digits,2048 bits  (=617 digits)
+
+            $
+        ```
+        """
+        r = self.factored_2()[-1]
+        l, _n, p, q, pm1, qm1 = r
+        assert (p - 1) * (q - 1) == self.totient(r)
+        assert self.totient_2(r) == self.totient_2(l)
+        assert self.totient_2(r) == dictprod_totient(pm1, qm1)
+        assert pow(65537, self.reduced_totient_2(190), self.reduced_totient(190)) == 1
+        assert len(self.factored()) == 25
+        assert len(self.factored_2()) == 20
+
+        r = self.get(2048)
+        assert r[0] == 2048 and bits(r[1]) == 2048
+        assert r == self.get_(r)
+        assert r == self.get_(2048)
+
+        assert self.index(617) == len(rsa) - 2
+
+        r = self.get(250)
+        [a,b],[c,d] = self.square_diffs(r)
+        assert r[0] == 250 and a**2 - b**2 == r[1] and c**2 - d**2 == r[1]
+
+        r = self.get(129)
+        [a,b],[c,d] = self.square_sums(r)
+        assert r[0] == 129 and a**2 + b**2 == r[1] and c**2 + d**2 == r[1]
+        a,b,c,d = self.square_sums_4(r)
+        assert a**2 + b**2 + c**2 + d**2 == r[1]
+
+        validate(rsa)
+
+
 if __name__ == "__main__":
-    R = RSA()
-    r = R.factored_2()[-1]
-    l, n, p, q, pm1, qm1 = r
-    assert (p - 1) * (q - 1) == R.totient(r)
-    assert R.totient_2(r) == R.totient_2(l)
-    assert R.totient_2(r) == dictprod_totient(pm1, qm1)
-    assert pow(65537, R.reduced_totient_2(190), R.reduced_totient(190)) == 1
-
-    main(rsa)
+    RSA().validate()
