@@ -1,18 +1,24 @@
 # RSA_numbers_factored
 
-Related forum thread:  
+* [Introduction](#introduction)
+* [Functionality validation: Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
+* [Functionality validation: snapshot](#functionality-validation-snapshot)
+
+## Introduction 
+
+Associated forum thread:  
 [https://forums.raspberrypi.com/viewtopic.php?t=343468](https://forums.raspberrypi.com/viewtopic.php?t=343468)
 
-Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (now in [python/RSA_numbers_factored.py](python/RSA_numbers_factored.py) and documented [here](python/docs/RSA_numbers_factored.py.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos.
+Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (details on [Python iimplementation](python/README.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos:
 
-Version with  emulation of used sympy functionality [python/RSA_numbers_factored_mp.py](python/RSA_numbers_factored_mp.py) does run on MicroPython on a 264KB ram only Raspberry Pico RP2040 microcontrolller (just for fun). Unmodified RSA_numbers_factored.py works on Anroid (with [Pydroid3](https://play.google.com/store/search?q=Pydroid3) playstore app, 3 day free trial, 2$/month, 16$/lifetime) as well. Details on both non-standard Python environments [here](python/README.md#non-standard-python-environments).
-
-[R.html](R.html)  browser term output RSA tuples if both prime factors are ≡1 (mod 4)  
-[validate.html](validate.html)  do validation, with output in browser term  
-[squares.html](squares.html)  initial version, dynamical onclick buttons if ≡1 (mod 4)  
+* [R.html](R.html)  browser term output RSA tuples if both prime factors are ≡1 (mod 4)  
+* [validate.html](validate.html)  do validation, with output in browser term  
+* [squares.html](squares.html)  initial version, dynamical onclick buttons if ≡1 (mod 4)  
 
 Transpilation was done manually, using these templates:  
 [human_transpiler.templates.md](human_transpiler.templates.md)  
+
+Works with help of added JavaScript implementation for sympy functions gcd and isprime, and functions from itertools.
 
 ## Functionality validation: Python, browser and nodejs demos 
 

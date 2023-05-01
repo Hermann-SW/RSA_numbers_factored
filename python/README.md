@@ -1,9 +1,19 @@
 # RSA_numbers_factored.py
 
-Related forum thread:  
+* [Introduction](#introduction)
+* [RSA_numbers_factored.py documentation](#rsa_numbers_factoredpy-documentation)
+* [Non-standard Python environments](#non-standard-python-environments)
+  * [MicroPython](#micropython)
+  * [Android](#android)
+* [Makefile](#makefile)
+
+## Introduction 
+
+Associated forum thread:  
 [https://forums.raspberrypi.com/viewtopic.php?t=343468](https://forums.raspberrypi.com/viewtopic.php?t=343468)
 
-Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (now in [./RSA_numbers_factored.py](./RSA_numbers_factored.py)), with Python changes getting manually transpiled to [../RSA_numbers_factored.js](../RSA_numbers_factored.js) for use in nodejs and HTML demos.
+Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (now in [./RSA_numbers_factored.py](./RSA_numbers_factored.py)). Python code changes get manually transpiled to [../RSA_numbers_factored.js](../RSA_numbers_factored.js) for use in nodejs and HTML demos, find [details here](../README.md) (with added JavaScript implementation of sympy functions gcd and isprime, and functions from itertools).
+
 
 ## RSA_numbers_factored.py documentation  
 
@@ -22,3 +32,18 @@ Version with  emulation of used sympy functionality [RSA_numbers_factored_mp.py]
 Unmodified RSA_numbers_factored.py works on Android (with [Pydroid3](https://play.google.com/store/search?q=Pydroid3) playstore app, 3 day free trial, 2$/month, 16$/lifetime) as well. Test \_\_name\_\_ == "\_\_main\_\_" does not work in Pydroid3, so new demo [Pydroid3_demo.py](Pydroid3_demo.py) added. Details in [this forum posting](https://forums.raspberrypi.com/viewtopic.php?t=343468&start=25#p2090124)  
 ![Pydroid3 demo](Pydroid3_demo.png)
 
+## Makefile
+
+Makefile targets:
+```
+    $ make
+    targets: doc|doc_diff|pylint|black|validate|clean
+    $
+```
+
+* <b>doc</b>: runs lazydocs to create new doc, with same sed replacements
+* <b>doc_diff</b>: updates doc, and shows reduced version of "git diff" for doc
+* <b>pylint</b>: runs pylint, allows long lines with 30+ continuous digits, ignores no-self-use and invalid-name warnings
+* <b>black</b>: runs "black" Python formatter, followed from "make validate"
+* <b>validate</b>: compares validation run output against file "validate.good"
+* <b>clean</b>: clean doc and temporary file
