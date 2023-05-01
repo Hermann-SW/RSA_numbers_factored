@@ -26,7 +26,7 @@ Generated with lazydocs, can be found here:
 
 ### MicroPython
 
-Version with  emulation of used sympy functionality [RSA_numbers_factored_mp.py](RSA_numbers_factored_mp.py) does run on MicroPython on a 264KB ram only Raspberry Pico RP2040 microcontrolller (just for fun — "Validation demo takes 3:09min on RP2040 MicroPython, instead of 1 second in Python or browser JavaScript version though ..."). More details in [this forum posting](https://forums.raspberrypi.com/viewtopic.php?t=343468&start=25#p2085457)  
+Not up to date version with  emulation of used sympy functionality [RSA_numbers_factored_mp.py](RSA_numbers_factored_mp.py) does run on MicroPython on a 264KB ram only Raspberry Pico RP2040 microcontrolller (just for fun — "Validation demo takes 3:09min on RP2040 MicroPython, instead of 1 second in Python or browser JavaScript version though ..."). More details in [this forum posting](https://forums.raspberrypi.com/viewtopic.php?t=343468&start=25#p2085457)  
 ![MicroPython demo](RSA_numbers_factored_mp.py.png)
 
 ### Android
