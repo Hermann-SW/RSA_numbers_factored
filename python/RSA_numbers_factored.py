@@ -1,5 +1,5 @@
-# pylint: disable=R0201, C0103, R0912
-#                 no-self-use, invalid-name, too-many-branches
+# pylint: disable=R0201, C0103
+#                 no-self-use, invalid-name
 '''
 For type hinting:
 ```
