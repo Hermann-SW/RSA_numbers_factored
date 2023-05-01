@@ -22,7 +22,7 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
 
-(v1.10)
+v1.10
 - add uniq arg to RSA().square_sums()
 - add smp1m4 list of primes =1 (mod 4) less than 1000
 - add sqtst()
@@ -38,7 +38,10 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 - make sure every function/method gets called at least once in validation
 - pylint warning related simplifications
 - "validate" target to compare with "validate.good", new "black" target
-- code formatting now with "black", new "doc_diff" target
+- code formatting now with "black", results in need for --max-module-lines=2500
+- new "doc_diff" target
+- blacked Pydroid3 demo, then made pylint clean
+- updated both README.md, added table of contents
 
 v1.9
 - remove not needed anymore RSA(). \\_\\_init\\_\\_()
