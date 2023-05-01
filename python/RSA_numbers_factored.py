@@ -36,6 +36,9 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 - New makefile doc|pylint|validate targets
 - "make pylint" clean (top line disable and pylint options)
 - make sure every function/method gets called at least once in validation
+- pylint warning related simplifications
+- "validate" target to compare with "validate.good", new "black" target
+- code formatting now with "black", new "doc_diff" target
 
 v1.9
 - remove not needed anymore RSA(). \\_\\_init\\_\\_()

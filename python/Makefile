@@ -4,6 +4,14 @@ all:
 
 doc: docs/RSA_numbers_factored.py.md
 
+doc_diff: docs/RSA_numbers_factored.py.md
+	git diff $< | grep -v "^[-+]<a href" | \
+            grep -v "^ ## <kbd>" | \
+            grep -v "^ ### <kbd>" | \
+            grep -v "^@@ " | \
+            grep -v "^ $$" | \
+            grep -v "^ ---"
+
 docs/RSA_numbers_factored.py.md: RSA_numbers_factored.py Makefile
 	lazydocs $<
 	sed -i "s# \(\`\`\`\)\$$#\n\1#;s#\(\*\*Example.*:\*\*\)#\1\n#;s#<b>\`_\`</b>:##" $@
