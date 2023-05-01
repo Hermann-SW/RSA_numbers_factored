@@ -1,6 +1,6 @@
 
 all:
-	@echo "targets: doc|pylint|black|validate"
+	@echo "targets: doc|doc_diff|pylint|black|validate|clean"
 
 doc: docs/RSA_numbers_factored.py.md
 
