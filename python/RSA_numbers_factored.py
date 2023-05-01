@@ -6,7 +6,8 @@ For type hinting:
 IntList2       = NewType('IntList2',       List[Tuple[int, int]])
 IntList4       = NewType('IntList4',       List[Tuple[int, int, int, int]])
 
-RSA_factored_2 = NewType('RSA_factored_2', List[Tuple[int, int, int, int, Dict[int, int], Dict[int, int]]])
+RSA_factored_2 = NewType('RSA_factored_2', \
+    List[Tuple[int, int, int, int, Dict[int, int], Dict[int, int]]])
 RSA_factored   = NewType('RSA_factored',   IntList4)
 RSA_unfactored = NewType('RSA_unfactored', IntList2)
 
@@ -119,7 +120,8 @@ from sympy import lcm
 IntList2       = NewType('IntList2',       List[Tuple[int, int]])
 IntList4       = NewType('IntList4',       List[Tuple[int, int, int, int]])
 
-RSA_factored_2 = NewType('RSA_factored_2', List[Tuple[int, int, int, int, Dict[int, int], Dict[int, int]]])
+RSA_factored_2 = NewType('RSA_factored_2', \
+    List[Tuple[int, int, int, int, Dict[int, int], Dict[int, int]]])
 RSA_factored   = NewType('RSA_factored',   IntList4)
 RSA_unfactored = NewType('RSA_unfactored', IntList2)
 
@@ -317,7 +319,8 @@ def square_sums_(s: List[int]) -> Type[IntList2]:
         >>> r = rsa[0]
         >>> s = square_sum_prod(r)
         >>> square_sums_(s)
-        [[93861205413769670113229603198, 250662312444502854557140314865], [264836754409721537369435955610, 38768728061109707828243001823]]
+        [[93861205413769670113229603198, 250662312444502854557140314865], \
+[264836754409721537369435955610, 38768728061109707828243001823]]
         >>> for a,b in square_sums_(s):
         ...     a**2 + b**2 == r[1]
         ...
@@ -925,7 +928,8 @@ class RSA():
             >>> sum([x**2 for x in RSA.square_sums_4(129)]) == RSA.get(129)[1]
             True
             >>> RSA.square_sums_4(59)
-            (179348979911745603741332779404, 85487774497975933628103176206, 105946792191696573364448656521, 144715520252806281192691658344)
+            (179348979911745603741332779404, 85487774497975933628103176206, \
+105946792191696573364448656521, 144715520252806281192691658344)
             >>>
         ```
         """
