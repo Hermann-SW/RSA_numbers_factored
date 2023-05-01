@@ -6,6 +6,8 @@
   * [MicroPython](#micropython)
   * [Android](#android)
 * [Makefile](#makefile)
+* [Functionality validation: Python, browser and nodejs demos](../README.md#functionality-validation-python-browser-and-nodejs-demos)
+* [Functionality validation: (Python) snapshot](../README.md#functionality-validation-python-snapshot)
 
 ## Introduction 
 
