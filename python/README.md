@@ -43,9 +43,9 @@ Makefile targets:
     $
 ```
 
-* <b>doc</b>: runs lazydocs to create new doc, with same sed replacements
+* <b>doc</b>: runs lazydocs to create new doc, with some sed replacements
 * <b>doc_diff</b>: updates doc, and shows reduced version of "git diff" for doc
 * <b>pylint</b>: runs pylint, allows long lines with 30+ continuous digits, ignores no-self-use and invalid-name warnings
 * <b>black</b>: runs "black" Python formatter, followed from "make validate"
 * <b>validate</b>: compares validation run output against file "validate.good"
-* <b>clean</b>: clean doc and temporary file
+* <b>clean</b>: remove doc and temporary file
