@@ -17,7 +17,7 @@ docs/RSA_numbers_factored.py.md: RSA_numbers_factored.py Makefile
 	sed -i "s# \(\`\`\`\)\$$#\n\1#;s#\(\*\*Example.*:\*\*\)#\1\n#;s#<b>\`_\`</b>:##" $@
 
 pylint: RSA_numbers_factored.py
-	pylint --ignore-long-lines="\d{30}" --max-module-lines=2500 $<
+	pylint --ignore-long-lines="\d{92}" --max-module-lines=2500 $<
 
 black: RSA_numbers_factored.py
 	black $<

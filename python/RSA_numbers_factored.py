@@ -21,6 +21,7 @@ RSA_factored:    [l,n,p,q]           (n = p * q)
 RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
+(v1.11)
 
 v1.10
 - add uniq arg to RSA().square_sums()
