@@ -22,6 +22,7 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
 (v1.11)
+- improve doc
 
 v1.10
 - add uniq arg to RSA().square_sums()
@@ -679,8 +680,8 @@ def dictprod_reduced_totient(d1, d2):
     return int(lcm(dict_totient(d1), dict_totient(d2)))
 
 
-def _validate_squares():
-    """avoid R0915 pylint too-many-statements warning"""
+def validate_squares():
+    """avoid R0915 pylint too-many-statements warning for validate()"""
     s = [2, 1, 3, 2, 4, 1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
     p = 1
@@ -717,8 +718,8 @@ def _validate_squares():
 
 def validate(rsa_):
     """
-    Assert many identities to assure data consistency and demo output
-      (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
+    Assert many identities to assure data consistency and generate demo output for non RSA-class
+    functionality. Gets executed by [RSA().validate()](#function-validate-1).
     Args:
         rsa_: list of rsa entries.
     """
@@ -803,7 +804,7 @@ def validate(rsa_):
             end="\n" if i % 7 == br or i == len(rsa_) - 1 else "",
         )
 
-    _validate_squares()
+    validate_squares()
 
 
 # rsa list entries of form (n=p*q):
@@ -1593,7 +1594,7 @@ class RSA:
 
     def validate(self) -> None:
         """
-        Note: Assert many identities to assure data consistency and demo output
+        Assert many identities to assure data consistency and generate demo output
               (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
         Example:
         ```
