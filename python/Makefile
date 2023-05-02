@@ -10,7 +10,7 @@ doc_diff: docs/RSA_numbers_factored.py.md
             grep -v "^ ### <kbd>" | \
             grep -v "^@@ " | \
             grep -v "^ $$" | \
-            grep -v "^ ---"
+            grep -v "^ ---"; true
 
 docs/RSA_numbers_factored.py.md: RSA_numbers_factored.py Makefile
 	lazydocs $<
