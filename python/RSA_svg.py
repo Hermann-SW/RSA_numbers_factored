@@ -14,6 +14,8 @@ def svg(n: Union[int, RSA_number]) -> str:
     if len(r) < 4:
         return ""
     p, q = r[2:4]
+    X = bits(q) - 1
+    Y = bits(p) - 1
     s = (
         '<svg width="'
         + str(bits(q))
@@ -26,9 +28,9 @@ def svg(n: Union[int, RSA_number]) -> str:
             col = "blue" if (p & (1 << y) != 0 and q & (1 << x) != 0) else "cyan"
             s += (
                 '<rect x="'
-                + str(x)
+                + str(X - x)
                 + '" y="'
-                + str(y)
+                + str(Y - y)
                 + '" width="1" height="1" fill="'
                 + col
                 + '" stroke-width="0"/>'
