@@ -28,7 +28,7 @@ Here shown for demo [RSA_svg.py](RSA_svg.py) to create SVG from a RSA number:
 Different to OpenSSL random art, the generated image exposes RSA number factor p (1-bits = shown rows) and factor q (1-bits = shown columns) with "and" function:  
 ```
     $ python RSA_svg.py 250 > 250.svg
-    $ time convert 250.svg 250.svg.png 
+    $ convert 250.svg 250.svg.png 
     $ file 250.svg.png 
     250.svg.png: PNG image data, 414 x 415, 2-bit colormap, non-interlaced
     $ 
