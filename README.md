@@ -1,8 +1,9 @@
 # RSA_numbers_factored
 
 * [Introduction](#introduction)
-* [Functionality validation: Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
-* [Functionality validation: (Python) snapshot](#functionality-validation-python-snapshot)
+* Functionality validation:
+  * [Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
+  * [Functionality validation: (Python) snapshot](#functionality-validation-python-snapshot)
 
 ## Introduction 
 
