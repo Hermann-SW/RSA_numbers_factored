@@ -3,14 +3,14 @@
 * [Introduction](#introduction)
 * Functionality validation:
   * [Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
-  * [Functionality validation: (Python) snapshot](#functionality-validation-python-snapshot)
+  * [Python snapshot](#functionality-validation-python-snapshot)
 
 ## Introduction 
 
 Associated forum thread:  
 [https://forums.raspberrypi.com/viewtopic.php?t=343468](https://forums.raspberrypi.com/viewtopic.php?t=343468)
 
-Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (details on [Python iimplementation](python/README.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos:
+Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (details on [Python implementation](python/README.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos:
 
 * [R.html](R.html)  browser term output RSA tuples if both prime factors are ≡1 (mod 4)  
 * [validate.html](validate.html)  do validation, with output in browser term  
@@ -21,31 +21,34 @@ Transpilation was done manually, using these templates:
 
 Works with help of added JavaScript implementation for sympy functions gcd and isprime, and functions from itertools.
 
-## Functionality validation: Python, browser and nodejs demos 
+## Functionality validation 
+
+### Python, browser and nodejs demos 
 
 Just executing RSA_numbers_factored.py does functionality validation with lots of asserts:  
-![python.validation.png](python.validation.png)
+![python.validation.png](res/python.validation.png)
 
 Below screen recording of browser validation corresponds to above Python validation, just in browser term:  
 https://hermann-sw.github.io/RSA_numbers_factored/validate.html  
-![Peek_2022-12-18_22-29.gif](Peek_2022-12-18_22-29.gif)
+![Peek_2022-12-18_22-29.gif](res/Peek_2022-12-18_22-29.gif)
 
 Executing transpiled RSA_numbers_factored.js executes same functionality validation with console.log output:  
-![nodejs.validation.png](nodejs.validation.png)
+![nodejs.validation.png](res/nodejs.validation.png)
 
 Finally, if redirecting output for JavaScript "print()" implementation to console.log, validation can be done in developer tools browser console as well:  
-![browser_console.validation.png](browser_console.validation.png)
+![browser_console.validation.png](res/browser_console.validation.png)
 
-## Functionality validation: (Python) snapshot 
+### (Python) snapshot 
 Since validation code is likely to change (location as well as content) in future, here just current snapshot (out of order) to get an idea what all gets validated, and how validation output gets created:  
 ```python
 if __name__ == "__main__":
     RSA().validate()
-...
+```
+```python
 class RSA:
 ...
     def validate(self) -> None:
-...
+        ... (multiline comment)
         r = self.factored_2()[-1]
         l, _n, p, q, pm1, qm1 = r
         assert (p - 1) * (q - 1) == self.totient(r)
@@ -73,9 +76,10 @@ class RSA:
         assert a ** 2 + b ** 2 + c ** 2 + d ** 2 == r[1]
 
         validate(rsa)
-...
+```
+```python
 def validate(rsa_):
-...
+    ... (multiline comment)
     print(
         "\nwith p-1 and q-1 factorizations (n=p*q):",
         len(["" for r in rsa if len(r) == 6]),
@@ -157,10 +161,11 @@ def validate(rsa_):
             end="\n" if i % 7 == br or i == len(rsa_) - 1 else "",
         )
 
-    _validate_squares()
-...
-def _validate_squares():
-    """avoid R0915 pylint too-many-statements warning"""
+    validate_squares()
+```
+```python
+def validate_squares():
+    """avoid R0915 pylint too-many-statements warning for validate()"""
     s = [2, 1, 3, 2, 4, 1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
     p = 1
@@ -193,5 +198,4 @@ def _validate_squares():
     assert sq2d(257)[0] ** 2 - sq2d(257)[1] ** 2 == 257
 
     assert sq2(100049)[0] ** 2 + sq2(100049)[1] ** 2 == 100049
-...
 ```
