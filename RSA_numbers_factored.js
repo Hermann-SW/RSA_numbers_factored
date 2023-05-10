@@ -685,11 +685,10 @@ class RSA {
     }
 };
 
-
 if (typeof navigator != 'undefined')
 {
     assert(typeof process == 'undefined');
-} else if (process.argv.length > 1) {
+} else if ((process.argv.length > 1) && process.argv[1].endsWith("/RSA_numbers_factored.js")) {
     R = new RSA();
     r = R.factored_2()[len(R.factored_2())-1];
     [l, n, p, q, pm1, qm1] = r;

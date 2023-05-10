@@ -4,6 +4,7 @@
 * Functionality validation:
   * [Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
   * [Python snapshot](#functionality-validation-python-snapshot)
+* [Multiple precision integer performance across languages](performance/README.md)
 
 ## Introduction 
 

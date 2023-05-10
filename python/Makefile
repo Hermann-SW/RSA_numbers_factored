@@ -33,5 +33,15 @@ validate: RSA_numbers_factored.py
 	diff validate.good /tmp/out
 	rm -f /tmp/out
 
+sq2: sq2.py
+	@python $< > /tmp/out
+	@diff /tmp/out sq2.py.out
+	@rm -f /tmp/out
+
+sq2_gmpy2: sq2.py
+	@python $< gmpy2 > /tmp/out
+	@diff /tmp/out sq2.py.out
+	@rm -f /tmp/out
+
 clean:
 	rm -f docs/*.py.md /tmp/out
