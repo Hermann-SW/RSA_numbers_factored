@@ -6,7 +6,7 @@ from sys import stderr, argv
 
 from RSA_numbers_factored import sq2
 
-if len(argv) > 1 and argv[1] == "gmpy2":
+if argv[-1] == "gmpy2":
     from gmpy2 import mpz  # pylint: disable=no-name-in-module
 else:
     mpz = lambda x: x
