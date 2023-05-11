@@ -55,7 +55,7 @@ def mods(a: int, n: int) -> int:
 ```
 
 
-The benchmark I used to compare more than the few multiple precision functions from "calcpi.js" is function ```sq2(p)```, that returns pair/array/tuple (C++/NodeJS/Python) containing numbers whose squares add up to passed ```p```, which is asserted to be prime number and =1 (mod 4). That function, and other signed mod and Gaussian integer (complex number whose real and imaginary parts are both integers) functions were 2010 Robert Chapman Python code, that I transpiled to JavaScript manually, and transpiled to C++ further from there. That construction process makes the Python/NodeJS/C++ code "the same" and good for cross language performance comparison. While "Gaussian integer Greatest Common Divisor" function ```ggcd(w, z)``` has efficient (logarithmic in input size) runtime, computing sum of squares for 2467-digit (8193-bit) prime number takes some seconds on Cortex-A72 at least.
+The benchmark used to compare more than the few multiple precision functions from "calcpi.js" is function ```sq2(p)```, that returns tupe/array/pair (Python/NodeJS/C++) containing numbers whose squares add up to passed number ```p```, which is asserted to be prime number and =1 (mod 4). That function, and other signed mod and Gaussian integer (complex number whose real and imaginary parts are both integers) functions were 2010 Robert Chapman Python code, which was transpiled to JavaScript manually, and transpiled to C++ further from there. That construction process makes the Python/NodeJS/C++ code "the same" and good for cross language performance comparison. While "Gaussian integer Greatest Common Divisor" function ```ggcd(w, z)``` has efficient (logarithmic in input size) runtime, computing sum of squares for 2467-digit (8193-bit) prime number takes some seconds on Cortex-A72 at least.
 
 ## 2467-digit sum of squares benchmark
 
@@ -79,20 +79,20 @@ Combined view, with cross CPU runtime factors between Python with gmpy2, C++ wit
 
 ## calcpi.js
 
-There are two benchmarks in [gmp-wasm repo](https://github.com/Daninet/gmp-wasm/tree/master/benchmark), see also section [Performance](https://github.com/Daninet/gmp-wasm/tree/master#performance) in that repo. "mulspeeds.c" only tests multiplication of two 30,000-digit numbers (for mpzjss and gmp-wasm libraries, and JavaScript native BigInt). Better suited to compare more operations for other arbitrary precision libraries is "calcpi.js". I made that work with nodejs v12.22.x in this gist:  
+There are two benchmarks in [gmp-wasm repo](https://github.com/Daninet/gmp-wasm/tree/master/benchmark), see also [Performance](https://github.com/Daninet/gmp-wasm/tree/master#performance) section in that repo. "mulspeeds.c" only tests multiplication of two 30,000-digit numbers (for mpzjs and gmp-wasm libraries, and JavaScript native BigInt). Better suited to compare more operations for other multiple precision libraries is "calcpi.js". This gist makes "calcpi.js" work with NodeJS v12.22.x with small diff:  
 [https://gist.github.com/Hermann-SW/615c6409d2d3de9a0916c87e857d9cb3](https://gist.github.com/Hermann-SW/615c6409d2d3de9a0916c87e857d9cb3)
 
-For execution ```npm i decimal.js``` installs all libraries needed for "calcpi.js" (decimal.js, big.js, big-integer, gmp-wasm, pi-decimals, mpzjs).
+For execution of "calcpi.js", ```npm i decimal.js``` installs all libraries needed (decimal.js, big.js, big-integer, gmp-wasm, pi-decimals, mpzjs).
 
 ### Arm 
-The measurements were done on 1.8GHz Cortex-A72 CPU (without GUI in console mode) with NodeJS v12.22.12. Both *gmp-wasm without low-level functions* are worse than builtin BigInt here. While using MPZJS library shows 10% improvement here for Arm, the other benchmark above showed 185% slowdown over native BigInt. So without low-level gmp-wasm functions,Bbest NodeJS option is to use builtin BigInt.
+The measurements were done on 1.8GHz Cortex-A72 CPU (without GUI in console mode) with NodeJS v12.22.12. Both *gmp-wasm without low-level functions* are worse than builtin BigInt here. While using mpzjs library shows 10% improvement for Arm, the other benchmark above showed 185% slowdown over native BigInt. So without low-level gmp-wasm functions, best NodeJS option is to use builtin BigInt.
 ![calcpi.js.jpg](calcpi.js.jpg)
 
 
 
 ### Intel
 
-The measurements were made with Node.js v12.22.9 on an 3.6GHz i7-11700K. Here all gmp-wasm options are worse than builtin BigInt. Only mpzjs library shows improvement over using builtin BigInt (3.5%), but the other benchmark above showed 219% slowdown. So best option here is NodeJS with BigInt as well.  
+The measurements were made with Node.js v12.22.9 on 3.6GHz i7-11700K. Here all gmp-wasm options are worse than builtin BigInt. Only mpzjs library shows improvement over using builtin BigInt (3.5%), but the other benchmark above showed 219% slowdown. So best option here is NodeJS with BigInt as well.  
 ```
 ...
 Measuring... round 4
