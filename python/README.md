@@ -10,6 +10,7 @@
 * Functionality validation:
   * [Python, browser and nodejs demos](../README.md#functionality-validation-python-browser-and-nodejs-demos)
   * [Python snapshot](../README.md#functionality-validation-python-snapshot)
+* [Multiple precision integer performance across languages](../performance/README.md)
 
 ## Introduction 
 
