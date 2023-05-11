@@ -1,1 +1,1 @@
-The C++ code here is only used for [Multiple precision integer performance across languages](../README.md#multiple-precision-integer-performance-across-languages) work. Currently there is no plan to transpile whole [RSA_numbers_factored.py](../python/RSA_numbers_factored.py) to C++.
+The C++ code here is only used for [Multiple precision integer performance across languages](../README.md#multiple-precision-integer-performance-across-languages) work. Currently there is no plan to transpile whole [RSA_numbers_factored.py](../blob/main/python/RSA_numbers_factored.py) to C++.
