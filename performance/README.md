@@ -79,7 +79,7 @@ Combined view, with cross CPU runtime factors between Python with gmpy2, C++ wit
 
 ## calcpi.js
 
-There are two benchmarks in [gmp-wasm repo](https://github.com/Daninet/gmp-wasm/tree/master/benchmark), see also [Performance](https://github.com/Daninet/gmp-wasm/tree/master#performance) section in that repo. "mulspeeds.c" only tests multiplication of two 30,000-digit numbers (for mpzjs and gmp-wasm libraries, and JavaScript native BigInt). Better suited to compare more operations for other multiple precision libraries is "calcpi.js". This gist makes "calcpi.js" work with NodeJS v12.22.x with small diff:  
+There are two benchmarks in [gmp-wasm repo](https://github.com/Daninet/gmp-wasm/tree/master/benchmark), see also [Performance](https://github.com/Daninet/gmp-wasm/tree/master#performance) section in that repo. "mulspeed.js" only tests multiplication of two 30,000-digit numbers (for mpzjs and gmp-wasm libraries, and JavaScript native BigInt). Better suited to compare more operations for other multiple precision libraries is "calcpi.js". This gist makes "calcpi.js" work with NodeJS v12.22.x with small diff:  
 [https://gist.github.com/Hermann-SW/615c6409d2d3de9a0916c87e857d9cb3](https://gist.github.com/Hermann-SW/615c6409d2d3de9a0916c87e857d9cb3)
 
 For execution of "calcpi.js", ```npm i decimal.js``` installs all libraries needed (decimal.js, big.js, big-integer, gmp-wasm, pi-decimals, mpzjs).
