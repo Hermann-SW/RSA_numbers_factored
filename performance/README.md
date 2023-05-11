@@ -63,19 +63,19 @@ All source code can be found in this repo.
 
 ### Arm
 1.8GHz Cortex-A72 CPU measured runtimes:   
-![2466-digit.python_nodejs_cpp.graphviz.jpg](2466-digit.python_nodejs_cpp.graphviz.jpg)  
+![2467-digit.python_nodejs_cpp.graphviz.jpg](2467-digit.python_nodejs_cpp.graphviz.jpg)  
 
 Best is 2.36s at bottom for C++ with libgmpxx, but Python with gmpy2 lib is nearly as efficient with 2.49s. Best NodeJS option with builtin BigInt is much slower with 9.57s.  
-![2466-digit.python_nodejs_cpp.jpg](2466-digit.python_nodejs_cpp.jpg)
+![2467-digit.python_nodejs_cpp.jpg](2467-digit.python_nodejs_cpp.jpg)
 
 ### Intel
 3.6GHz i7-11700K CPU is much faster, measured runtimes in the diagram:  
-![2466-digit.python_nodejs_cpp.graphviz.intel.jpg](2466-digit.python_nodejs_cpp.graphviz.intel.jpg)
+![2467-digit.python_nodejs_cpp.graphviz.intel.jpg](2467-digit.python_nodejs_cpp.graphviz.intel.jpg)
 
 ### Summary
 
 Combined view, with cross CPU runtime factors between Python with gmpy2, C++ with libgmpxx and JavaScript with BigInt (the best option for non low-level NodeJS code): 
-![2466-digit.python_nodejs_cpp.graphviz.combined.jpg](2466-digit.python_nodejs_cpp.graphviz.combined.jpg)
+![2467-digit.python_nodejs_cpp.graphviz.combined.jpg](2467-digit.python_nodejs_cpp.graphviz.combined.jpg)
 
 ## calcpi.js
 
