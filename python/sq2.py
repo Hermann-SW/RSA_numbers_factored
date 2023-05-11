@@ -1,6 +1,6 @@
 # pylint: disable=C0103
 #                 invalid-name
-"""determine sum of squares for 2466-digit prime"""
+"""determine sum of squares for 2467-digit prime"""
 from time import time
 from sys import stderr, argv
 
