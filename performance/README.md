@@ -5,14 +5,14 @@ This performance investigation is on multiple precision integer performance, but
 ### C++
 C++ [libgmpxx](https://gmplib.org/manual/C_002b_002b-Class-Interface) is nice and performant wrapper for libgmp. Small function ```mods()``` computing "signed mod" example:
 ```
-    mpz_class mods(mpz_class a, mpz_class n) {
-        assert(n > 0);
-        a = a % n;
-        if (2 * a > n) {
-            a -= n;
-        }
-        return a;
+mpz_class mods(mpz_class a, mpz_class n) {
+    assert(n > 0);
+    a = a % n;
+    if (2 * a > n) {
+        a -= n;
     }
+    return a;
+}
 ```
 
 
