@@ -60,7 +60,7 @@ The benchmark used to compare more than the few multiple precision functions fro
 ## 2467-digit sum of squares benchmark
 
 All source code can be found in this repo. The diagram shows the Python callgraph for this benchmark. [sq2.py](../python/sq2.py) calls function "sq2()" from [RSA_numbers_factored.py](../python/RSA_numbers_factored.py). Because Python got transpiled to NodeJS and then C++, it is the callgraph for them as well. More detailed documentation with examples here:  
-[docs/RSA_numbers_factored.py.md#function-section1](python/docs/RSA_numbers_factored.py.md#function-section1)  
+[python/docs/RSA_numbers_factored.py.md#function-section1](../python/docs/RSA_numbers_factored.py.md#function-section1)  
 
 | | | |
 |-|-|-|
