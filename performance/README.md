@@ -67,7 +67,7 @@ All source code can be found in this repo. The diagram shows the Python callgrap
 | prime =1 (mod 4) function | sq2(p) | returns pair of numbers, their squares summing up to p |
 | Gaussian integer functions  | ggcd(w, z) | returns greatest common divisor for gaussian integers |
 | | grem(w, z) | returns remainder in Gaussian integers when dividing w by z |
-| Signed mod functions | root4m1() | returns sqrt(-1) (mod p) |
+| Signed mod functions | root4m1(p) | returns sqrt(-1) (mod p) |
 | | quos(a, n) | returns equivalent of "a//n" for signed mod |
 | | powmods(a, r, n) | returns "signed" a**r (mod n), in range -n//2..n//2 |
 | | mods(a, n) |  returns "signed" a (mod n), in range -n//2..n//2 |
