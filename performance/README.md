@@ -59,7 +59,19 @@ The benchmark used to compare more than the few multiple precision functions fro
 
 ## 2467-digit sum of squares benchmark
 
-All source code can be found in this repo.
+All source code can be found in this repo. The diagram shows the Python callgraph for this benchmark. [sq2.py](../python/sq2.py) calls function "sq2()" from [RSA_numbers_factored.py](../python/RSA_numbers_factored.py). Because Python got transpiled to NodeJS and then C++, it is the callgraph for them as well. More detailed documentation with examples here:  
+[docs/RSA_numbers_factored.py.md#function-section1](python/docs/RSA_numbers_factored.py.md#function-section1)  
+| | sq2() | returns pair of numbers, their squares summing up to p |
+| Gaussian integer | functions | |
+| | ggcd() | returns greatest common divisor for gaussian integers |
+| | grem() | returns remainder in Gaussian integers when dividing w by z |
+| Signed mod | functions | |
+| | root4m1() | returns sqrt(-1) (mod p) |
+| | quos() | returns equivalent of "a//n" for signed mod |
+| | powmods() | returns "signed" a**r (mod n), in range -n//2..n//2 |
+| | mod()s |  returns "signed" a (mod n), in range -n//2..n//2 |
+
+![2467-digit.python_nodejs_cpp.sq2_callgraph.graphviz.jpg](2467-digit.python_nodejs_cpp.sq2_callgraph.graphviz.jpg)
 
 ### Arm
 1.8GHz Cortex-A72 CPU measured runtimes:   
