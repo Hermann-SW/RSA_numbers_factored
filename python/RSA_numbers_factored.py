@@ -198,7 +198,7 @@ def mods(a: int, n: int) -> int:
 
 
 def powmods(a: int, r: int, n: int) -> int:
-    """return "signed" a**r (mod n), in range -n//2..n//2"""
+    """returns "signed" a**r (mod n), in range -n//2..n//2"""
     out = 1
     while r > 0:
         if (r % 2) == 1:
