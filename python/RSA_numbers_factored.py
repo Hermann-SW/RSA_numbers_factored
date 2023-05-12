@@ -328,8 +328,8 @@ def square_sum_prod(n: Union[int, RSA_number]) -> Union[IntList2, IntList4]:
     ```
     """
     if isinstance(n, list):
-        l = square_sum_prod(n[2])
-        return l + square_sum_prod(n[3])
+        L = square_sum_prod(n[2])
+        return L + square_sum_prod(n[3])
 
     return list(sq2(n))
 
@@ -361,22 +361,22 @@ def square_sums_(s: List[int]) -> Type[IntList2]:
 
     b = s.pop()
     a = s.pop()
-    l = []
+    r = []
     for p in square_sums_(s):
         # Brahmagupta–Fibonacci identity
-        l.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
-        l.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
+        r.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
+        r.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
     s.append(a)
     s.append(b)
-    return l
+    return r
 
 
 def square_sums(
-    l: List[int], revt: bool = False, revl: bool = False, uniq: bool = False
+    L: List[int], revt: bool = False, revl: bool = False, uniq: bool = False
 ) -> Type[IntList2]:
     """
     Args:
-        l: List of int.
+        L: List of int.
         revt: sorting direction for tuples.
         revl: sorting direction for list.
         uniq: eliminate duplicates if True.
@@ -399,12 +399,12 @@ def square_sums(
         >>>
     ```
     """
-    r = square_sums_(l)
+    r = square_sums_(L)
     for t in r:
         t.sort(reverse=revt)
     r.sort(key=(lambda t: t[0]), reverse=revl)
     if uniq:
-        return [l for i, l in enumerate(r) if i == 0 or r[i - 1][0] != l[0]]
+        return [L for i, L in enumerate(r) if i == 0 or r[i - 1][0] != L[0]]
     return r
 
 
@@ -492,13 +492,13 @@ smp1m4 = [
 ]
 
 
-def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
+def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
     """
     Note:
         sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
         asserts for all k-element subsets of l
     Args:
-        l: list of distinct primes =1 (mod 4)
+        L: list of distinct primes =1 (mod 4)
         k: size of subsets
         dbg: 0=without debug output, 1-3 with more and more
     Example:
@@ -520,15 +520,15 @@ def sqtst(l: List[int], k: int, dbg: int = 0) -> None:
         >>>
     ```
     """
-    assert len(l) >= k
-    for s in combinations(range(len(l)), k):
-        L = list(chain(*[sq2(l[x]) for x in s]))
-        S = square_sums(L, uniq=True)
+    assert len(L) >= k
+    for s in combinations(range(len(L)), k):
+        LS = list(chain(*[sq2(L[x]) for x in s]))
+        S = square_sums(LS, uniq=True)
         if dbg >= 1:
             if dbg >= 3:
                 print(s)
             if dbg >= 2:
-                print(L)
+                print(LS)
             print(S)
         assert 2 ** (k - 1) == len(S)
 
@@ -540,16 +540,16 @@ def SECTION3():
     return
 
 
-def idx(rsa_: List[RSA_number], l: int) -> int:
+def idx(rsa_: List[RSA_number], L: int) -> int:
     """
     Args:
         rsa_: list of RSA numbers
-        l: bit-length or decimal-digit-length of RSA number
+        L: bit-length or decimal-digit-length of RSA number
     Returns:
         _: index of RSA-l in rsa list, -1 if not found
     """
     for (i, r) in enumerate(rsa_):
-        if r[0] == l:
+        if r[0] == L:
             return i
     return -1
 
@@ -690,23 +690,23 @@ def validate_squares():
     for j in range(0, len(s), 2):
         p *= s[j] ** 2 + s[j + 1] ** 2
 
-    l = square_sums_(s)
-    for t in l:
+    L = square_sums_(s)
+    for t in L:
         assert t[0] ** 2 + t[1] ** 2 == p
 
-    l = square_sums(s)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
-    for t in l:
+    L = square_sums(s)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
+    for t in L:
         assert t[0] ** 2 + t[1] ** 2 == p
         assert t[0] < t[1]
-    for j in range(len(l) - 1):
-        assert l[j][0] < l[j + 1][0]
+    for j in range(len(L) - 1):
+        assert L[j][0] < L[j + 1][0]
 
-    l = square_sums(s, revl=True, revt=True)
-    for t in l:
+    L = square_sums(s, revl=True, revt=True)
+    for t in L:
         assert t[0] ** 2 + t[1] ** 2 == p
         assert t[0] > t[1]
-    for j in range(len(l) - 1):
-        assert l[j][0] > l[j + 1][0]
+    for j in range(len(L) - 1):
+        assert L[j][0] > L[j + 1][0]
 
     sqtst(smp1m4[10:20], 8)
 
@@ -733,13 +733,13 @@ def validate(rsa_):
     assert len(["" for r in rsa_ if len(r) == 6]) == 20
     for (i, r) in enumerate(rsa_):
         if has_factors_2(r):
-            (l, n, p, q, pm1, qm1) = r
+            (L, n, p, q, pm1, qm1) = r
         elif has_factors(r):
-            (l, n, p, q) = r
+            (L, n, p, q) = r
         else:
-            (l, n) = r
+            (L, n) = r
 
-        assert l == digits(n) or l == bits(n)
+        assert L == digits(n) or L == bits(n)
 
         if i > 0:
             assert n > rsa_[i - 1][1]
@@ -774,7 +774,7 @@ def validate(rsa_):
             )
 
             # this does only work for RSA number != RSA-190
-            if l != 190:
+            if L != 190:
                 assert (
                     pow(65537, dictprod_totient(pm1, qm1), primeprod_totient(p, q)) == 1
                 )
@@ -796,8 +796,8 @@ def validate(rsa_):
             assert len(["" for r in rsa_ if len(r) == 2]) == 31
 
         print(
-            "%3d" % l,
-            ("bits  " if l == bits(n) else "digits")
+            "%3d" % L,
+            ("bits  " if L == bits(n) else "digits")
             + (
                 ","
                 if i < len(rsa_) - 1
