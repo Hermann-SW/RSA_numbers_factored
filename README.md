@@ -16,6 +16,7 @@ Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-S
 * [R.html](R.html)  browser term output RSA tuples if both prime factors are ≡1 (mod 4)  
 * [validate.html](validate.html)  do validation, with output in browser term  
 * [squares.html](squares.html)  initial version, dynamical onclick buttons if ≡1 (mod 4)  
+* [sq2.html](R.html)  browser term output, determine sum of squares for 2467-digit prime  
 
 Transpilation was done manually, using these templates:  
 [human_transpiler.templates.md](human_transpiler.templates.md)  
