@@ -1,0 +1,17 @@
+<body>
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></head>
+
+<textarea id="_term_" cols=80 rows=24></textarea>
+
+<script src="RSA_numbers_factored.js"></script>
+
+<script>
+_term_ = document.getElementById("_term_")
+_p_ = print_ // = console.log
+
+const start = Date.now()
+var r = sq2(2n ** 2n ** 13n + 897n)
+print(`${(Date.now() - start)/1000}s`);
+print(r[0] + " " + r[1])
+</script>
+</body>
