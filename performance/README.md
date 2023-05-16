@@ -118,7 +118,7 @@ RSA_numbers_factored$
 
 ### Summary
 
-Combined view, with cross CPU runtime factors between Python with gmpy2, C++ with libgmpxx and JavaScript with BigInt (the best option for non low-level NodeJS code). With latest stable node v18.16.0, BigInt runtime got much better. But it is still 53%/155% worse than C++ with libgmpxx on Arm/Inntel, while Python with gmpy2 is much closer: 
+Combined view, with cross CPU runtime factors between Python with gmpy2, C++ with libgmpxx and JavaScript with BigInt (the best option for non low-level NodeJS code). With latest stable node v18.16.0, BigInt runtime got much better. But it is still 53%/155% worse than C++ with libgmpxx on Arm/Intel, while Python with gmpy2 is much closer to libgmpxx:  
 ![2467-digit.python_nodejs_cpp.graphviz.combined.jpg](2467-digit.python_nodejs_cpp.graphviz.combined.jpg)
 
 ## calcpi.js
