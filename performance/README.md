@@ -128,10 +128,10 @@ NodeJS BigInt script [sq2.js](../sq2.js) was converted to [sq2.html](../sq2.html
 
 Surprisingly Firefox is much slower than Chromium/Chrome on Arm as well as on Intel.  
 
-Arm (Chromium top, Firefox bottom):  
+Arm (1.8GHz Cortex-A72; Chromium top, Firefox bottom):  
 ![Cortex-A72.browsers.sq2.html.jpg](Cortex-A72.browsers.sq2.html.jpg)
 
-Intel (Firefox top, Chrome bottom):  
+Intel (2.5GHz i7-11850H; Firefox top, Chrome bottom):  
 ![i7-11850H.browsers.sq2.html.jpg](i7-11850H.browsers.sq2.html.jpg)
 
 ## calcpi.js
