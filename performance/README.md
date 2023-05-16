@@ -121,6 +121,19 @@ RSA_numbers_factored$
 Combined view, with cross CPU runtime factors between Python with gmpy2, C++ with libgmpxx and JavaScript with BigInt (the best option for non low-level NodeJS code). With latest stable node v18.16.0, BigInt runtime got much better. But it is still 53%/155% worse than C++ with libgmpxx on Arm/Intel, while Python with gmpy2 is much closer to libgmpxx:  
 ![2467-digit.python_nodejs_cpp.graphviz.combined.jpg](2467-digit.python_nodejs_cpp.graphviz.combined.jpg)
 
+### Browsers
+
+NodeJS BigInt script [sq2.js](../sq2.js) was converted to [sq2.html](../sq2.html) for benchmarking browser, online here:  
+[https://hermann-sw.github.io/RSA_numbers_factored/sq2.html](https://hermann-sw.github.io/RSA_numbers_factored/sq2.html)  
+
+Surprisingly Firefox is much slower than Chromium/Chrome on Arm as well as on Intel.  
+
+Arm (Chromium top, Firefox bottom):  
+![Cortex-A72.browsers.sq2.html.jpg](Cortex-A72.browsers.sq2.html.jpg)
+
+Intel (Firefox top, Chrome bottom):  
+![i7-11850H.browsers.sq2.html.jpg](i7-11850H.browsers.sq2.html.jpg)
+
 ## calcpi.js
 
 There are two benchmarks in [gmp-wasm repo](https://github.com/Daninet/gmp-wasm/tree/master/benchmark), see also [Performance](https://github.com/Daninet/gmp-wasm/tree/master#performance) section in that repo. "mulspeed.js" only tests multiplication of two 30,000-digit numbers (for mpzjs and gmp-wasm libraries, and JavaScript native BigInt). Better suited to compare more operations for other multiple precision libraries is "calcpi.js". This gist makes "calcpi.js" work with NodeJS v12.22.x with small diff:  
