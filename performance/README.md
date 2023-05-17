@@ -54,8 +54,12 @@ def mods(a: int, n: int) -> int:
     return a
 ```
 
+## Benchmarks
 
 The benchmark used to compare more than the few multiple precision functions from "calcpi.js" is function ```sq2(p)```, that returns tupe/array/pair (Python/NodeJS/C++) containing numbers whose squares add up to passed number ```p```, which is asserted to be prime number and =1 (mod 4). That function, and other signed mod and Gaussian integer (complex number whose real and imaginary parts are both integers) functions were 2010 Robert Chapman Python code, which was transpiled to JavaScript manually, and transpiled to C++ further from there. That construction process makes the Python/NodeJS/C++ code "the same" and good for cross language performance comparison. While "Gaussian integer Greatest Common Divisor" function ```ggcd(w, z)``` has efficient (logarithmic in input size) runtime, computing sum of squares for 2467-digit (8193-bit) prime number takes some seconds on Cortex-A72 at least.
+
+Python sympy ```gcd()``` is still not able to compute GCD of Gausssian Integers. Reference to fast Gaussian Integer GCD algorithms from the literature, link to Robin Chapman 2010 code for ```sq2()``` used in this benchmark, and reference to this performance evalution added to sympy repo issue:  
+[https://github.com/sympy/sympy/issues/15358#issuecomment-1550977489](https://github.com/sympy/sympy/issues/15358#issuecomment-1550977489)
 
 ## 2467-digit sum of squares benchmark
 
