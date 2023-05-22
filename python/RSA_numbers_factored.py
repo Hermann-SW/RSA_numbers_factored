@@ -1,5 +1,5 @@
-# pylint: disable=R0201, C0103
-#                 no-self-use, invalid-name
+# pylint: disable=C0103
+#                 invalid-name
 """
 For type hinting:
 ```
@@ -796,7 +796,7 @@ def validate(rsa_):
             assert len(["" for r in rsa_ if len(r) == 2]) == 31
 
         print(
-            "%3d" % L,
+            f"{L:%3d}",
             ("bits  " if L == bits(n) else "digits")
             + (
                 ","

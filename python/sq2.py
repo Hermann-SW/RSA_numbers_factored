@@ -1,5 +1,5 @@
-# pylint: disable=C0103
-#                 invalid-name
+# pylint: disable=C0103, C3001
+#                 invalid-name, unnecessary-lambda-assignment
 """determine sum of squares for 2467-digit prime"""
 from time import time
 from sys import stderr, argv
