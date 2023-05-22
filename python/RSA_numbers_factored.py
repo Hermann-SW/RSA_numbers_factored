@@ -796,7 +796,7 @@ def validate(rsa_):
             assert len(["" for r in rsa_ if len(r) == 2]) == 31
 
         print(
-            f"{L:%3d}",
+            f"{L:3d}",
             ("bits  " if L == bits(n) else "digits")
             + (
                 ","
