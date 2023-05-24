@@ -18,6 +18,9 @@ Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-S
 * [squares.html](squares.html)  initial version, dynamical onclick buttons if ≡1 (mod 4)  
 * [sq2.html](sq2.html)  browser term output, determine sum of squares for 2467-digit prime  
 
+You can try the HTML demos online here:  
+[https://hermann-sw.github.io/RSA_numbers_factored/](https://hermann-sw.github.io/RSA_numbers_factored/)  
+
 Transpilation was done manually, using these templates:  
 [human_transpiler.templates.md](human_transpiler.templates.md)  
 
