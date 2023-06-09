@@ -14,7 +14,7 @@ print("n is ", #digits(n),"-digit number");
 
 smallest_qnr(m) = {
   t=2;
-  while(kronecker(t, m) != -1, t++;);
+  while(kronecker(t, m) != -1, t = nextprime(t + 1););
   t;
 }
 
