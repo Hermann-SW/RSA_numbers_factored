@@ -12,11 +12,7 @@ quit);
 
 print("n is ", #digits(n),"-digit number");
 
-smallest_qnr(m) = {
-  t=2;
-  while(kronecker(t, m) != -1, t = nextprime(t + 1););
-  t;
-}
+smallest_qnr(m) = { forprime(t=2, oo, if(kronecker(t, m)==-1, return(t))); }
 
 nr = smallest_qnr(n);
 ##
