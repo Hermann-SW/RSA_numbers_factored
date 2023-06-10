@@ -8,8 +8,13 @@
 
 #include <iostream>
 
-                                        //  10000-digit
-                                        //  36401-digit
+//  10000-digit  https://t5k.org/curios/page.php?number_id=9680
+//  36401-digit  https://t5k.org/curios/page.php?number_id=3658
+// 100355-digit  https://t5k.org/primes/page.php?id=89650
+// 200700-digit  https://t5k.org/primes/page.php?id=103792
+// 272770-digit  https://t5k.org/primes/lists/all.txt
+// 330855-digit  https://t5k.org/primes/lists/all.txt
+// 388342-digit  https://t5k.org/primes/page.php?id=122213
 struct row { std::string f; unsigned b, e, a; } r[] = {
     { "65516468355", 2, 333333, 1 },    // 100355-digit
     { "3756801695685", 2, 666669, 1 },  // 200700-digit
