@@ -1,52 +1,85 @@
-// Precompute "sqrtm1 = sqrt(-1) (mod p)" for 100355-388342 digit primes:
+// Precompute "sqrtm1 = sqrt(-1) (mod p)" for 10000-388342 digit primes:
 //
 // g++ sqrtm1.cc -lgmp -lgmpxx -O3 -o sqrt1
 //
-#include <assert.h>
-#include <gmpxx.h>
 #include <time.h>
+#include <gmpxx.h>
+#include <assert.h>
 
 #include <iostream>
 
-int main(void) {
-  mpz_class a, b, c;
-  mpz_class r;
+                                        //  10000-digit
+                                        //  36401-digit
+struct row { std::string f; unsigned b, e, a; } r[] = {
+    { "65516468355", 2, 333333, 1 },    // 100355-digit
+    { "3756801695685", 2, 666669, 1 },  // 200700-digit
+    { "1705", 2, 906110, 1 },           // 272770-digit
+    { "2145", 2, 1099064, 1 },          // 330855-digit
+    { "2996863034895", 2, 1290000, 1 }  // 388342-digit
+};
 
-#if 0
-  // 2996863034895 * 2 ** 1290000 ± 1    (10986s + 11465s on i7-11850H)
-  mpz_ui_pow_ui(a.get_mpz_t(), 2, 1290000);
-  b = "2996863034895";
-#elif 0
-  //  3756801695685 * 2 ** 666669 ± 1    (2732s on i7-11850H)
-  mpz_ui_pow_ui(a.get_mpz_t(), 2, 666669);
-  b = "3756801695685";
-#elif 0
-  // 65516468355 * 2 ** 333333 ± 1       (588s on i7-11850H)
-  mpz_ui_pow_ui(a.get_mpz_t(), 2, 333333);
-  b = "65516468355";
-#elif 0
-  // 1705 * 2 ** 906110 + 1              (5086s + 5239s + 5204s on i7-11850H)
-  mpz_ui_pow_ui(a.get_mpz_t(), 2, 906110);
-  b = "1705";
-#else
-  // 2145 * 2 ** 1099064 + 1             (7549s on i7-11850H)
-  mpz_ui_pow_ui(a.get_mpz_t(), 2, 1099064);
-  b = "2145";
-#endif
+int main(int argc, char *argv[]) {
+    mpz_class a, b, c, p;
+    unsigned u = atoi(argv[1]);
+    assert(u >= 0 && u < 7);
 
-  a = b * a + 1;
-  c = a / 4;
+    switch (u) {
+        case 0: {
+            mpz_ui_pow_ui(a.get_mpz_t(), 10, 10000);
+            a -= 1;
+            a /= 3;
+            mpz_ui_pow_ui(b.get_mpz_t(), 10, 6333);
+            a -= b;
+            break;
+        }
+        case 1: {
+            mpz_ui_pow_ui(a.get_mpz_t(), 10, 36400);
+            a -= 1;
+            a /= 9;
+            b = a;
+            a *= 34;
+            mpz_ui_pow_ui(c.get_mpz_t(), 10, 2264);
+            c *= b;
+            c *= mpz_class("42000040044444004000024");
+            mpz_ui_pow_ui(b.get_mpz_t(), 10, 4550);
+            b -= 1;
+            b /= 9;
+            c /= b;
+            a -= c;
+            a -= 1;
+            break;
+        }
+        case 2:
+        case 3:
+        case 4:
+        case 5:
+        case 6: {
+            u -= 2;
+            mpz_ui_pow_ui(a.get_mpz_t(), r[u].b, r[u].e);
+            a *= mpz_class(r[u].f);
+            a += r[u].a;
+            break;
+        }
+        default:  assert(0 || !"wrong selection (0-6)");
+    }
 
-  gmp_randclass r1(gmp_randinit_default);
-  do {
-    b = 2 + r1.get_z_range(a - 3);
-    std::cerr << mpz_sizeinbase(b.get_mpz_t(), 2) << " bits\n";
+    p = a;
+    c = a / 4;
+
+    // deterministic fast search for smallest quadratic non-residue
+    b = 2;
+    while (mpz_kronecker(b.get_mpz_t(), p.get_mpz_t()) != -1) {
+        mpz_nextprime(b.get_mpz_t(), b.get_mpz_t());
+    }
+    std::cerr << "smallest quadratic non-residue prime: " << b << "\n";
+
     clock_t start = clock();
-    mpz_powm(r.get_mpz_t(), b.get_mpz_t(), c.get_mpz_t(), a.get_mpz_t());
+    mpz_powm(a.get_mpz_t(), b.get_mpz_t(), c.get_mpz_t(), p.get_mpz_t());
     std::cerr << static_cast<float>(clock() - start) / CLOCKS_PER_SEC << "s\n";
-    std::cout << r << "\n";
-  } while (r * r % a != a - 1);
+    std::cout << a << "\n";
 
-  std::cerr << "done\n";
-  return 0;
+    assert(a * a % p == p - 1);
+
+    std::cerr << "done\n";
+    return 0;
 }
