@@ -563,7 +563,19 @@ if cypari2 is None:
 else:
 
     def to_square_sums(sqrtm1: int, p: int) -> Type[IntList2]:
-        """much faster in case cypari2 is available"""
+        """much faster in case cypari2 is available
+        Args:
+            sqrtm1: sqrt(-1) (mod p).
+            p: prime p =1 (mod 4).
+        Returns:
+            _: sum of squares for p.
+        Example:
+        ```
+            >>> to_square_sums(11, 61)
+            (6, -5)
+            >>>
+        ```
+        """
         [M, V] = pari.halfgcd(sqrtm1, p)
         return gen_to_python(V[1]), gen_to_python(M[1, 0])
 
