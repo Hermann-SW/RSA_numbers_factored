@@ -126,7 +126,7 @@ Global variable descriptions:
 
 **Global Variables**
 ---------------
-- **cypari2**
+- **pari**
 - **smp1m4**
 - **rsa**
 
@@ -539,7 +539,7 @@ sqtst(L: List[int], k: int, dbg: int = 0) → None
 
 ---
 
-<a href="../../python/RSA_numbers_factored.py#L547"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
+<a href="../../python/RSA_numbers_factored.py#L565"><img align="right" style="float:right;" src="https://img.shields.io/badge/-source-cccccc?style=flat-square"></a>
 
 ## <kbd>function</kbd> `to_square_sums`
 
@@ -547,25 +547,7 @@ sqtst(L: List[int], k: int, dbg: int = 0) → None
 to_square_sums(sqrtm1: int, p: int) → Type[IntList2]
 ```
 
-
-
-**Args:**
- 
- - <b>`sqrtm1`</b>:  sqrt(-1) (mod p). 
- - <b>`p`</b>:  prime p =1 (mod 4). 
-
-**Returns:**
- 
- -   sum of squares for p. 
-
-**Example:**
-
-
-```
-    >>> to_square_sums(11, 61)
-    (6, -5)
-    >>> 
-``` 
+much faster in case cypari2 is available 
 
 
 ---
@@ -595,7 +577,7 @@ to_sqrtm1(xy: Type[IntList2], p: int) → int
 ```
     >>> to_square_sums((6, -5), 61)
     11
-    >>> 
+    >>>
 ``` 
 
 
