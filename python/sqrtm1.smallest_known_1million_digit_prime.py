@@ -1,5 +1,11 @@
+# pylint: disable=C0103, C3001, C0301, C0321
+#                 invalid-name, unnecessary-lambda-assignment, line-too-long, multiple-statements
+"""
+2143  10^999999+308267*10^292000+1     1000000 CH10  2021
+https://t5k.org/primes/lists/all.txt
+"""
 from time import time
-from gmpy2 import mpz
+from gmpy2 import mpz  # pylint: disable=no-name-in-module
 import cypari2
 
 p = mpz(10 ** 999999 + 308267 * 10 ** 292000 + 1)
@@ -13,7 +19,7 @@ pari = cypari2.Pari(); pari.allocatemem(1000000000)
 print("[M,V] = pari.halfgcd(sqrtm1, p)")
 t = time(); [M,V] = pari.halfgcd(sqrtm1, p);  print(f'{1000*(time()-t):.1f}ms')
 
-print("[x,y] = [mps(V[1]), mpz(M[1,0])]")
+print("[x,y] = [mpz(V[1]), mpz(M[1,0])]")
 t = time(); [x,y] = [mpz(V[1]), mpz(M[1,0])]; print(f'{1000*(time()-t):.1f}ms')
 assert x**2 + y**2 == p
 

@@ -1,5 +1,5 @@
-# pylint: disable=C0103
-#                 invalid-name
+# pylint: disable=C0103, I1101
+#                 invalid-name, c-extension-no-member
 """
 For type hinting:
 ```
@@ -22,6 +22,7 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
 (v1.11)
+- make use of cypari2 if available, initially for using ".halfgcd(()"
 - improve doc
 - new RSA_svg.py demo
 - improve markdown
@@ -125,7 +126,15 @@ from math import log2, log10
 from itertools import combinations, chain
 from typing import Tuple, List, Union, Dict, NewType, Type
 from sympy.ntheory import isprime
-from sympy import lcm
+from sympy import lcm, gcd, I
+
+try:
+    import cypari2
+
+    pari = cypari2.Pari()
+    gen_to_python = cypari2.convert.gen_to_python
+except ImportError:
+    cypari2 = None
 
 IntList2 = NewType("IntList2", List[Tuple[int, int]])
 IntList4 = NewType("IntList4", List[Tuple[int, int, int, int]])
@@ -533,6 +542,49 @@ def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
         assert 2 ** (k - 1) == len(S)
 
 
+if cypari2 is None:
+
+    def to_square_sums(sqrtm1: int, p: int) -> Type[IntList2]:
+        """
+        Args:
+            sqrtm1: sqrt(-1) (mod p).
+            p: prime p =1 (mod 4).
+        Returns:
+            _: sum of squares for p.
+        Example:
+        ```
+            >>> to_square_sums(11, 61)
+            (6, -5)
+            >>>
+        ```
+        """
+        return gcd(p, sqrtm1 + I).as_real_imag()
+
+else:
+
+    def to_square_sums(sqrtm1: int, p: int) -> Type[IntList2]:
+        """much faster in case cypari2 is available"""
+        [M, V] = pari.halfgcd(sqrtm1, p)
+        return gen_to_python(V[1]), gen_to_python(M[1, 0])
+
+
+def to_sqrtm1(xy: Type[IntList2], p: int) -> int:
+    """
+    Args:
+        xy: xy[0]**2 + xy[1]**2 == p.
+        p: prime p =1 (mod 4).
+    Returns:
+        _: sqrt(-1) (mod p).
+    Example:
+    ```
+        >>> to_square_sums((6, -5), 61)
+        11
+        >>>
+    ```
+    """
+    return xy[0] * pow(xy[1], -1, p) % p
+
+
 def SECTION3():
     """
     Functions working on "rsa" list
@@ -548,7 +600,7 @@ def idx(rsa_: List[RSA_number], L: int) -> int:
     Returns:
         _: index of RSA-l in rsa list, -1 if not found
     """
-    for (i, r) in enumerate(rsa_):
+    for i, r in enumerate(rsa_):
         if r[0] == L:
             return i
     return -1
@@ -731,7 +783,7 @@ def validate(rsa_):
     )
     br = 6
     assert len(["" for r in rsa_ if len(r) == 6]) == 20
-    for (i, r) in enumerate(rsa_):
+    for i, r in enumerate(rsa_):
         if has_factors_2(r):
             (L, n, p, q, pm1, qm1) = r
         elif has_factors(r):
@@ -1638,13 +1690,13 @@ class RSA:
 
         r = self.get(250)
         [a, b], [c, d] = self.square_diffs(r)
-        assert r[0] == 250 and a ** 2 - b ** 2 == r[1] and c ** 2 - d ** 2 == r[1]
+        assert r[0] == 250 and a**2 - b**2 == r[1] and c ** 2 - d**2 == r[1]
 
         r = self.get(129)
         [a, b], [c, d] = self.square_sums(r)
-        assert r[0] == 129 and a ** 2 + b ** 2 == r[1] and c ** 2 + d ** 2 == r[1]
+        assert r[0] == 129 and a**2 + b**2 == r[1] and c ** 2 + d**2 == r[1]
         a, b, c, d = self.square_sums_4(r)
-        assert a ** 2 + b ** 2 + c ** 2 + d ** 2 == r[1]
+        assert a**2 + b**2 + c**2 + d**2 == r[1]
 
         validate(rsa)
 
