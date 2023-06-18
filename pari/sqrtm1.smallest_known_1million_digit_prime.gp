@@ -1,6 +1,8 @@
 assert(b, v, s) = { if(!(b), error(Str(v) Str(s))); }
 
-\\ rank 2137 on  https://t5k.org/primes/lists/all.txt
+\\ https://t5k.org/primes/lists/all.txt
+\\ 2147  10^999999+308267*10^292000+1     1000000 CH10  2021
+\\
 p = 10^999999 + 308267 * 10 ^ 292000 + 1;
 
 print(#digits(p), "-digit prime p (", #digits(p, 2), " bits)");
@@ -19,6 +21,16 @@ assert(x^2 + y^2 == p, "x,y", " not sum of squares");
 
 print("sqrtm1 = lift(Mod(x/y, p))");
 sqrtm1 = lift(Mod(x/y, p));
+##
+assert(Mod(sqrtm1^2, p) == Mod(p - 1, p), "sqrtm1", " not as needed");
+
+print("sqrtm1 = lift(x*Mod(1/y, p))");
+sqrtm1 = lift(x*Mod(1/y, p));
+##
+assert(Mod(sqrtm1^2, p) == Mod(p - 1, p), "sqrtm1", " not as needed");
+
+print("sqrtm1 = lift(Mod(x, p)/y)");
+sqrtm1 = lift(Mod(x, p)/y);
 ##
 assert(Mod(sqrtm1^2, p) == Mod(p - 1, p), "sqrtm1", " not as needed");
 

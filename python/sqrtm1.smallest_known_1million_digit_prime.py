@@ -1,7 +1,7 @@
 # pylint: disable=C0103, C3001, C0301, C0321
 #                 invalid-name, unnecessary-lambda-assignment, line-too-long, multiple-statements
 """
-2143  10^999999+308267*10^292000+1     1000000 CH10  2021
+2147  10^999999+308267*10^292000+1     1000000 CH10  2021
 https://t5k.org/primes/lists/all.txt
 """
 from time import time

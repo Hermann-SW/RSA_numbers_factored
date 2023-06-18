@@ -1,6 +1,6 @@
 // Precompute "sqrtm1 = sqrt(-1) (mod p)" for 10000-388342 digit primes:
 //
-// g++ sqrtm1.cc -lgmp -lgmpxx -O3 -o sqrt1
+// g++ sqrtm1.cc -lgmp -lgmpxx -O3 -o sqrtm1
 //
 #include <time.h>
 #include <gmpxx.h>
@@ -26,7 +26,7 @@ struct row { std::string f; unsigned b, e, a; } r[] = {
 int main(int argc, char *argv[]) {
     mpz_class a, b, c, p;
     unsigned u = atoi(argv[1]);
-    assert(u >= 0 && u < 7);
+    assert(u >= 0 && u < 8);
 
     switch (u) {
         case 0: {
@@ -63,6 +63,14 @@ int main(int argc, char *argv[]) {
             mpz_ui_pow_ui(a.get_mpz_t(), r[u].b, r[u].e);
             a *= mpz_class(r[u].f);
             a += r[u].a;
+            break;
+        }
+        case 7: {
+            mpz_ui_pow_ui(a.get_mpz_t(), 10, 999999);
+            mpz_ui_pow_ui(b.get_mpz_t(), 10, 292000);
+            b *= mpz_class("308267");
+            a += b;
+            a += 1;
             break;
         }
         default:  assert(0 || !"wrong selection (0-6)");
