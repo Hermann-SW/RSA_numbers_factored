@@ -86,7 +86,7 @@ int main(int argc, char *argv[]) {
 
     assert(x*x + y*y == p);
 
-    std::cout << "a = y^(-1) (mod p) [powm]; a *= x; a %= x" << "\n";
+    std::cout << "a = y^(-1) (mod p) [powm]; a *= x; a %= p" << "\n";
     clock_t start = clock();
     c = -1;
     mpz_powm(a.get_mpz_t(), y.get_mpz_t(), c.get_mpz_t(), p.get_mpz_t());
