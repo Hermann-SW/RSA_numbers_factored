@@ -19,54 +19,22 @@
 #ifdef PARI
 #include <pari/pari.h>
 
-// from: https://mersenneforum.org/showpost.php?s=1b4a66ceb4c359463161f3d6451771c4&p=626367&postcount=13
-/*******************************/
-/*                             */
-/*         GEN --> mpz         */
-/*                             */
-/*******************************/
-void mpz_set_GEN(mpz_ptr z, GEN x) {
-    /* Sets z to x, which needs to be of type t_INT. */
-    const long lx = lgefint(x) - 2;
-    const long sign = signe(x);
-    int i;
-
-    assert (sizeof(long) == sizeof(mp_limb_t));
-
-    if (typ(x) != t_INT)
-        pari_err_TYPE("mpz_set_GEN", x);
-
-    if (sign == 0) {
-        mpz_set_ui(z, 0);
-    } else {
-        mpz_realloc2(z, (mp_bitcnt_t) lx * BITS_IN_LONG);
-        z->_mp_size = static_cast<int>(sign * lx);
-        for (i = 0; i < lx; i++)
-            (z->_mp_d)[i] = (mp_bitcnt_t)(*int_W (x, i));
-    }
+// from 2007 posting: https://pari.math.u-bordeaux.fr/archives/pari-users-0712/msg00001.html
+#define LIMBS(x)  (reinterpret_cast<mp_limb_t *>((x)+2))
+#define NLIMBS(x) (lgefint(x)-2)
+void
+GEN2mpz(mpz_t X, GEN x) {
+    int64_t l = NLIMBS(x);
+    X->_mp_alloc = l;
+    X->_mp_size = signe(x) > 0? l: -l;
+    X->_mp_d = LIMBS(x); /* shallow! */
 }
-
-/*******************************/
-/*                             */
-/*        mpz --> GEN          */
-/*                             */
-/*******************************/
-GEN mpz_get_GEN(mpz_srcptr z) {
-    /* Returns the GEN of type t_INT corresponding to z. */
-    const long lz = z->_mp_size;
-    const long lx = labs(lz);
-    const long lx2 = lx + 2;
-    int i;
-    GEN x = cgeti(lx2);
-
-    assert (sizeof(long) == sizeof(mp_limb_t));
-
-    x[1] = (long int)
-        (evalsigne((lz > 0 ? 1 : (lz < 0 ? -1 : 0)))
-        | (unsigned long int) evallgefint(lx2));
-    for (i = 0; i < lx; i++)
-        *int_W (x, i) = (long int) ((z->_mp_d)[i]);
-
+GEN
+mpz2GEN(mpz_t X) {
+    int64_t l = X->_mp_size, lx = labs(l)+2;
+    GEN x = cgeti(lx);
+    x[1] = evalsigne(l > 0? 1: -1) | evallgefint(lx);
+    for (int i = 2; i < lx; i++) x[i] = X->_mp_d[i-2];
     return x;
 }
 #endif
@@ -102,8 +70,8 @@ int main(int argc, char *argv[]) {
 
     std::cout << "[M,V] = halfgcdii(sqrtm1, p)" << "\n";
     start = clock();
-    GEN X = mpz_get_GEN(sqrtm1.get_mpz_t());
-    GEN Y = mpz_get_GEN(p.get_mpz_t());
+    GEN X = mpz2GEN(sqrtm1.get_mpz_t());
+    GEN Y = mpz2GEN(p.get_mpz_t());
 
     GEN MV = halfgcdii(X, Y);
     std::cout << static_cast<float>(clock() - start) / CLOCKS_PER_SEC << "s\n";
@@ -117,13 +85,13 @@ int main(int argc, char *argv[]) {
     assert(typ(gmael2(gel(MV, 1), 2, 1)) == t_INT);
     assert(typ(gel(gel(MV, 2), 2)) == t_INT);
 */
-    mpz_set_GEN(x.get_mpz_t(), gel(gel(MV, 2), 2));
-    mpz_set_GEN(y.get_mpz_t(), gmael2(gel(MV, 1), 1, 2));
+    GEN2mpz(x.get_mpz_t(), gel(gel(MV, 2), 2));
+    GEN2mpz(y.get_mpz_t(), gmael2(gel(MV, 1), 1, 2));
     std::cout << static_cast<float>(clock() - start) / CLOCKS_PER_SEC << "s\n";
 
     assert(x*x + y*y == p);
 #endif
 
     std::cout << "done\n";
-    return 0;
+    exit(0);  // avoid "munmap_chunk(): invalid pointer" for "return 0;"
 }
