@@ -21,3 +21,6 @@ p=lift(Mod(qnr, n)^(n\4));
 ##
 write("/dev/stderr", p);
 assert(p^2 % n == n-1, "p^2 % n != n-1: ", p);
+q=lift(sqrt(Mod(-1, n)));
+##
+assert(q^2 % n == n-1, "q^2 % n != n-1: ", q);
