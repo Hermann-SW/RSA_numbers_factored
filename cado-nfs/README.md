@@ -42,9 +42,14 @@ After RSA-100 was factored in less than 8min(!!) with 12 threads on six-core 760
 | 110 |     0:14:50 |
 | 120 |     0:57:19 |
 | 129 |     3:11:10 |
+| 130 |     3:35:51 |
+
+Factorization end screenshot for RSA-100:  
+![RSA-100.462s.png](RSA-100.462s.png)
 
 Factorization end screenshot for RSA-129:  
 ![RSA-129.3_11_10h.png](RSA-129.3_11_10h.png)
 
-Factorization end screenshot for RSA-100:  
-![RSA-100.462s.png](RSA-100.462s.png)
+Factorization end screenshot for RSA-130:  
+![RSA-130.3_35_51h.png](RSA-130.3_35_51h.png)
+
