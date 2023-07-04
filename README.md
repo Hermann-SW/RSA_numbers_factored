@@ -5,7 +5,7 @@
   * [Python, browser and nodejs demos](#functionality-validation-python-browser-and-nodejs-demos)
   * [Python snapshot](#functionality-validation-python-snapshot)
 * [Multiple precision integer performance across languages](performance/README.md)
-* [Factorizations of RSA-59 .. RSA-129 with 7600X CPU](cado-nfs/README.md)
+* [Factorizations of RSA-59 .. RSA-140 with 7600X CPU](cado-nfs/README.md)
 
 ## Introduction 
 
