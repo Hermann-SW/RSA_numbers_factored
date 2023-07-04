@@ -1,6 +1,10 @@
 
 all: eslint
 
+validate: RSA_numbers_factored.js
+	nodejs $< > /tmp/out
+	diff python/validate.good /tmp/out
+	rm -f /tmp/out
 
 eslint: sq2.eslint sq2_mpzjs.eslint
 

@@ -1,11 +1,11 @@
 
-with p-1 and q-1 factorizations (n=p*q): 20
+with p-1 and q-1 factorizations (n=p*q): 25
  59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
 140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
-190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,
+190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,230 digits,
+232 digits,768 bits  ,240 digits,250 digits,
 
-without (p-1) and (q-1) factorizations, but p and q: 5
-230 digits,232 digits,768 bits  ,240 digits,250 digits,
+without (p-1) and (q-1) factorizations, but p and q: 0
 
 have not been factored sofar: 31
 260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
