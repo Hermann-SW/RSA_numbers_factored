@@ -4,7 +4,7 @@ Can be found here:
 https://en.wikipedia.org/wiki/RSA_numbers#RSA-100
 
 RSA-100 .. RSA-250 have been factored, with prime factors listed.  
-RSA-250 .. RSA-617/RSA-2048 are unfactored sofar.
+RSA-260 .. RSA-617/RSA-2048 are unfactored sofar.
 
 ## msieve
 
