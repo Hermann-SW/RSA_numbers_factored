@@ -1,0 +1,216 @@
+Assertless, so all computed sqrtm1=powm(_, qnr, p/4, p) are "sqrt(-1) (mod p)".
+
+hermann@7600x:~/RSA_numbers_factored/c++$ ./n+9
+3-digit prime p (10 bits)
+smallest quadratic non-residue prime: 3
+6e-06s
+done
+4-digit prime p (11 bits)
+smallest quadratic non-residue prime: 5
+2e-06s
+done
+6-digit prime p (19 bits)
+smallest quadratic non-residue prime: 5
+1e-06s
+done
+7-digit prime p (24 bits)
+smallest quadratic non-residue prime: 3
+3e-06s
+done
+10-digit prime p (31 bits)
+smallest quadratic non-residue prime: 5
+2e-06s
+done
+12-digit prime p (38 bits)
+smallest quadratic non-residue prime: 3
+3e-06s
+done
+15-digit prime p (48 bits)
+smallest quadratic non-residue prime: 3
+2e-06s
+done
+18-digit prime p (58 bits)
+smallest quadratic non-residue prime: 3
+1e-06s
+done
+20-digit prime p (67 bits)
+smallest quadratic non-residue prime: 5
+3e-06s
+done
+25-digit prime p (83 bits)
+smallest quadratic non-residue prime: 5
+2e-06s
+done
+29-digit prime p (96 bits)
+smallest quadratic non-residue prime: 3
+1e-06s
+done
+36-digit prime p (120 bits)
+smallest quadratic non-residue prime: 3
+3e-06s
+done
+53-digit prime p (176 bits)
+smallest quadratic non-residue prime: 3
+3e-06s
+done
+80-digit prime p (264 bits)
+smallest quadratic non-residue prime: 3
+1e-05s
+done
+89-digit prime p (296 bits)
+smallest quadratic non-residue prime: 3
+1.1e-05s
+done
+96-digit prime p (318 bits)
+smallest quadratic non-residue prime: 3
+1.3e-05s
+done
+97-digit prime p (320 bits)
+smallest quadratic non-residue prime: 3
+1.6e-05s
+done
+99-digit prime p (328 bits)
+smallest quadratic non-residue prime: 3
+2.4e-05s
+done
+202-digit prime p (671 bits)
+smallest quadratic non-residue prime: 5
+7.8e-05s
+done
+210-digit prime p (698 bits)
+smallest quadratic non-residue prime: 3
+6.9e-05s
+done
+267-digit prime p (887 bits)
+smallest quadratic non-residue prime: 5
+0.000138s
+done
+404-digit prime p (1343 bits)
+smallest quadratic non-residue prime: 5
+0.000597s
+done
+517-digit prime p (1718 bits)
+smallest quadratic non-residue prime: 3
+0.001016s
+done
+559-digit prime p (1856 bits)
+smallest quadratic non-residue prime: 3
+0.0012s
+done
+721-digit prime p (2395 bits)
+smallest quadratic non-residue prime: 5
+0.002489s
+done
+816-digit prime p (2711 bits)
+smallest quadratic non-residue prime: 5
+0.003795s
+done
+973-digit prime p (3230 bits)
+smallest quadratic non-residue prime: 3
+0.005618s
+done
+980-digit prime p (3254 bits)
+smallest quadratic non-residue prime: 3
+0.005793s
+done
+1129-digit prime p (3750 bits)
+smallest quadratic non-residue prime: 3
+0.008962s
+done
+1318-digit prime p (4376 bits)
+smallest quadratic non-residue prime: 3
+0.013779s
+done
+1353-digit prime p (4495 bits)
+smallest quadratic non-residue prime: 5
+0.014493s
+done
+1372-digit prime p (4558 bits)
+smallest quadratic non-residue prime: 3
+0.01495s
+done
+1589-digit prime p (5279 bits)
+smallest quadratic non-residue prime: 5
+0.019158s
+done
+1676-digit prime p (5568 bits)
+smallest quadratic non-residue prime: 3
+0.02199s
+done
+2808-digit prime p (9328 bits)
+smallest quadratic non-residue prime: 3
+0.082019s
+done
+3050-digit prime p (10130 bits)
+smallest quadratic non-residue prime: 3
+0.100978s
+done
+3832-digit prime p (12728 bits)
+smallest quadratic non-residue prime: 3
+0.186523s
+done
+4099-digit prime p (13616 bits)
+smallest quadratic non-residue prime: 3
+0.20908s
+done
+4484-digit prime p (14894 bits)
+smallest quadratic non-residue prime: 3
+0.263656s
+done
+4959-digit prime p (16474 bits)
+smallest quadratic non-residue prime: 3
+0.346226s
+done
+7117-digit prime p (23640 bits)
+smallest quadratic non-residue prime: 3
+0.855958s
+done
+12058-digit prime p (40054 bits)
+smallest quadratic non-residue prime: 3
+3.10459s
+done
+13366-digit prime p (44400 bits)
+smallest quadratic non-residue prime: 3
+3.96661s
+done
+15153-digit prime p (50336 bits)
+smallest quadratic non-residue prime: 3
+5.24575s
+done
+24369-digit prime p (80950 bits)
+smallest quadratic non-residue prime: 3
+17.3617s
+done
+44070-digit prime p (146398 bits)
+smallest quadratic non-residue prime: 3
+66.5868s
+done
+52298-digit prime p (173728 bits)
+smallest quadratic non-residue prime: 3
+102.007s
+done
+70618-digit prime p (234587 bits)
+smallest quadratic non-residue prime: 5
+207.313s
+done
+88602-digit prime p (294328 bits)
+smallest quadratic non-residue prime: 3
+333.626s
+done
+115054-digit prime p (382199 bits)
+smallest quadratic non-residue prime: 5
+627.592s
+done
+173278-digit prime p (575615 bits)
+smallest quadratic non-residue prime: 5
+1488.44s
+done
+185775-digit prime p (617131 bits)
+smallest quadratic non-residue prime: 5
+1710.37s
+done
+274239-digit prime p (911000 bits)
+smallest quadratic non-residue prime: 3
+3873.47s
+done
+hermann@7600x:~/RSA_numbers_factored/c++$ 
