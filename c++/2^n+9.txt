@@ -1,6 +1,6 @@
 Assertless, so all computed sqrtm1=powm(_, qnr, p/4, p) are "sqrt(-1) (mod p)".
 
-hermann@7600x:~/RSA_numbers_factored/c++$ ./n+9
+hermann@7600x:~/RSA_numbers_factored/c++$ ./2^n+9
 3-digit prime p (10 bits)
 smallest quadratic non-residue prime: 3
 6e-06s
