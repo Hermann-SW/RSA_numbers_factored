@@ -1,0 +1,40 @@
+--- Llr.c	2023-08-08 11:47:05.658701636 +0200
++++ Llr.c.new	2023-08-08 11:27:50.687829908 +0200
+@@ -11523,6 +11523,17 @@
+ } 
+ 
+ 
++uint32_t *__a = NULL;
++void gwnum2stderr(gwhandle *gwdata, long i, gwnum x)
++{
++  long l;
++  if (! __a)  { __a = malloc(sizeof(uint32_t) * 1000000); }
++  l  = gwtobinary(gwdata, x, __a, 1000000);
++  fprintf(stderr, "\\\\ %ld: 0x", i);
++  for(--l; l>=0; --l)  fprintf(stderr, "%08x", __a[l]);
++  fprintf(stderr, "\n");
++}
++
+ int isProthP ( 
+ 	unsigned long format, 
+ 	char *sgk,
+@@ -11904,6 +11915,9 @@
+ 		writeresidue (gwdata, x, N, tmp2, buf, str, 0, BIT);
+ 	while (bit < Nlen) {
+ 
++                if (bit > (Nlen-100))
++                        gwnum2stderr(gwdata, bit, x);
++
+ /* Error check the first and last 50 iterations, before writing an */
+ /* intermediate file (either user-requested stop or a */
+ /* 30 minute interval expired), and every 128th iteration. */
+@@ -12042,6 +12056,9 @@
+ 		}
+ 	}
+ 
++        fprintf(stderr, "after loop:\n");
++        gwnum2stderr(gwdata, bit, x);
++
+ /* See if we've found a Proth prime.  If not, format a 64-bit residue. */
+ 
+ 	clearline (100);
