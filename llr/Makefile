@@ -12,7 +12,7 @@ else
 	./sllr64 -d -q"33218925*2^169690+1" 2>err
 	tail -4 err | cut -b-50
 ifneq ($(shell which python),)
-	python verify.py `tail -3 err | head -1 | cut -f2 -d:` 33218925 169690
+	python verify.py err 33218925 169690
 endif
 endif
 
