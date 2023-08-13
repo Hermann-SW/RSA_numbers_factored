@@ -696,7 +696,7 @@ validate(rsa_) =
 */
     validate_squares();
 
-    foreach(rsa, r, \
+    foreach(rsa_, r, \
         if (#r > 4, \
             assert(dict_int(r[5]) == r[3]-1, r[5], "pm1_wrong"); \
             assert(dict_int(r[6]) == r[4]-1, r[6], "qm1_wrong"); \
