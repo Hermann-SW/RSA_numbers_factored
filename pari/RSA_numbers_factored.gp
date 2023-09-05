@@ -570,7 +570,7 @@ def dictprod_reduced_totient(d1, d2):
 
 validate_squares() =
 {
-  my(s,p,L,t,j);
+  my(s,p,L);
 /*
     s = [2, 1, 3, 2, 4, 1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
@@ -696,12 +696,10 @@ validate(rsa_) =
 */
     validate_squares();
 
-    foreach(rsa_, r, \
-        if (#r > 4, \
-            assert(dict_int(r[5]) == r[3]-1, r[5], "pm1_wrong"); \
-            assert(dict_int(r[6]) == r[4]-1, r[6], "qm1_wrong"); \
-        ); \
-    );
+    foreach(rsa_,r,
+        if (#r>4,
+            assert(dict_int(r[5])==r[3]-1, r[5], "pm1_wrong");
+            assert(dict_int(r[6])==r[4]-1, r[6], "qm1_wrong")));
 }
 
 
