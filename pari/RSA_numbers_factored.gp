@@ -526,9 +526,9 @@ dict_int(d) = {
 \\  Returns:
 \\      _: n with d = sympy.factorint(n).
 \\  """
-    my(p,v);
-    p = 1;
-    foreach(mattranspose(d), v, p *= v[1]^v[2]);
+    my(p=1);
+    foreach(mattranspose(d),v,
+        p*=v[1]^v[2]);
     return(p);
 }
 /*
