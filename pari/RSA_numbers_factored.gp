@@ -301,9 +301,10 @@ def square_sums(
     if uniq:
         return [L for i, L in enumerate(r) if i == 0 or r[i - 1][0] != L[0]]
     return r
+*/
 
-
-smp1m4 = [
+{
+  smp1m4=[
     5,
     13,
     17,
@@ -383,10 +384,10 @@ smp1m4 = [
     941,
     953,
     977,
-    997,
-]
+    997];
+}
 
-
+/*
 def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
     """
     Note:
