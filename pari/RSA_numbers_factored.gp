@@ -113,11 +113,15 @@
 \\ from sympy.ntheory import isprime
 \\ from sympy import lcm
 \\
-assert(b, v, s) = { if(!(b), error(Str(v)" "Str(s))); }
+assert(b, v, s)=
+{
+    if(!(b),
+        error(Str(v)" "Str(s)));
+}
 
-bits(N) = { #binary(N); }
+bits(N)=#binary(N);
 
-digits_(N) = { #digits(N); }
+digits_(N)=#digits(N);
 
 \\     Robert Chapman 2010 code from https://math.stackexchange.com/a/5883/1084297
 \\     with small changes:
@@ -126,82 +130,76 @@ digits_(N) = { #digits(N); }
 \\     - made sq2() return tuple with positive numbers; before sq2(13) returned (-3,-2)
 \\     - sq2(p) result can be obtained from sympy.solvers.diophantine.diophantine by diop_DN(-1, p)[0]
 \\
-mods(a,n) =
+mods(a,n)=
 {
    assert(n>0, n, " <=0");
-   a = a % n;
-   if(2*a>n, return(a-n));
+   a=a%n;
+   if(2*a>n,
+       return(a-n));
    return(a);
 }
 
-powmods(a,r,n) =
+powmods(a,r,n)=
 {
-   my(out = 1);
+   my(out=1);
    while(r>0,
      if(r%2==1, 
-       r-=1;
-       out = mods(out*a, n);
-     );
-     r = floor(r/2);
-     a = mods(a*a, n);
-   );
+       r-=1;out=mods(out*a, n););
+     r=floor(r/2);
+     a=mods(a*a, n););
    out;
 }
 
-quos(a, n) =
+quos(a,n)=
 {
    assert(n>0, n, " <= 0");
    floor((a - mods(a, n))/n);
 }
 
-grem(w,z) =
+grem(w,z)=
 {
    my(w0,w1,z0,z1,n);
    [w0,w1] = w;
    [z0,z1] = z;
-   n = z0*z0 + z1*z1;
+   n=z0*z0+z1*z1;
    assert(n>0, "division by ", n);
-   u0 = quos(w0*z0+w1*z1,n);
-   u1 = quos(w1*z0-w0*z1,n);
+   u0=quos(w0*z0+w1*z1,n);
+   u1=quos(w1*z0-w0*z1,n);
    [w0-z0*u0+z1*u1, w1-z0*u1-z1*u0];
 }
 
-ggcd(w,z) =
+ggcd(w,z)=
 {
    while(z!=[0,0],
-     [w,z] = [z, grem(w,z)];
-   );
+     [w,z] = [z, grem(w,z)];);
    w;
 }
 
-root4m1(p) =
+root4m1(p)=
 {
-   my(k,j,a,b);
    assert(p>1 && p%4==1, p, " not 1 (mod 4)");
-   k=floor(p/4);
-   j=2;
+   my(k=p\4,j=2,a,b);
    while(1,
      a=powmods(j,k,p);
      b=mods(a*a,p);
-     if(b==-1, return(a););
+     if(b==-1,
+       return(a););
      assert(b==1, p, " not prime");
-     j+=1;
-   );
+     j+=1;);
 }
 
-sq2(p) =
+sq2(p)=
 {
-   my(a,x,y);
    assert(p>1 && p%4==1, p, " not 1 (mod 4)");
-   a=root4m1(p);
-   [x,y] = ggcd([p,0], [a,1]);
-   [abs(x), abs(y)];
+   my(a=root4m1(p),x,y);
+   [x,y]=ggcd([p,0],[a,1]);
+   [abs(x),abs(y)];
 }
 
-sq2d(p) =
+sq2d(p)=
 {
-   assert(p > 1 && isprime(p), p, " not prime");
-   [floor(1 + p / 2), floor(p / 2)];
+   assert(p>1 && isprime(p), p, " not prime");
+   [1+p\2,p\2];
 }
 
 /*
@@ -519,7 +517,8 @@ def primeprod_reduced_totient(p, q):
 \\ Functions on factorization dictionaries.
 \\ [as returned by sympy.factorint() (in rsa[x][5] for p-1 and rsa[x][6] for q-1) ]
 \\
-dict_int(d) = {
+dict_int(d) =
+{
 \\  """
 \\  Args:
 \\      d: factorization dictionary.
