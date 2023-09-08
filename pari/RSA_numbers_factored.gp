@@ -132,74 +132,74 @@ digits_(N)=#digits(N);
 \\
 mods(a,n)=
 {
-   assert(n>0, n, " <=0");
-   a=a%n;
-   if(2*a>n,
-       return(a-n));
-   return(a);
+    assert(n>0,n," <=0");
+    a=a%n;
+    if(2*a>n,
+        return(a-n));
+    return(a);
 }
 
 powmods(a,r,n)=
 {
-   my(out=1);
-   while(r>0,
-     if(r%2==1, 
-       r-=1;out=mods(out*a, n););
-     r=floor(r/2);
-     a=mods(a*a, n););
-   out;
+    my(out=1);
+    while(r>0,
+        if(r%2==1, 
+            r-=1;out=mods(out*a, n););
+        r=floor(r/2);
+        a=mods(a*a, n););
+    out;
 }
 
 quos(a,n)=
 {
-   assert(n>0, n, " <= 0");
-   floor((a - mods(a, n))/n);
+    assert(n>0,n," <= 0");
+    floor((a-mods(a, n))/n);
 }
 
 grem(w,z)=
 {
-   my(w0,w1,z0,z1,n);
-   [w0,w1] = w;
-   [z0,z1] = z;
-   n=z0*z0+z1*z1;
-   assert(n>0, "division by ", n);
-   u0=quos(w0*z0+w1*z1,n);
-   u1=quos(w1*z0-w0*z1,n);
-   [w0-z0*u0+z1*u1, w1-z0*u1-z1*u0];
+    my(w0,w1,z0,z1,n);
+    [w0,w1]=w;
+    [z0,z1]=z;
+    n=z0*z0+z1*z1;
+    assert(n>0,"division by ",n);
+    u0=quos(w0*z0+w1*z1,n);
+    u1=quos(w1*z0-w0*z1,n);
+    [w0-z0*u0+z1*u1, w1-z0*u1-z1*u0];
 }
 
 ggcd(w,z)=
 {
-   while(z!=[0,0],
-     [w,z] = [z, grem(w,z)];);
-   w;
+    while(z!=[0,0],
+        [w,z]=[z, grem(w,z)];);
+    w;
 }
 
 root4m1(p)=
 {
-   assert(p>1 && p%4==1, p, " not 1 (mod 4)");
-   my(k=p\4,j=2,a,b);
-   while(1,
-     a=powmods(j,k,p);
-     b=mods(a*a,p);
-     if(b==-1,
-       return(a););
-     assert(b==1, p, " not prime");
-     j+=1;);
+    assert(p>1&&p%4==1,p," not 1 (mod 4)");
+    my(k=p\4,j=2,a,b);
+    while(1,
+        a=powmods(j,k,p);
+        b=mods(a*a,p);
+        if(b==-1,
+            return(a););
+        assert(b==1,p," not prime");
+        j+=1;);
 }
 
 sq2(p)=
 {
-   assert(p>1 && p%4==1, p, " not 1 (mod 4)");
-   my(a=root4m1(p),x,y);
-   [x,y]=ggcd([p,0],[a,1]);
-   [abs(x),abs(y)];
+    assert(p>1&&p%4==1,p," not 1 (mod 4)");
+    my(a=root4m1(p),x,y);
+    [x,y]=ggcd([p,0],[a,1]);
+    [abs(x),abs(y)];
 }
 
 sq2d(p)=
 {
-   assert(p>1 && isprime(p), p, " not prime");
-   [1+p\2,p\2];
+    assert(p>1&&isprime(p),p," not prime");
+    [1+p\2,p\2];
 }
 
 
