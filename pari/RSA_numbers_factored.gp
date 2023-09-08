@@ -113,7 +113,7 @@
 \\ from sympy.ntheory import isprime
 \\ from sympy import lcm
 \\
-assert(b, v, s)=
+assert(b,v="",s="")=
 {
     if(!(b),
         error(Str(v)" "Str(s)));
@@ -202,106 +202,100 @@ sq2d(p)=
    [1+p\2,p\2];
 }
 
-/*
-def square_sum_prod(n: Union[int, RSA_number]) -> Union[IntList2, IntList4]:
-    """
-    Args:
-        n: int or RSA_number.
-    Returns:
-        _: int list with squares of pairs of ints sum up to prime, prime[s] multiply to n.
-    Example:
-        For prime 233 and composite number RSA-59.
-    ```
-        >>> square_sum_prod(233)
-        [13, 8]
-        >>>
-        >>> r = rsa[0]
-        >>> s = square_sum_prod(r)
-        >>> (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == r[1]
-        True
-        >>>
-    ```
-    """
-    if isinstance(n, list):
-        L = square_sum_prod(n[2])
-        return L + square_sum_prod(n[3])
 
-    return list(sq2(n))
+square_sum_prod(n)=
+{
+\\    """
+\\    Args:
+\\        n: int or RSA_number.
+\\    Returns:
+\\        _: int list with squares of pairs of ints sum up to prime, prime[s] multiply to n.
+\\    Example:
+\\        For prime 233 and composite number RSA-59.
+\\    ```
+\\        >>> square_sum_prod(233)
+\\        [13, 8]
+\\        >>>
+\\        >>> r = rsa[0]
+\\        >>> s = square_sum_prod(r)
+\\        >>> (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == r[1]
+\\        True
+\\        >>>
+\\    ```
+\\    """
+    if(type(n)=="t_VEC",
+        L=square_sum_prod(n[3]);
+        return(concat(L,square_sum_prod(n[4]))));
 
+    return(sq2(n));
+}
 
-def square_sums_(s: List[int]) -> Type[IntList2]:
-    """
-    Args:
-        s: List of int returned by square_sum_prod(n).
-    Returns:
-        _: List of int pairs, their squares summing up to n.
-    Example:
-        For composite number RSA-59.
-    ```
-        >>> r = rsa[0]
-        >>> s = square_sum_prod(r)
-        >>> square_sums_(s)
-        [[93861205413769670113229603198, 250662312444502854557140314865], \
-[264836754409721537369435955610, 38768728061109707828243001823]]
-        >>> for a,b in square_sums_(s):
-        ...     a**2 + b**2 == r[1]
-        ...
-        True
-        True
-        >>>
-    ```
-    """
-    if len(s) == 2:
-        return [s]
+square_sums_(s)=
+{
+\\    """
+\\    Args:
+\\        s: List of int returned by square_sum_prod(n).
+\\    Returns:
+\\        _: List of int pairs, their squares summing up to n.
+\\    Example:
+\\        For composite number RSA-59.
+\\    ```
+\\        >>> r = rsa[0]
+\\        >>> s = square_sum_prod(r)
+\\        >>> square_sums_(s)
+\\        [[93861205413769670113229603198, 250662312444502854557140314865], \
+\\[264836754409721537369435955610, 38768728061109707828243001823]]
+\\        >>> for a,b in square_sums_(s):
+\\        ...     a**2 + b**2 == r[1]
+\\        ...
+\\        True
+\\        True
+\\        >>>
+\\    ```
+\\    """
+    if(#s==2,
+        return([s]));
 
-    b = s.pop()
-    a = s.pop()
-    r = []
-    for p in square_sums_(s):
-        # Brahmagupta–Fibonacci identity
-        r.append([abs(a * p[0] - b * p[1]), a * p[1] + b * p[0]])
-        r.append([a * p[0] + b * p[1], abs(b * p[0] - a * p[1])])
-    s.append(a)
-    s.append(b)
-    return r
+    my([a,b]=s[#s-1..#s],r=List(),L,S);
+    foreach(square_sums_(s[1..#s-2]),p,
+        \\ Brahmagupta–Fibonacci identity
+        listput(r,[abs(a*p[1]-b*p[2]),a*p[2]+b*p[1]]);
+        listput(r,[a*p[1]+b*p[2],abs(b*p[1]-a*p[2])]));
+    return([x|x<-r]);
+}
 
-
-def square_sums(
-    L: List[int], revt: bool = False, revl: bool = False, uniq: bool = False
-) -> Type[IntList2]:
-    """
-    Args:
-        L: List of int.
-        revt: sorting direction for tuples.
-        revl: sorting direction for list.
-        uniq: eliminate duplicates if True.
-    Returns:
-        _: square_sums_(l) sorted (tuples and list), optionally with duplicates removed.
-    Example:
-        For list corresponding to number
-          5\\*5\\*13 (5 = 2\\*\\*2 + 1\\*\\*2, 13 = 3\\*\\*2 + 2\\*\\*2).
-    ```
-        >>> s = [2, 1, 2, 1, 3, 2]
-        >>> square_sums(s)
-        [[1, 18], [6, 17], [10, 15], [10, 15]]
-        >>> square_sums(s, revt=True, revl=True)
-        [[18, 1], [17, 6], [15, 10], [15, 10]]
-        >>> square_sums(s, uniq=True)
-        [[1, 18], [6, 17], [10, 15]]
-        >>> for a,b in square_sums(s, uniq=True):
-        ...     assert a**2 + b**2 == 5*5*13
-        ...
-        >>>
-    ```
-    """
-    r = square_sums_(L)
-    for t in r:
-        t.sort(reverse=revt)
-    r.sort(key=(lambda t: t[0]), reverse=revl)
-    if uniq:
-        return [L for i, L in enumerate(r) if i == 0 or r[i - 1][0] != L[0]]
-    return r
-*/
+square_sums(L,revt=0,revl=0,uniq=0)=
+{
+\\    """
+\\    Args:
+\\        L: List of int.
+\\        revt: sorting direction for tuples.
+\\        revl: sorting direction for list.
+\\        uniq: eliminate duplicates if True.
+\\    Returns:
+\\        _: square_sums_(l) sorted (tuples and list), optionally with duplicates removed.
+\\    Example:
+\\        For list corresponding to number
+\\          5\\*5\\*13 (5 = 2\\*\\*2 + 1\\*\\*2, 13 = 3\\*\\*2 + 2\\*\\*2).
+\\    ```
+\\        >>> s = [2, 1, 2, 1, 3, 2]
+\\        >>> square_sums(s)
+\\        [[1, 18], [6, 17], [10, 15], [10, 15]]
+\\        >>> square_sums(s, revt=True, revl=True)
+\\        [[18, 1], [17, 6], [15, 10], [15, 10]]
+\\        >>> square_sums(s, uniq=True)
+\\        [[1, 18], [6, 17], [10, 15]]
+\\        >>> for a,b in square_sums(s, uniq=True):
+\\        ...     assert a**2 + b**2 == 5*5*13
+\\        ...
+\\        >>>
+\\    ```
+\\    """
+    r=square_sums_(L);
+    r=[vecsort(t,,4*revt)|t<-r];
+    r=vecsort(r,1,4*revl+8*uniq);
+    return(r);
+}
 
 {
   smp1m4=[
@@ -387,48 +381,50 @@ def square_sums(
     997];
 }
 
+sqtst(L,k,dbg=0)=
+{
+\\    """
+\\    Note:
+\\        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
+\\        asserts for all k-element subsets of l
+\\    Args:
+\\        L: list of distinct primes =1 (mod 4)
+\\        k: size of subsets
+\\        dbg: 0=without debug output, 1-3 with more and more
+\\    Example:
+\\    ```
+\\        >>> smp1m4[0:3]
+\\        [5, 13, 17]
+\\        >>> sqtst(smp1m4[0:3], 2, dbg=3)
+\\        (0, 1)
+\\        [2, 1, 3, 2]
+\\        [[1, 8], [4, 7]]
+\\        (0, 2)
+\\        [2, 1, 4, 1]
+\\        [[2, 9], [6, 7]]
+\\        (1, 2)
+\\        [3, 2, 4, 1]
+\\        [[5, 14], [10, 11]]
+\\        >>>
+\\        >>> sqtst(smp1m4[0:20], 7)
+\\        >>>
+\\    ```
+\\    """
+    assert(#L>=k);
+    my(LS,S);
+    forsubset([#L,k],s,
+        LS=concat([sq2(L[x])|x<-s]);
+        S=square_sums(LS,,,1);
+        if(dbg>=1,
+            if(dbg>=3,
+                print(s));
+            if(dbg>=2,
+                print(LS));
+            print(S));
+        assert(2^(k-1)==#S));
+}
+
 /*
-def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
-    """
-    Note:
-        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
-        asserts for all k-element subsets of l
-    Args:
-        L: list of distinct primes =1 (mod 4)
-        k: size of subsets
-        dbg: 0=without debug output, 1-3 with more and more
-    Example:
-    ```
-        >>> smp1m4[0:3]
-        [5, 13, 17]
-        >>> sqtst(smp1m4[0:3], 2, dbg=3)
-        (0, 1)
-        [2, 1, 3, 2]
-        [[1, 8], [4, 7]]
-        (0, 2)
-        [2, 1, 4, 1]
-        [[2, 9], [6, 7]]
-        (1, 2)
-        [3, 2, 4, 1]
-        [[5, 14], [10, 11]]
-        >>>
-        >>> sqtst(smp1m4[0:20], 7)
-        >>>
-    ```
-    """
-    assert len(L) >= k
-    for s in combinations(range(len(L)), k):
-        LS = list(chain(*[sq2(L[x]) for x in s]))
-        S = square_sums(LS, uniq=True)
-        if dbg >= 1:
-            if dbg >= 3:
-                print(s)
-            if dbg >= 2:
-                print(LS)
-            print(S)
-        assert 2 ** (k - 1) == len(S)
-
-
 def SECTION3():
     """
     Functions working on "rsa" list
@@ -570,40 +566,39 @@ def dictprod_reduced_totient(d1, d2):
 
 validate_squares() =
 {
-  my(s,p,L);
-/*
-    s = [2, 1, 3, 2, 4, 1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
+    my(s,p,L);
+    s=[2,1,3,2,4,1];  \\ 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
-    p = 1
-    for j in range(0, len(s), 2):
-        p *= s[j] ** 2 + s[j + 1] ** 2
+    p=1;
+    for(j=1,#s,
+        p*=s[j]^2+s[j+1]^2;j+=1);
 
-    L = square_sums_(s)
-    for t in L:
-        assert t[0] ** 2 + t[1] ** 2 == p
+    L=square_sums_(s);
+    foreach(L,t,
+        assert(t[1]^2+t[2]^2==p));
 
-    L = square_sums(s)  # [[4, 33], [9, 32], [12, 31], [23, 24]]
-    for t in L:
-        assert t[0] ** 2 + t[1] ** 2 == p
-        assert t[0] < t[1]
-    for j in range(len(L) - 1):
-        assert L[j][0] < L[j + 1][0]
+    L=square_sums(s);  \\ [[4, 33], [9, 32], [12, 31], [23, 24]]
+    foreach(L,t,
+        assert(t[1]^2+t[2]^2==p);
+        assert(t[1]<t[2]));
+    for(j=1,#L-1,
+        assert(L[j][1]<L[j+1][1]));
 
-    L = square_sums(s, revl=True, revt=True)
-    for t in L:
-        assert t[0] ** 2 + t[1] ** 2 == p
-        assert t[0] > t[1]
-    for j in range(len(L) - 1):
-        assert L[j][0] > L[j + 1][0]
+    L=square_sums(s,1,1);
+    foreach(L,t,
+        assert(t[1]^2+t[2]^2==p);
+        assert(t[1]>t[2]));
+    for(j=1,#L-1,
+        assert(L[j][1]>L[j+1][1]));
 
-    sqtst(smp1m4[10:20], 8)
+    sqtst(smp1m4[11..20],8);
 
-    s = square_sum_prod(rsa[0])
-    assert (s[0] ** 2 + s[1] ** 2) * (s[2] ** 2 + s[3] ** 2) == rsa[0][1]
-*/
-  assert(sq2d(257)[1] ^ 2 - sq2d(257)[2] ^ 2 == 257);
+    s=square_sum_prod(rsa[1]);
+    assert((s[1]^2+s[2]^2)*(s[3]^2+s[4]^2)==rsa[1][2]);
 
-  assert(sq2(100049)[1] ^ 2 + sq2(100049)[2] ^ 2 == 100049);
+    assert(sq2d(257)[1]^2-sq2d(257)[2]^2==257);
+
+    assert(sq2(100049)[1]^2+sq2(100049)[2]^2==100049);
 }
 
 \\ Assert many identities to assure data consistency and generate demo output for
@@ -611,7 +606,7 @@ validate_squares() =
 \\
 validate(rsa_) =
 {
-  my(br,i,r,L,n,p,q,pm1,qm1,k);
+    my(br,i,r,L,n,p,q,pm1,qm1,k);
 /*
     print(
         "\nwith p-1 and q-1 factorizations (n=p*q):",
