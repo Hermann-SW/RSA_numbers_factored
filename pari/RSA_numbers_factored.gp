@@ -431,86 +431,88 @@ def SECTION3():
     Functions working on "rsa" list
     """
     return
+*/
 
+idx(rsa_,L)=
+{
+\\    """
+\\    Args:
+\\        rsa_: list of RSA numbers
+\\        L: bit-length or decimal-digit-length of RSA number
+\\    Returns:
+\\        _: index of RSA-l in rsa list, -1 if not found
+\\    """
+    for(i=1,#rsa_,
+        if(rsa_[i][1]==L,
+            return(i)));
+    return(-1);
+}
 
-def idx(rsa_: List[RSA_number], L: int) -> int:
-    """
-    Args:
-        rsa_: list of RSA numbers
-        L: bit-length or decimal-digit-length of RSA number
-    Returns:
-        _: index of RSA-l in rsa list, -1 if not found
-    """
-    for (i, r) in enumerate(rsa_):
-        if r[0] == L:
-            return i
-    return -1
+has_factors(r,mod4=-1)=
+{
+\\    """
+\\    Args:
+\\        r: an RSA number
+\\        mod4: optional restriction (remainder mod 4 for number or its both prime factors)
+\\    Returns:
+\\        _: RSA number has factors and adheres mod 4 restriction(s)
+\\    """
+    return(#r>=4 && (
+        mod4==-1
+        || (type(mod4)=="t_INT"&&r[2]%4==mod4)
+        || (type(mod4)=="t_VEC"&&r[3]%4==mod4[1]&&r[4]%4==mod4[2])));
+}
 
-
-def has_factors(
-    r: Type[RSA_number], mod4: Union[None, int, Tuple[int, int]] = None
-) -> bool:
-    """
-    Args:
-        r: an RSA number
-        mod4: optional restriction (remainder mod 4 for number or its both prime factors)
-    Returns:
-        _: RSA number has factors and adheres mod 4 restriction(s)
-    """
-    return len(r) >= 4 and (
-        mod4 is None
-        or (isinstance(mod4, int) and r[1] % 4 == mod4)
-        or (isinstance(mod4, tuple) and r[2] % 4 == mod4[0] and r[3] % 4 == mod4[1])
-    )
-
-
-def has_factors_2(r: Type[RSA_number]) -> bool:
-    """
-    Args:
-        r: an RSA number
-    Returns:
-        _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
-    Example:
-    For RSA-100
-    ```
-        >>> r=rsa[2]
-        >>> has_factors_2(r)
-        True
-        >>> l,n,p,q,pm1,qm1 = r
-        >>> l
-        100
-        >>>
-        >>> q
-        40094690950920881030683735292761468389214899724061
-        >>> qm1
-        {2: 2, 5: 1, 41: 1, 2119363: 1, 602799725049211: 1, 38273186726790856290328531: 1}
-        >>>
-    ```
-    """
-    return len(r) >= 6
-
+has_factors_2(r)=
+{
+\\    """
+\\    Args:
+\\        r: an RSA number
+\\    Returns:
+\\        _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
+\\    Example:
+\\    For RSA-100
+\\    ```
+\\        >>> r=rsa[2]
+\\        >>> has_factors_2(r)
+\\        True
+\\        >>> l,n,p,q,pm1,qm1 = r
+\\        >>> l
+\\        100
+\\        >>>
+\\        >>> q
+\\        40094690950920881030683735292761468389214899724061
+\\        >>> qm1
+\\        {2: 2, 5: 1, 41: 1, 2119363: 1, 602799725049211: 1, 38273186726790856290328531: 1}
+\\        >>>
+\\    ```
+\\    """
+    return(#r>=6);
+}
 
 \\  primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f
 \\
-def primeprod_totient(p, q):
-    """
-    Args:
-        p,q: odd primes.
-    Returns:
-        _: totient(n) with n=p*q.
-    """
-    return (p - 1) * (q - 1)
+primeprod_totient(p,q)=
+{
+\\    """
+\\    Args:
+\\        p,q: odd primes.
+\\    Returns:
+\\        _: totient(n) with n=p*q.
+\\    """
+    return((p-1)*(q-1));
+}
 
-
-def primeprod_reduced_totient(p, q):
-    """
-    Args:
-        p,q: odd primes.
-    Returns:
-        _: reduced_totient(n) with n=p*q.
-    """
-    return int(lcm(p - 1, q - 1))
-*/
+primeprod_reduced_totient(p,q)=
+{
+\\    """
+\\    Args:
+\\        p,q: odd primes.
+\\    Returns:
+\\        _: reduced_totient(n) with n=p*q.
+\\    """
+    return(lcm(p-1,q-1));
+}
 
 \\ Functions on factorization dictionaries.
 \\ [as returned by sympy.factorint() (in rsa[x][5] for p-1 and rsa[x][6] for q-1) ]
@@ -528,42 +530,44 @@ dict_int(d) =
         p*=v[1]^v[2]);
     return(p);
 }
-/*
-def dict_totient(d):
-    """
-    Args:
-        d: factorization dictionary.
-    Returns:
-        _: totient(n) with d = sympy.factorint(n).
-    """
-    p = 1
-    for k in d.keys():
-        p *= (k - 1) * (k ** (d[k] - 1))
 
-    return p
-
+dict_totient(d)=
+{
+\\    """
+\\    Args:
+\\        d: factorization dictionary.
+\\    Returns:
+\\        _: totient(n) with d = sympy.factorint(n).
+\\    """
+    my(p=1);
+    foreach(mattranspose(d),v,
+        p*=(v[1]-1)*(v[1]^(v[2]-1)));
+    return(p);
+}
 
 \\ functions on pair of factorization dictionaries
 \\
-def dictprod_totient(d1, d2):
-    """
-    Args:
-        d1,d2: factorization dictionaries.
-    Returns:
-        _: totient(n) with n=dict_int(d1)*dict_int(d2).
-    """
-    return dict_totient(d1) * dict_totient(d2)
+dictprod_totient(d1,d2)=
+{
+\\    """
+\\    Args:
+\\        d1,d2: factorization dictionaries.
+\\    Returns:
+\\        _: totient(n) with n=dict_int(d1)*dict_int(d2).
+\\    """
+    return(dict_totient(d1)*dict_totient(d2));
+}
 
-
-def dictprod_reduced_totient(d1, d2):
-    """
-    Args:
-        d1,d2: factorization dictionaries.
-    Returns:
-        _: reduced_totient(n) with n=dict_int(d1)*dict_int(d2).
-    """
-    return int(lcm(dict_totient(d1), dict_totient(d2)))
-*/
+dictprod_reduced_totient(d1,d2)=
+{
+\\    """
+\\    Args:
+\\        d1,d2: factorization dictionaries.
+\\    Returns:
+\\        _: reduced_totient(n) with n=dict_int(d1)*dict_int(d2).
+\\    """
+    return(lcm(dict_totient(d1),dict_totient(d2)));
+}
 
 validate_squares() =
 {
@@ -607,95 +611,79 @@ validate_squares() =
 \\
 validate(rsa_) =
 {
-    my(br,i,r,L,n,p,q,pm1,qm1,k);
-/*
-    print(
-        "\nwith p-1 and q-1 factorizations (n=p*q):",
-        len(["" for r in rsa if len(r) == 6]),
-    )
-    br = 6
-    assert len(["" for r in rsa_ if len(r) == 6]) == 20
-    for (i, r) in enumerate(rsa_):
-        if has_factors_2(r):
-            (L, n, p, q, pm1, qm1) = r
-        elif has_factors(r):
-            (L, n, p, q) = r
-        else:
-            (L, n) = r
+    my(br,r,L,n,p,q,pm1,qm1,k);
 
-        assert L == digits(n) or L == bits(n)
+    print("\nwith p-1 and q-1 factorizations (n=p*q): ",#[""|r<-rsa_,#r==6]);
+    br=0;
+    assert(#[""|r<-rsa_,#r==6]==25);
+    for(i=1,#rsa_,r=rsa_[i];
+        if(has_factors_2(r),
+            [L,n,p,q,pm1,qm1]=r,
+            if(has_factors(r),
+                [L,n,p,q]=r,
+                [L,n]=r));
+        assert(L==digits_(n)||L==bits(n));
 
-        if i > 0:
-            assert n > rsa_[i - 1][1]
+        if(i>1,
+            assert(n>rsa_[i-1][2]));
 
-        if has_factors(r):
-            assert n == p * q
-            assert isprime(p)
-            assert isprime(q)
-            assert pow(997, primeprod_totient(p, q), n) == 1
-            assert pow(997, primeprod_reduced_totient(p, q), n) == 1
+        if(has_factors(r),
+            assert(n==p*q);
+            assert(isprime(p));
+            assert(isprime(q));
+            assert(Mod(997,n)^primeprod_totient(p,q)==Mod(1,n));
+            assert(Mod(997,n)^primeprod_reduced_totient(p, q)==Mod(1,n)));
 
-        if has_factors_2(r):
-            for k in pm1.keys():
-                assert isprime(k)
+        if(has_factors_2(r),
+            foreach(mattranspose(pm1),k,
+                assert(isprime(k[1])));
 
-            for k in qm1.keys():
-                assert isprime(k)
+            foreach(mattranspose(qm1),k,
+                assert(isprime(k[1])));
 
-            assert dict_int(pm1) == p - 1
-            assert dict_int(qm1) == q - 1
+            assert(dict_int(pm1)==p-1);
+            assert(dict_int(qm1)==q-1);
 
-            assert pow(997, dict_totient(pm1), p - 1) == 1
-            assert pow(997, dict_totient(qm1), q - 1) == 1
+            assert(Mod(997,p-1)^dict_totient(pm1)==Mod(1,p-1));
+            assert(Mod(997,q-1)^dict_totient(qm1)==Mod(1,q-1));
 
             assert (
-                pow(
-                    65537,
-                    dictprod_reduced_totient(pm1, qm1),
-                    primeprod_reduced_totient(p, q),
-                )
-                == 1
-            )
+                Mod(65537,primeprod_reduced_totient(p,q))^
+                    dictprod_reduced_totient(pm1,qm1)
+                ==Mod(1,primeprod_reduced_totient(p,q))
+            );
 
-            # this does only work for RSA number != RSA-190
-            if L != 190:
-                assert (
-                    pow(65537, dictprod_totient(pm1, qm1), primeprod_totient(p, q)) == 1
-                )
+            \\ this does only work for RSA number != RSA-190
+            if(L!=190,
+                assert(
+                    Mod(65537,primeprod_totient(p,q))^dictprod_totient(pm1,qm1)==Mod(1,primeprod_totient(p,q)))));
 
-        if not has_factors_2(r) and has_factors_2(rsa_[i - 1]):
+        if(!has_factors_2(r)&&has_factors_2(rsa_[i-1]),
             print(
-                "\n\nwithout (p-1) and (q-1) factorizations, but p and q:",
-                len(["" for r in rsa_ if len(r) == 4]),
-            )
-            br = 3
-            assert len(["" for r in rsa_ if len(r) == 4]) == 5
+                "\n\nwithout (p-1) and (q-1) factorizations, but p and q: ",
+                #[""|r<-rsa_,#r==4]);
+            br=3;
+            assert(#[""|r<-rsa_,#r==4]==0));
 
-        if not has_factors(r) and has_factors(rsa_[i - 1]):
+        if(!has_factors(r)&&has_factors(rsa_[i-1]),
             print(
-                "\nhave not been factored sofar:",
-                len(["" for r in rsa_ if len(r) == 2]),
-            )
-            br = 3
-            assert len(["" for r in rsa_ if len(r) == 2]) == 31
+                "\nhave not been factored sofar: ",
+                #[""|r<-rsa_,#r==2]);
+            br = 3;
+            assert(#[""|r<-rsa_,#r==2]==31));
 
-        print(
-            f"{L:3d}",
-            ("bits  " if L == bits(n) else "digits")
-            + (
-                ","
-                if i < len(rsa_) - 1
-                else "(=" + str(digits(rsa_[-1][1])) + " digits)\n"
-            ),
-            end="\n" if i % 7 == br or i == len(rsa_) - 1 else "",
-        )
-*/
+        printf("%3d %s%s%s",L,
+            if(L==bits(n),"bits  ","digits"),
+            if(i<#rsa_,",",concat(concat("(=",digits_(rsa_[i][2]))," digits)\n")),
+            if(i%7==br||i==#rsa_,"\n",""));
+    );
+
     validate_squares();
 
     foreach(rsa_,r,
         if (#r>4,
-            assert(dict_int(r[5])==r[3]-1, r[5], "pm1_wrong");
-            assert(dict_int(r[6])==r[4]-1, r[6], "qm1_wrong")));
+            assert(dict_int(r[5])==r[3]-1,r[5],"pm1_wrong");
+            assert(dict_int(r[6])==r[4]-1,r[6],"qm1_wrong")));
 }
 
 

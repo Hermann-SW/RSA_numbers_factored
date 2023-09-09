@@ -792,7 +792,7 @@ def validate(rsa_):
     """
     print(
         "\nwith p-1 and q-1 factorizations (n=p*q):",
-        len(["" for r in rsa if len(r) == 6]),
+        len(["" for r in rsa_ if len(r) == 6]),
     )
     br = 6
     assert len(["" for r in rsa_ if len(r) == 6]) == 25
