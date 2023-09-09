@@ -635,11 +635,11 @@ validate(rsa_) =
             assert(Mod(997,n)^primeprod_reduced_totient(p, q)==Mod(1,n)));
 
         if(has_factors_2(r),
-            foreach(mattranspose(pm1),k,
-                assert(isprime(k[1])));
+            foreach(pm1[,1],k,
+                assert(isprime(k)));
 
-            foreach(mattranspose(qm1),k,
-                assert(isprime(k[1])));
+            foreach(qm1[,1],k,
+                assert(isprime(k)));
 
             assert(dict_int(pm1)==p-1);
             assert(dict_int(qm1)==q-1);
