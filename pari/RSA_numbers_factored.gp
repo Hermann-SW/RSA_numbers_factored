@@ -119,6 +119,10 @@ assert(b,v="",s="")=
         error(Str(v)" "Str(s)));
 }
 
+len(v)=#v;
+
+last(v)=v[#v];
+
 bits(N)=#binary(N);
 
 digits_(N)=#digits(N);
@@ -205,24 +209,24 @@ sq2d(p)=
 
 square_sum_prod(n)=
 {
-\\    """
-\\    Args:
-\\        n: int or RSA_number.
-\\    Returns:
-\\        _: int list with squares of pairs of ints sum up to prime, prime[s] multiply to n.
-\\    Example:
-\\        For prime 233 and composite number RSA-59.
-\\    ```
-\\        >>> square_sum_prod(233)
-\\        [13, 8]
-\\        >>>
-\\        >>> r = rsa[0]
-\\        >>> s = square_sum_prod(r)
-\\        >>> (s[0]**2 + s[1]**2) * (s[2]**2 + s[3]**2) == r[1]
-\\        True
-\\        >>>
-\\    ```
-\\    """
+\\  """
+\\  Args:
+\\      n: int or RSA_number.
+\\  Returns:
+\\      _: int list with squares of pairs of ints sum up to prime, prime[s] multiply to n.
+\\  Example:
+\\      For prime 233 and composite number RSA-59.
+\\  ```
+\\      ? square_sum_prod(233)
+\\      [13, 8]
+\\      ? 
+\\      ? r=rsa[1];
+\\      ? s=square_sum_prod(r);
+\\      ? (s[1]^2+s[2]^2)*(s[3]^2+s[4]^2)==r[2]
+\\      1
+\\      ? 
+\\  ```
+\\  """
     if(type(n)=="t_VEC",
         L=square_sum_prod(n[3]);
         return(concat(L,square_sum_prod(n[4]))));
@@ -232,27 +236,24 @@ square_sum_prod(n)=
 
 square_sums_(s)=
 {
-\\    """
-\\    Args:
-\\        s: List of int returned by square_sum_prod(n).
-\\    Returns:
-\\        _: List of int pairs, their squares summing up to n.
-\\    Example:
-\\        For composite number RSA-59.
-\\    ```
-\\        >>> r = rsa[0]
-\\        >>> s = square_sum_prod(r)
-\\        >>> square_sums_(s)
-\\        [[93861205413769670113229603198, 250662312444502854557140314865], \
-\\[264836754409721537369435955610, 38768728061109707828243001823]]
-\\        >>> for a,b in square_sums_(s):
-\\        ...     a**2 + b**2 == r[1]
-\\        ...
-\\        True
-\\        True
-\\        >>>
-\\    ```
-\\    """
+\\  """
+\\  Args:
+\\      s: List of int returned by square_sum_prod(n).
+\\  Returns:
+\\      _: List of int pairs, their squares summing up to n.
+\\  Example:
+\\      For composite number RSA-59.
+\\  ```
+\\      ? r=rsa[1];
+\\      ? s=square_sum_prod(r);
+\\      ? square_sums_(s)
+\\      [[93861205413769670113229603198, 250662312444502854557140314865], [264836754409721537369435955610, 38768728061109707828243001823]]
+\\      ? foreach(square_sums_(s),v,[a,b]=v;print(a^2+b^2==r[2]))
+\\      1
+\\      1
+\\      ? 
+\\  ```
+\\  """
     if(#s==2,
         return([s]));
 
@@ -266,38 +267,36 @@ square_sums_(s)=
 
 square_sums(L,revt=0,revl=0,uniq=0)=
 {
-\\    """
-\\    Args:
-\\        L: List of int.
-\\        revt: sorting direction for tuples.
-\\        revl: sorting direction for list.
-\\        uniq: eliminate duplicates if True.
-\\    Returns:
-\\        _: square_sums_(l) sorted (tuples and list), optionally with duplicates removed.
-\\    Example:
-\\        For list corresponding to number
-\\          5\\*5\\*13 (5 = 2\\*\\*2 + 1\\*\\*2, 13 = 3\\*\\*2 + 2\\*\\*2).
-\\    ```
-\\        >>> s = [2, 1, 2, 1, 3, 2]
-\\        >>> square_sums(s)
-\\        [[1, 18], [6, 17], [10, 15], [10, 15]]
-\\        >>> square_sums(s, revt=True, revl=True)
-\\        [[18, 1], [17, 6], [15, 10], [15, 10]]
-\\        >>> square_sums(s, uniq=True)
-\\        [[1, 18], [6, 17], [10, 15]]
-\\        >>> for a,b in square_sums(s, uniq=True):
-\\        ...     assert a**2 + b**2 == 5*5*13
-\\        ...
-\\        >>>
-\\    ```
-\\    """
+\\  """
+\\  Args:
+\\      L: List of int.
+\\      revt: sorting direction for tuples.
+\\      revl: sorting direction for list.
+\\      uniq: eliminate duplicates if True.
+\\  Returns:
+\\      _: square_sums_(l) sorted (tuples and list), optionally with duplicates removed.
+\\  Example:
+\\      For list corresponding to number
+\\        5\\*5\\*13 (5 = 2\\*\\*2 + 1\\*\\*2, 13 = 3\\*\\*2 + 2\\*\\*2).
+\\  ```
+\\      ? s=[2,1,2,1,3,2];
+\\      ? square_sums(s)
+\\      [[1, 18], [6, 17], [10, 15], [10, 15]]
+\\      ? square_sums(s,1,1)
+\\      [[18, 1], [17, 6], [15, 10], [15, 10]]
+\\      ? square_sums(s,,,1)
+\\      [[1, 18], [6, 17], [10, 15]]
+\\      ? foreach(square_sums(s,,,1),v,[a,b]=v;assert(a^2+b^2==5*5*13))
+\\      ? 
+\\  ```
+\\  """
     r=square_sums_(L);
     r=[vecsort(t,,4*revt)|t<-r];
     r=vecsort(r,1,4*revl+8*uniq);
     return(r);
 }
 
-{
+{ \\ [x|x<-[2..1000],x%4==1&&isprime(x)]
   smp1m4=[
     5,
     13,
@@ -383,34 +382,32 @@ square_sums(L,revt=0,revl=0,uniq=0)=
 
 sqtst(L,k,dbg=0)=
 {
-\\    """
-\\    Note:
-\\        sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
-\\        asserts for all k-element subsets of l
-\\    Args:
-\\        L: list of distinct primes =1 (mod 4)
-\\        k: size of subsets
-\\        dbg: 0=without debug output, 1-3 with more and more
-\\    Example:
-\\    ```
-\\        >>> smp1m4[0:3]
-\\        [5, 13, 17]
-\\        >>> sqtst(smp1m4[0:3], 2, dbg=3)
-\\        (0, 1)
-\\        [2, 1, 3, 2]
-\\        [[1, 8], [4, 7]]
-\\        (0, 2)
-\\        [2, 1, 4, 1]
-\\        [[2, 9], [6, 7]]
-\\        (1, 2)
-\\        [3, 2, 4, 1]
-\\        [[5, 14], [10, 11]]
-\\        ...
-\\        >>>
-\\        >>> sqtst(smp1m4[0:20], 7)
-\\        >>>
-\\    ```
-\\    """
+\\  """
+\\  Note:
+\\      sqtst() verifies that 2**(k-1) == unique #sum_of_squares by many
+\\      asserts for all k-element subsets of l
+\\  Args:
+\\      L: list of distinct primes =1 (mod 4)
+\\      k: size of subsets
+\\      dbg: 0=without debug output, 1-3 with more and more
+\\  Example:
+\\  ```
+\\      ? smp1m4[1..3]
+\\      [5, 13, 17]
+\\      ? sqtst(smp1m4[1..3],2,dbg=3)
+\\      Vecsmall([1, 2])
+\\      [2, 1, 3, 2]
+\\      [[1, 8], [4, 7]]
+\\      Vecsmall([1, 3])
+\\      [2, 1, 4, 1]
+\\      [[2, 9], [6, 7]]
+\\      Vecsmall([2, 3])
+\\      [3, 2, 4, 1]
+\\      [[5, 14], [10, 11]]
+\\      ? sqtst(smp1m4[1..20],7)
+\\      ? 
+\\  ```
+\\  """
     assert(#L>=k);
     my(LS,S);
     forsubset([#L,k],s,
@@ -435,13 +432,13 @@ def SECTION3():
 
 idx(rsa_,L)=
 {
-\\    """
-\\    Args:
-\\        rsa_: list of RSA numbers
-\\        L: bit-length or decimal-digit-length of RSA number
-\\    Returns:
-\\        _: index of RSA-l in rsa list, -1 if not found
-\\    """
+\\  """
+\\  Args:
+\\      rsa_: list of RSA numbers
+\\      L: bit-length or decimal-digit-length of RSA number
+\\  Returns:
+\\      _: index of RSA-l in rsa list, -1 if not found
+\\  """
     for(i=1,#rsa_,
         if(rsa_[i][1]==L,
             return(i)));
@@ -450,13 +447,13 @@ idx(rsa_,L)=
 
 has_factors(r,mod4=-1)=
 {
-\\    """
-\\    Args:
-\\        r: an RSA number
-\\        mod4: optional restriction (remainder mod 4 for number or its both prime factors)
-\\    Returns:
-\\        _: RSA number has factors and adheres mod 4 restriction(s)
-\\    """
+\\  """
+\\  Args:
+\\      r: an RSA number
+\\      mod4: optional restriction (remainder mod 4 for number or its both prime factors)
+\\  Returns:
+\\      _: RSA number has factors and adheres mod 4 restriction(s)
+\\  """
     return(#r>=4 && (
         mod4==-1
         || (type(mod4)=="t_INT"&&r[2]%4==mod4)
@@ -465,28 +462,39 @@ has_factors(r,mod4=-1)=
 
 has_factors_2(r)=
 {
-\\    """
-\\    Args:
-\\        r: an RSA number
-\\    Returns:
-\\        _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
-\\    Example:
-\\    For RSA-100
-\\    ```
-\\        >>> r=rsa[2]
-\\        >>> has_factors_2(r)
-\\        True
-\\        >>> l,n,p,q,pm1,qm1 = r
-\\        >>> l
-\\        100
-\\        >>>
-\\        >>> q
-\\        40094690950920881030683735292761468389214899724061
-\\        >>> qm1
-\\        {2: 2, 5: 1, 41: 1, 2119363: 1, 602799725049211: 1, 38273186726790856290328531: 1}
-\\        >>>
-\\    ```
-\\    """
+\\  """
+\\  Args:
+\\      r: an RSA number
+\\  Returns:
+\\      _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
+\\  Example:
+\\  For RSA-100
+\\  ```
+\\      ? r=rsa[3];
+\\      ? has_factors_2(r)
+\\      1
+\\      ? [l,n,p,q,pm1,qm1]=r;
+\\      ? l
+\\      100
+\\      ? q
+\\      40094690950920881030683735292761468389214899724061
+\\      ? qm1
+\\      
+\\      [                         2 2]
+\\      
+\\      [                         5 1]
+\\      
+\\      [                        41 1]
+\\      
+\\      [                   2119363 1]
+\\      
+\\      [           602799725049211 1]
+\\      
+\\      [38273186726790856290328531 1]
+\\      
+\\      ? 
+\\  ```
+\\  """
     return(#r>=6);
 }
 
@@ -494,23 +502,23 @@ has_factors_2(r)=
 \\
 primeprod_totient(p,q)=
 {
-\\    """
-\\    Args:
-\\        p,q: odd primes.
-\\    Returns:
-\\        _: totient(n) with n=p*q.
-\\    """
+\\  """
+\\  Args:
+\\      p,q: odd primes.
+\\  Returns:
+\\      _: totient(n) with n=p*q.
+\\  """
     return((p-1)*(q-1));
 }
 
 primeprod_reduced_totient(p,q)=
 {
-\\    """
-\\    Args:
-\\        p,q: odd primes.
-\\    Returns:
-\\        _: reduced_totient(n) with n=p*q.
-\\    """
+\\  """
+\\  Args:
+\\      p,q: odd primes.
+\\  Returns:
+\\      _: reduced_totient(n) with n=p*q.
+\\  """
     return(lcm(p-1,q-1));
 }
 
@@ -533,12 +541,12 @@ dict_int(d) =
 
 dict_totient(d)=
 {
-\\    """
-\\    Args:
-\\        d: factorization dictionary.
-\\    Returns:
-\\        _: totient(n) with d = sympy.factorint(n).
-\\    """
+\\  """
+\\  Args:
+\\      d: factorization dictionary.
+\\  Returns:
+\\      _: totient(n) with d = sympy.factorint(n).
+\\  """
     my(p=1);
     foreach(mattranspose(d),v,
         p*=(v[1]-1)*(v[1]^(v[2]-1)));
@@ -549,23 +557,23 @@ dict_totient(d)=
 \\
 dictprod_totient(d1,d2)=
 {
-\\    """
-\\    Args:
-\\        d1,d2: factorization dictionaries.
-\\    Returns:
-\\        _: totient(n) with n=dict_int(d1)*dict_int(d2).
-\\    """
+\\  """
+\\  Args:
+\\      d1,d2: factorization dictionaries.
+\\  Returns:
+\\      _: totient(n) with n=dict_int(d1)*dict_int(d2).
+\\  """
     return(dict_totient(d1)*dict_totient(d2));
 }
 
 dictprod_reduced_totient(d1,d2)=
 {
-\\    """
-\\    Args:
-\\        d1,d2: factorization dictionaries.
-\\    Returns:
-\\        _: reduced_totient(n) with n=dict_int(d1)*dict_int(d2).
-\\    """
+\\  """
+\\  Args:
+\\      d1,d2: factorization dictionaries.
+\\  Returns:
+\\      _: reduced_totient(n) with n=dict_int(d1)*dict_int(d2).
+\\  """
     return(lcm(dict_totient(d1),dict_totient(d2)));
 }
 
@@ -1343,281 +1351,240 @@ rsa = [\
 ];
 
 
-/*
 \\ RSA convenience class.
 \\
-class RSA:
 
-    def __init__(self):
-        """avoid W0201 pylint warning"""
-        self.i = 0
+RSA.index_=x->{
+\\  """
+\\  Args:
+\\      x: bit-length or decimal-digit-length of RSA number.
+\\  Returns:
+\\      _: index of RSA-x in rsa list, -1 if not found.
+\\  """
+    return(idx(rsa, x));
+}
 
-    def __iter__(self):
-        """for iteration over RSA"""
-        self.i = 0
-        return self
+RSA.get=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length.
+\\  Returns:
+\\      _: RSA-x from rsa list, asserts if not found.
+\\  """
+    my(i=self.index_(x));
+    assert(i!=-1);
+    return(rsa[i]);
+}
 
-    def __next__(self):
-        """for iteration over RSA"""
-        if self.i < len(rsa):
-            r = rsa[self.i]
-            self.i += 1
-            return r
+RSA.get_=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: identity or RSA-x from rsa list.
+\\  """
+    if(type(x)=="t_VEC",
+        return(x));
 
-        raise StopIteration
+    return(self.get(x));
+}
 
-    def index(self, x: int) -> int:
-        """
-        Args:
-            x: bit-length or decimal-digit-length of RSA number.
-        Returns:
-            _: index of RSA-x in rsa list, -1 if not found.
-        """
-        return idx(rsa, x)
+factored(mod4=-1)=
+{
+\\  """
+\\  Args:
+\\      mod4: optional restriction (remainder mod 4 for number or its both prime factors).
+\\  Returns:
+\\      _: list of RSA_number being factored and satisfying mod4 restriction
+\\  Example:
+\\  ```
+\\      ? #rsa
+\\      56
+\\      ? #RSA.factored()
+\\      25
+\\      ? #RSA.factored(3)
+\\      13
+\\      ? #RSA.factored(1)
+\\      12
+\\      ? #RSA.factored([1,1])
+\\      5
+\\      ? #RSA.factored([3,3])
+\\      7
+\\      ?
+\\  ```
+\\  """
+    return([r[1..4]|r<-rsa,has_factors(r,mod4)]);
+}
+RSA.factored=factored;
 
-    def get(self, x: int) -> Type[RSA_number]:
-        """
-        Args:
-            x: RSA number length.
-        Returns:
-            _: RSA-x from rsa list, asserts if not found.
-        """
-        i = self.index(x)
-        assert i != -1
-        return rsa[i]
+RSA.factored_2=dummy->{
+\\  """
+\\  Args:
+\\      _: none.
+\\  Returns:
+\\      _: list of RSA_number with factorization dictionaries.
+\\  """
+    return([r|r<-rsa,has_factors_2(r)]);
+}
 
-    def get_(self, x: Union[int, RSA_number]) -> Type[RSA_number]:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: identity or RSA-x from rsa list.
-        """
-        if isinstance(x, list):
-            return x
+RSA.totient=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: totient(x).
+\\        """
+    my(r=self.get_(x));
+    assert(has_factors(r));
+    return(primeprod_totient(r[3], r[4]));
+}
 
-        return self.get(x)
+RSA.reduced_totient=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: reduced_totient(x).
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors(r));
+    return(primeprod_reduced_totient(r[3], r[4]));
+}
 
-    def factored(
-        self, mod4: Union[None, int, Tuple[int, int]] = None
-    ) -> Type[IntList4]:
-        """
-        Args:
-            mod4: optional restriction (remainder mod 4 for number or its both prime factors).
-        Returns:
-            _: list of RSA_number being factored and satisfying mod4 restriction
-        Example:
-        ```
-            >>> len(rsa)
-            56
-            >>> len(RSA.factored())
-            25
-            >>> len(RSA.factored(mod4=3))
-            13
-            >>> len(RSA.factored(mod4=1))
-            12
-            >>> len(RSA.factored(mod4=(1,1)))
-            5
-            >>> len(RSA.factored(mod4=(3,3)))
-            7
-            >>>
-            ...
-        ```
-        """
-        return [r[0:4] for r in rsa if has_factors(r, mod4)]
+RSA.totient_2=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: apply totient function to totient(x).
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors_2(r));
+    return(dictprod_totient(r[5], r[6]));
+}
 
-    def factored_2(self) -> List[RSA_number]:
-        """
-        Args:
-            _: none.
-        Returns:
-            _: list of RSA_number with factorization dictionaries.
-        Example:
-        Factored RSA_number without factorization dictionaries.
-        ```
-            >>> set([r[0] for r in RSA.factored()]) - set([r[0] for r in RSA.factored_2()])
-            {768, 230, 232, 240, 250}
-            >>>
-        ```
-        """
-        return [r for r in rsa if has_factors_2(r)]
+RSA.reduced_totient_2=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: apply reduced_totient function to reduced_totient(x).
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors_2(r));
+    return(dictprod_reduced_totient(r[5], r[6]));
+}
 
-    def totient(self, x: Union[int, RSA_number]) -> int:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: totient(x).
-        """
-        r = self.get_(x)
-        assert has_factors(r)
-        return primeprod_totient(r[2], r[3])
+RSA.square_diffs=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: two differences of squares resulting in x.
+\\  Example:
+\\  ```
+\\      ? t=RSA.get(250);
+\\      ? n=t[2];
+\\      ? [e,f]=RSA.square_diffs(t);[a,b]=e;[c,d]=f;
+\\      ? (a^2-b^2)==n&&(c^2-d^2)==n
+\\      1
+\\      ? 
+\\  ```
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors(r));
+    return([
+        [(r[3] + r[4]) / 2, abs(r[3] - r[4]) / 2],
+        [(r[2] + 1) / 2, (r[2] - 1) / 2]
+    ]);
+}
 
-    def reduced_totient(self, x: Union[int, RSA_number]) -> int:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: reduced_totient(x).
-        """
-        r = self.get_(x)
-        assert has_factors(r)
-        return primeprod_reduced_totient(r[2], r[3])
+RSA.square_sums=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: two different sums of squares resulting in x.
+\\  Example:
+\\  ```
+\\      ? t=RSA.get(129);
+\\      ? n=t[2];
+\\      ? [e,f]=RSA.square_sums(t);[a,b]=e;[c,d]=f;
+\\      ? (a^2+b^2)==n&&(c^2+d^2)==n
+\\      1
+\\      ? #Set([a,b,c,d])
+\\      4
+\\      ? 
+\\  ```
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors(r)&&r[3]%4==1&&r[4]%4==1);
+    return(square_sums(square_sum_prod(r)));
+}
 
-    def totient_2(self, x: Union[int, RSA_number]) -> int:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: apply totient function to totient(x).
-        """
-        r = self.get_(x)
-        assert has_factors_2(r)
-        return dictprod_totient(r[4], r[5])
+RSA.square_sums_4=x->{
+\\  """
+\\  Args:
+\\      x: RSA_number length or RSA_number
+\\  Returns:
+\\      _: square sums of tuple elements sum up to RSA number
+\\  Example:
+\\  ```
+\\      ? [p,q]=[13,29];
+\\      ? n=p*q;
+\\      ? sq4=RSA.square_sums_4([0,0,p,q]);
+\\      ? sq4
+\\      [15, 4, 6, 10]
+\\      ? vecsum([x^2|x<-sq4])==n
+\\      1
+\\      ? vecsum([x^2|x<-RSA.square_sums_4(129)])==RSA.get(129)[2]
+\\      1
+\\      ? RSA.square_sums_4(59)
+\\      [179348979911745603741332779404, 85487774497975933628103176206, 105946792191696573364448656521, 144715520252806281192691658344]
+\\      ? 
+\\  ```
+\\  """
+    my(r=self.get_(x),p,q);
+    assert(has_factors(r)&&r[3]%4==1&&r[4]%4==1);
+    p=sq2(r[3]);
+    q=sq2(r[4]);
+    return([p[1]*q[1],p[2]*q[2],p[1]*q[2],p[2]*q[1]]);
+}
 
-    def reduced_totient_2(self, x: Union[int, RSA_number]) -> int:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: apply reduced_totient function to reduced_totient(x).
-        """
-        r = self.get_(x)
-        assert has_factors_2(r)
-        return dictprod_reduced_totient(r[4], r[5])
+RSA.validate=dummy->{
+\\  """
+\\  Assert many identities to assure data consistency and generate demo output
+\\        (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
+\\  """
+    my(r=last(self.factored_2()),[l,n,p,q,pm1,qm1]=r);
+    assert((p-1)*(q-1)==self.totient(r));
+    assert(self.totient_2(r)==self.totient_2(l));
+    assert(self.totient_2(r)==dictprod_totient(pm1, qm1));
+    assert(Mod(65537,self.reduced_totient(190))^self.reduced_totient_2(190)==Mod(1,self.reduced_totient(190)));
+    assert(len(self.factored())==25);
+    assert(len(self.factored_2())==25);
 
-    def square_diffs(self, x: Union[int, RSA_number]) -> Type[IntList2]:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: two differences of squares resulting in x.
-        Example:
-        ```
-            >>> t = RSA.get(250)
-            >>> n = t[1]
-            >>> [a,b],[c,d] = RSA.square_diffs(t)
-            >>> (a**2 - b**2) == n and (c**2 - d**2) == n
-            True
-            >>>
-        ```
-        """
-        r = self.get_(x)
-        assert has_factors(r)
-        return [
-            [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2],
-            [(r[1] + 1) // 2, (r[1] - 1) // 2],
-        ]
+    r=self.get(2048);
+    assert(r[1]==2048&&bits(r[2])==2048);
+    assert(r==self.get_(r));
+    assert(r == self.get_(2048));
 
-    def square_sums(self, x: Union[int, RSA_number]) -> Type[IntList2]:
-        """
-        Args:
-            x: RSA number length or RSA_number.
-        Returns:
-            _: two different sums of squares resulting in x.
-        Example:
-        ```
-            >>> t = RSA.get(129)
-            >>> n = t[1]
-            >>> [a,b],[c,d] = RSA.square_sums(t)
-            >>> (a**2 + b**2) == n and (c**2 + d**2) == n
-            True
-            >>> len({a,b,c,d})
-            4
-            >>>
-        ```
-        """
-        r = self.get_(x)
-        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
-        return square_sums(square_sum_prod(r))
+    assert(self.index_(617)==len(rsa)-1);
 
-    def square_sums_4(self, x: Union[int, RSA_number]) -> Tuple[int, int, int, int]:
-        """
-        Args:
-            x: RSA_number length or RSA_number
-        Returns:
-            _: square sums of tuple elements sum up to RSA number
-        Example:
-        ```
-            >>> p,q = 13,29
-            >>> n = p*q
-            >>> sq4 = RSA.square_sums_4([0,0,p,q])
-            >>> sq4
-            (15, 4, 6, 10)
-            >>> sum([x**2 for x in sq4]) == n
-            True
-            >>> sum([x**2 for x in RSA.square_sums_4(129)]) == RSA.get(129)[1]
-            True
-            >>> RSA.square_sums_4(59)
-            (179348979911745603741332779404, 85487774497975933628103176206, \
-105946792191696573364448656521, 144715520252806281192691658344)
-            >>>
-        ```
-        """
-        r = self.get_(x)
-        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
-        p = sq2(r[2])
-        q = sq2(r[3])
-        return p[0] * q[0], p[1] * q[1], p[0] * q[1], p[1] * q[0]
+    r=self.get(250);
 
-    def validate(self) -> None:
-        """
-        Assert many identities to assure data consistency and generate demo output
-              (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
-        Example:
-        ```
-            $ python RSA_numbers_factored.py
+    my([e,f]=self.square_diffs(r),[a,b]=e,[c,d]=f);
+    assert(r[1]==250&&a^2-b^2==r[2]&&c^2-d^2==r[2]);
 
-            with p-1 and q-1 factorizations (n=p*q): 20
-             59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
-            140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
-            190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,
+    r=self.get(129);
+    [e,f]=self.square_sums(r);[a,b]=e;[c,d]=f;
+    assert(r[1]==129&&a^2+b^2==r[2]&&c^2+d^2==r[2]);
+    [a,b,c,d]=self.square_sums_4(r);
+    assert(a^2+b^2+c^2+d^2==r[2]);
 
-            without (p-1) and (q-1) factorizations, but p and q: 5
-            230 digits,232 digits,768 bits  ,240 digits,250 digits,
-
-            have not been factored sofar: 31
-            260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
-            1024 bits  ,310 digits,320 digits,330 digits,340 digits,350 digits,360 digits,
-            370 digits,380 digits,390 digits,400 digits,410 digits,420 digits,430 digits,
-            440 digits,450 digits,460 digits,1536 bits  ,470 digits,480 digits,490 digits,
-            500 digits,617 digits,2048 bits  (=617 digits)
-
-            $
-        ```
-        """
-        r = self.factored_2()[-1]
-        l, _n, p, q, pm1, qm1 = r
-        assert (p - 1) * (q - 1) == self.totient(r)
-        assert self.totient_2(r) == self.totient_2(l)
-        assert self.totient_2(r) == dictprod_totient(pm1, qm1)
-        assert pow(65537, self.reduced_totient_2(190), self.reduced_totient(190)) == 1
-        assert len(self.factored()) == 25
-        assert len(self.factored_2()) == 20
-
-        r = self.get(2048)
-        assert r[0] == 2048 and bits(r[1]) == 2048
-        assert r == self.get_(r)
-        assert r == self.get_(2048)
-
-        assert self.index(617) == len(rsa) - 2
-
-        r = self.get(250)
-        [a, b], [c, d] = self.square_diffs(r)
-        assert r[0] == 250 and a ** 2 - b ** 2 == r[1] and c ** 2 - d ** 2 == r[1]
-
-        r = self.get(129)
-        [a, b], [c, d] = self.square_sums(r)
-        assert r[0] == 129 and a ** 2 + b ** 2 == r[1] and c ** 2 + d ** 2 == r[1]
-        a, b, c, d = self.square_sums_4(r)
-        assert a ** 2 + b ** 2 + c ** 2 + d ** 2 == r[1]
-
-        validate(rsa)
+    validate(rsa);
+}
 
 
-if __name__ == "__main__":
-    RSA().validate()
-*/
-
-validate(rsa);
-print("validate(rsa): ✓");
+\\if __name__ == "__main__":
+\\    RSA().validate()

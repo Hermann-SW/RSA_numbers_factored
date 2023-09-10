@@ -1606,7 +1606,6 @@ class RSA:
             >>> len(RSA.factored(mod4=(3,3)))
             7
             >>>
-            ...
         ```
         """
         return [r[0:4] for r in rsa if has_factors(r, mod4)]
@@ -1617,13 +1616,6 @@ class RSA:
             _: none.
         Returns:
             _: list of RSA_number with factorization dictionaries.
-        Example:
-        Factored RSA_number without factorization dictionaries.
-        ```
-            >>> set([r[0] for r in RSA.factored()]) - set([r[0] for r in RSA.factored_2()])
-            {768, 230, 232, 240, 250}
-            >>>
-        ```
         """
         return [r for r in rsa if has_factors_2(r)]
 
