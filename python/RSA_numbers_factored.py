@@ -545,7 +545,7 @@ def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
 
 if cypari2 is None:
 
-    def to_square_sums(sqrtm1: int, p: int) -> Type[IntList2]:
+    def to_squares_sum(sqrtm1: int, p: int) -> Type[IntList2]:
         """
         Args:
             sqrtm1: sqrt(-1) (mod p).
@@ -554,7 +554,7 @@ if cypari2 is None:
             _: sum of squares for p.
         Example:
         ```
-            >>> to_square_sums(11, 61)
+            >>> to_squares_sum(11, 61)
             (6, -5)
             >>>
         ```
@@ -563,7 +563,7 @@ if cypari2 is None:
 
 else:
 
-    def to_square_sums(sqrtm1: int, p: int) -> Type[IntList2]:
+    def to_squares_sum(sqrtm1: int, p: int) -> Type[IntList2]:
         """much faster in case cypari2 is available
         Args:
             sqrtm1: sqrt(-1) (mod p).
@@ -572,14 +572,13 @@ else:
             _: sum of squares for p.
         Example:
         ```
-            >>> to_square_sums(11, 61)
+            >>> to_squares_sum(11, 61)
             (6, -5)
             >>>
         ```
         """
         [M, V] = pari.halfgcd(sqrtm1, p)
         return gen_to_python(V[1]), gen_to_python(M[1, 0])
-
 
 def to_sqrtm1(xy: Type[IntList2], p: int) -> int:
     """
@@ -590,7 +589,7 @@ def to_sqrtm1(xy: Type[IntList2], p: int) -> int:
         _: sqrt(-1) (mod p).
     Example:
     ```
-        >>> to_square_sums((6, -5), 61)
+        >>> to_sqrtm1((6, -5), 61)
         11
         >>>
     ```
@@ -1737,6 +1736,14 @@ class RSA:
         q = sq2(r[3])
         return p[0] * q[0], p[1] * q[1], p[0] * q[1], p[1] * q[0]
 
+    def to_sqrtm1(self, xy: int, p: int) -> Type[IntList2]:
+        """ shortcut """
+        return to_sqrtm1(xy, p)
+
+    def to_squares_sum(self, sqrtm1: Type[IntList2], p: int) -> int:
+        """ shortcut """
+        return to_squares_sum(sqrtm1, p)
+
     def validate(self) -> None:
         """
         Assert many identities to assure data consistency and generate demo output
@@ -1788,6 +1795,11 @@ class RSA:
         assert r[0] == 129 and a**2 + b**2 == r[1] and c ** 2 + d**2 == r[1]
         a, b, c, d = self.square_sums_4(r)
         assert a**2 + b**2 + c**2 + d**2 == r[1]
+
+        xy = sq2(997)
+        sqrtm1 = self.to_sqrtm1(xy, 997)
+        assert(pow(sqrtm1, 2, 997) == 997-1)
+        assert(self.to_squares_sum(sqrtm1, 997) == xy)
 
         validate(rsa)
 

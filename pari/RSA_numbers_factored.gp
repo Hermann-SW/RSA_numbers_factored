@@ -422,6 +422,43 @@ sqtst(L,k,dbg=0)=
         assert(2^(k-1)==#S));
 }
 
+to_squares_sum(sqrtm1,p)=
+{
+\\  """much faster in case cypari2 is available
+\\  Args:
+\\      sqrtm1: sqrt(-1) (mod p).
+\\      p: prime p =1 (mod 4).
+\\  Returns:
+\\      _: sum of squares for p.
+\\  Example:
+\\  ```
+\\      >>> to_squares_sum(11, 61)
+\\      (6, -5)
+\\      >>>
+\\  ```
+\\  """
+    [M,V]=halfgcd(sqrtm1,p);
+    return([V[2],M[2, 1]]);
+}
+
+to_sqrtm1(xy,p)=
+{
+\\  """
+\\  Args:
+\\      xy: xy[0]**2 + xy[1]**2 == p.
+\\      p: prime p =1 (mod 4).
+\\  Returns:
+\\      _: sqrt(-1) (mod p).
+\\  Example:
+\\  ```
+\\      >>> to_sqrtm1((6, -5), 61)
+\\      11
+\\      >>>
+\\  ```
+\\  """
+    return(lift(Mod(xy[1],p)/xy[2]));
+}
+
 /*
 def SECTION3():
     """
@@ -1389,8 +1426,7 @@ RSA.get_=x->{
     return(self.get(x));
 }
 
-factored(mod4=-1)=
-{
+RSA.factored=(mod4=-1)->{
 \\  """
 \\  Args:
 \\      mod4: optional restriction (remainder mod 4 for number or its both prime factors).
@@ -1415,9 +1451,8 @@ factored(mod4=-1)=
 \\  """
     return([r[1..4]|r<-rsa,has_factors(r,mod4)]);
 }
-RSA.factored=factored;
 
-RSA.factored_2=dummy->{
+RSA.factored_2=()->{
 \\  """
 \\  Args:
 \\      _: none.
@@ -1551,12 +1586,20 @@ RSA.square_sums_4=x->{
     return([p[1]*q[1],p[2]*q[2],p[1]*q[2],p[2]*q[1]]);
 }
 
-RSA.validate=dummy->{
+RSA.to_squares_sum=(sqrtm1, p)->{
+\\  """ shortcut """
+    to_squares_sum(sqrtm1, p);
+}
+
+RSA.to_sqrtm1=to_sqrtm1;
+\\  """ shortcut """
+
+RSA.validate=()->{
 \\  """
 \\  Assert many identities to assure data consistency and generate demo output
 \\        (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
 \\  """
-    my(r=last(self.factored_2()),[l,n,p,q,pm1,qm1]=r);
+    my(r=last(self.factored_2()),[l,n,p,q,pm1,qm1]=r,xy,sqrtm1);
     assert((p-1)*(q-1)==self.totient(r));
     assert(self.totient_2(r)==self.totient_2(l));
     assert(self.totient_2(r)==dictprod_totient(pm1, qm1));
@@ -1581,6 +1624,11 @@ RSA.validate=dummy->{
     assert(r[1]==129&&a^2+b^2==r[2]&&c^2+d^2==r[2]);
     [a,b,c,d]=self.square_sums_4(r);
     assert(a^2+b^2+c^2+d^2==r[2]);
+
+    xy=sq2(997);
+    sqrtm1=self.to_sqrtm1(xy,997);
+    assert(Mod(sqrtm1,997)^2==Mod(-1,997));
+    assert(self.to_squares_sum(sqrtm1,997)==xy);
 
     validate(rsa);
 }
