@@ -12,7 +12,7 @@
 Associated forum thread:  
 [https://forums.raspberrypi.com/viewtopic.php?t=343468](https://forums.raspberrypi.com/viewtopic.php?t=343468)
 
-Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (details on [Python implementation](python/README.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos:
+Continuation of [RSA_numbers_factored.py gist](https://gist.github.com/Hermann-SW/839dfe6002810d404e3f0fe1808a6333) (details on [Python implementation](python/README.md), lazydocs generated [Python documentation](https://github.com/Hermann-SW/RSA_numbers_factored/blob/main/python/docs/RSA_numbers_factored.py.md)), with transpiled [RSA_numbers_factored.js](RSA_numbers_factored.js) (from the Python version) and HTML demos:
 
 * [R.html](R.html)  browser term output RSA tuples if both prime factors are ≡1 (mod 4)  
 * [validate.html](validate.html)  do validation, with output in browser term  
