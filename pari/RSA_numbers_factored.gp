@@ -535,6 +535,18 @@ has_factors_2(r)=
     return(#r>=6);
 }
 
+without_factors(r,mod4=-1)=
+{
+\\  """
+\\  Args:
+\\      r: an RSA number
+\\  Returns:
+\\      _: RSA number has no known factors p and q
+    return(#r==2 && (
+        mod4==-1
+        || (type(mod4)=="t_INT"&&r[2]%4==mod4)));
+}
+
 \\  primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f
 \\
 primeprod_totient(p,q)=
@@ -1460,6 +1472,30 @@ RSA.factored_2=()->{
 \\      _: list of RSA_number with factorization dictionaries.
 \\  """
     return([r|r<-rsa,has_factors_2(r)]);
+}
+
+RSA.unfactored=(mod4=-1)->{
+\\  """
+\\  Args:
+\\      mod4: optional restriction (remainder mod 4 for number).
+\\  Returns:
+\\      _: list of RSA_number without factors and satisfying mod4 restriction
+\\  Example:
+\\  ```
+\\      ? #rsa
+\\      56
+\\      ? #RSA.factored()
+\\      25
+\\      ? #RSA.unfactored()
+\\      31
+\\      ? #RSA.unfactored(1)
+\\      17
+\\      ? #RSA.unfactored(3)
+\\      14
+\\      ? 
+\\  ```
+\\  """
+    return([r|r<-rsa,without_factors(r,mod4)]);
 }
 
 RSA.totient=x->{
