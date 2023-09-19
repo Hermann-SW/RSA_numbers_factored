@@ -580,6 +580,7 @@ else:
         [M, V] = pari.halfgcd(sqrtm1, p)
         return gen_to_python(V[1]), gen_to_python(M[1, 0])
 
+
 def to_sqrtm1(xy: Type[IntList2], p: int) -> int:
     """
     Args:
@@ -659,6 +660,19 @@ def has_factors_2(r: Type[RSA_number]) -> bool:
     ```
     """
     return len(r) >= 6
+
+
+def without_factors(r: Type[RSA_number], mod4: Union[None, int] = None) -> bool:
+    """
+    Args:
+        r: an RSA number
+        mod4: optional restriction (remainder mod 4 for number)
+    Returns:
+        _: RSA number has no factors and adheres mod 4 restriction(s)
+    """
+    return len(r) == 2 and (
+        mod4 is None or (isinstance(mod4, int) and r[1] % 4 == mod4)
+    )
 
 
 def SECTION4():
@@ -1618,6 +1632,29 @@ class RSA:
         """
         return [r for r in rsa if has_factors_2(r)]
 
+    def unfactored(self, mod4: Union[None, int] = None) -> Type[IntList2]:
+        """
+        Args:
+            mod4: optional restriction (remainder mod 4 for number).
+        Returns:
+            _: list of RSA_number being unfactored and satisfying mod4 restriction
+        Example:
+        ```
+            >>> len(rsa)
+            56
+            >>> len(RSA.factored())
+            25
+            >>> len(RSA.unfactored())
+            31
+            >>> len(RSA.unfactored(1))
+            17
+            >>> len(RSA.unfactored(3))
+            14
+            >>>
+        ```
+        """
+        return [r for r in rsa if without_factors(r, mod4)]
+
     def totient(self, x: Union[int, RSA_number]) -> int:
         """
         Args:
@@ -1627,7 +1664,8 @@ class RSA:
         """
         r = self.get_(x)
         assert has_factors(r)
-        return primeprod_totient(r[2], r[3])
+        p, q = r[2:4]
+        return primeprod_totient(p, q)
 
     def reduced_totient(self, x: Union[int, RSA_number]) -> int:
         """
@@ -1638,7 +1676,8 @@ class RSA:
         """
         r = self.get_(x)
         assert has_factors(r)
-        return primeprod_reduced_totient(r[2], r[3])
+        p, q = r[2:4]
+        return primeprod_reduced_totient(p, q)
 
     def totient_2(self, x: Union[int, RSA_number]) -> int:
         """
@@ -1649,7 +1688,8 @@ class RSA:
         """
         r = self.get_(x)
         assert has_factors_2(r)
-        return dictprod_totient(r[4], r[5])
+        pm1, qm1 = r[4:6]
+        return dictprod_totient(pm1, qm1)
 
     def reduced_totient_2(self, x: Union[int, RSA_number]) -> int:
         """
@@ -1660,7 +1700,8 @@ class RSA:
         """
         r = self.get_(x)
         assert has_factors_2(r)
-        return dictprod_reduced_totient(r[4], r[5])
+        pm1, qm1 = r[4:6]
+        return dictprod_reduced_totient(pm1, qm1)
 
     def square_diffs(self, x: Union[int, RSA_number]) -> Type[IntList2]:
         """
@@ -1680,9 +1721,10 @@ class RSA:
         """
         r = self.get_(x)
         assert has_factors(r)
+        n, p, q = r[1:4]
         return [
-            [(r[2] + r[3]) // 2, abs(r[2] - r[3]) // 2],
-            [(r[1] + 1) // 2, (r[1] - 1) // 2],
+            [(p + q) // 2, abs(p - q) // 2],
+            [(n + 1) // 2, (n - 1) // 2],
         ]
 
     def square_sums(self, x: Union[int, RSA_number]) -> Type[IntList2]:
@@ -1704,7 +1746,9 @@ class RSA:
         ```
         """
         r = self.get_(x)
-        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
+        assert has_factors(r)
+        p, q = r[2:4]
+        assert p % 4 == 1 and q % 4 == 1
         return square_sums(square_sum_prod(r))
 
     def square_sums_4(self, x: Union[int, RSA_number]) -> Tuple[int, int, int, int]:
@@ -1731,17 +1775,19 @@ class RSA:
         ```
         """
         r = self.get_(x)
-        assert has_factors(r) and r[2] % 4 == 1 and r[3] % 4 == 1
-        p = sq2(r[2])
-        q = sq2(r[3])
-        return p[0] * q[0], p[1] * q[1], p[0] * q[1], p[1] * q[0]
+        assert has_factors(r)
+        p, q = r[2:4]
+        assert p % 4 == 1 and q % 4 == 1
+        P = sq2(p)
+        Q = sq2(q)
+        return P[0] * Q[0], P[1] * Q[1], P[0] * Q[1], P[1] * Q[0]
 
     def to_sqrtm1(self, xy: int, p: int) -> Type[IntList2]:
-        """ shortcut """
+        """shortcut"""
         return to_sqrtm1(xy, p)
 
     def to_squares_sum(self, sqrtm1: Type[IntList2], p: int) -> int:
-        """ shortcut """
+        """shortcut"""
         return to_squares_sum(sqrtm1, p)
 
     def validate(self) -> None:
@@ -1798,8 +1844,8 @@ class RSA:
 
         xy = sq2(997)
         sqrtm1 = self.to_sqrtm1(xy, 997)
-        assert(pow(sqrtm1, 2, 997) == 997-1)
-        assert(self.to_squares_sum(sqrtm1, 997) == xy)
+        assert pow(sqrtm1, 2, 997) == 997 - 1
+        assert self.to_squares_sum(sqrtm1, 997) == xy
 
         validate(rsa)
 

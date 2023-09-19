@@ -1507,7 +1507,8 @@ RSA.totient=x->{
 \\        """
     my(r=self.get_(x));
     assert(has_factors(r));
-    return(primeprod_totient(r[3], r[4]));
+    my([,,p,q]=r);
+    return(primeprod_totient(p,q));
 }
 
 RSA.reduced_totient=x->{
@@ -1519,7 +1520,8 @@ RSA.reduced_totient=x->{
 \\  """
     my(r=self.get_(x));
     assert(has_factors(r));
-    return(primeprod_reduced_totient(r[3], r[4]));
+    my([,,p,q]=r);
+    return(primeprod_reduced_totient(p,q));
 }
 
 RSA.totient_2=x->{
@@ -1531,7 +1533,8 @@ RSA.totient_2=x->{
 \\  """
     my(r=self.get_(x));
     assert(has_factors_2(r));
-    return(dictprod_totient(r[5], r[6]));
+    my([,,,,pm1,qm1]=r);
+    return(dictprod_totient(pm1,qm1));
 }
 
 RSA.reduced_totient_2=x->{
@@ -1543,7 +1546,8 @@ RSA.reduced_totient_2=x->{
 \\  """
     my(r=self.get_(x));
     assert(has_factors_2(r));
-    return(dictprod_reduced_totient(r[5], r[6]));
+    my([,,,,pm1,qm1]=r);
+    return(dictprod_reduced_totient(pm1,qm1));
 }
 
 RSA.square_diffs=x->{
@@ -1559,15 +1563,15 @@ RSA.square_diffs=x->{
 \\      ? [e,f]=RSA.square_diffs(t);[a,b]=e;[c,d]=f;
 \\      ? (a^2-b^2)==n&&(c^2-d^2)==n
 \\      1
+\\      ? #Set([a,b,c,d])
+\\      4
 \\      ? 
 \\  ```
 \\  """
     my(r=self.get_(x));
     assert(has_factors(r));
-    return([
-        [(r[3] + r[4]) / 2, abs(r[3] - r[4]) / 2],
-        [(r[2] + 1) / 2, (r[2] - 1) / 2]
-    ]);
+    my([,n,p,q]=r);
+    return([[(p+q)/2,abs(p-q)/2],[(n+1)/2,(n-1)/2]]);
 }
 
 RSA.square_sums=x->{
@@ -1589,7 +1593,9 @@ RSA.square_sums=x->{
 \\  ```
 \\  """
     my(r=self.get_(x));
-    assert(has_factors(r)&&r[3]%4==1&&r[4]%4==1);
+    assert(has_factors(r));
+    my([,,p,q]=r);
+    assert(p%4==1&&q%4==1);
     return(square_sums(square_sum_prod(r)));
 }
 
@@ -1616,10 +1622,12 @@ RSA.square_sums_4=x->{
 \\  ```
 \\  """
     my(r=self.get_(x),p,q);
-    assert(has_factors(r)&&r[3]%4==1&&r[4]%4==1);
-    p=sq2(r[3]);
-    q=sq2(r[4]);
-    return([p[1]*q[1],p[2]*q[2],p[1]*q[2],p[2]*q[1]]);
+    assert(has_factors(r));
+    my([,,p,q]=r);
+    assert(p%4==1&&q%4==1);
+    P=sq2(p);
+    Q=sq2(q);
+    return([P[1]*Q[1],P[2]*Q[2],P[1]*Q[2],P[2]*Q[1]]);
 }
 
 RSA.to_squares_sum=(sqrtm1, p)->{

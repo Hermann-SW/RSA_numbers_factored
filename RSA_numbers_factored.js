@@ -194,6 +194,20 @@ function lcm(a, b){
     return a * b / gcd(a, b);
 } 
 
+function modular_inverse(a, n){
+    var t=0n,newt=1n,r=n,newr=a,q;
+
+    while (newr!=0n) {
+        q=r/newr;
+        [t,newt]=[newt,t-q*newt]; 
+        [r,newr]=[newr,r-q*newr];
+    }
+    assert(r<=1);
+    if (t<0n) t+=n;
+
+    return t;
+}
+
 // from itertools import combinations, combinations_with_replacement, chain
 //
 // from https://stackoverflow.com/a/54385026/5674289
@@ -309,7 +323,7 @@ function root4m1(p){
         if (b == -1n){
             return a;
         }
-        assert(b == 1 && "p not prime");
+        assert(b == 1n && "p not prime");
         j += 1n;
     }
 }
@@ -356,26 +370,26 @@ function square_sums_(s){
     }
 }
 
-function square_sums(l, revt=false, revl=false, uniq=false){
-    var r = square_sums_(l);
-    for(i=0; i<len(r); ++i){
+function square_sums(L, revt=false, revl=false, uniq=false){
+    var r = square_sums_(L);
+    for(var i=0; i<len(r); ++i){
         r[i].sort(function(a,b){var c = a - b;
                          return (c<0n?-1:c>0n?1:0)*(revt?-1:1);});
     }
     r.sort(function(a,b){var c = a[0] - b[0];
                          return (c<0n?-1:c>0n?1:0)*(revl?-1:1);});
     if (uniq){
-	return r.filter((l,i) => i == 0 || r[i-1][0] != l[0]);
+        return r.filter((l,i) => i == 0 || r[i-1][0] != l[0]);
     }
     return r
 }
 
 var smp1m4 = [5n,13n,17n,29n,37n,41n,53n,61n,73n,89n,97n,101n,109n,113n,137n,
-	      149n,157n,173n,181n,193n,197n,229n,233n,241n,257n,269n,277n,281n,
-	      293n,313n,317n,337n,349n,353n,373n,389n,397n,401n,409n,421n,433n,
-	      449n,457n,461n,509n,521n,541n,557n,569n,577n,593n,601n,613n,617n,
+              149n,157n,173n,181n,193n,197n,229n,233n,241n,257n,269n,277n,281n,
+              293n,313n,317n,337n,349n,353n,373n,389n,397n,401n,409n,421n,433n,
+              449n,457n,461n,509n,521n,541n,557n,569n,577n,593n,601n,613n,617n,
               641n,653n,661n,673n,677n,701n,709n,733n,757n,761n,769n,773n,797n,
-	      809n,821n,829n,853n,857n,877n,881n,929n,937n,941n,953n,977n,997n];
+              809n,821n,829n,853n,857n,877n,881n,929n,937n,941n,953n,977n,997n];
 
 function sqtst(l, k, dbg=0){
     assert(len(l) >= k);
@@ -389,6 +403,14 @@ function sqtst(l, k, dbg=0){
         }
         assert(2**(k-1) == len(S));
     }
+}
+
+function to_squares_sum(sqrtm1, p){
+    return ggcd([p,0n], [sqrtm1,1n]);
+}
+
+function to_sqrtm1(xy, p){
+    return xy[0] * modular_inverse(xy[1], p) % p;
 }
 
 function idx(rsa, l){
@@ -408,6 +430,12 @@ function has_factors(r, mod4){
 }
 function has_factors_2(r){
     return (len(r) >= 6);
+}
+function without_factors(r, mod4){
+    return (len(r) == 2) && (
+          (typeof mod4 == 'undefined')  ||
+         ((typeof mod4 == 'bigint') && (r[1] % 4n == mod4))
+        );
 }
 
 // primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f
@@ -449,19 +477,59 @@ function dictprod_reduced_totient(d1, d2){
 
 // simple demo asserting a lot of identities
 //
-function main(rsa){
+function validate_squares(){
+    var s = [2n,1n,3n,2n,4n,1n];  // 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
+
+    var p = 1n, t, j, L;
+    for(j=0; j<len(s); j+=2){
+        p *= (s[j]**2n + s[j+1]**2n);
+    }
+    L = square_sums_(s);
+    for(t of L){
+        assert (t[0]**2n + t[1]**2n == p);
+    }
+    L = square_sums(s);  // [[4, 33], [9, 32], [12, 31], [23, 24]]
+    for(t of L){
+        assert (t[0]**2n + t[1]**2n == p);
+        assert (t[0] < t[1]);
+    }
+    for(j=0; j < len(L) - 1; ++j){
+        assert (L[j][0] < L[j+1][0]);
+    }
+    L = square_sums(s, true, true);
+    for(t of L){
+        assert (t[0]**2n + t[1]**2n == p);
+        assert (t[0] > t[1]);
+    }
+    for(j=0; j<len(L) - 1; ++j){
+        assert (L[j][0] > L[j+1][0]);
+    }
+
+    sqtst(smp1m4.slice(10,20), 8);
+
+    s = square_sum_prod(rsa[0]);
+    assert((s[0]**2n + s[1]**2n) * (s[2]**2n + s[3]**2n) == rsa[0][1]);
+
+    assert(sq2d(257n)[0]**2n - sq2d(257n)[1]**2n == 257n);
+
+    assert(sq2(100049n)[0]**2n + sq2(100049n)[1]**2n == 100049n);
+}
+
+function validate(rsa_){
     var c = 0, c4 = 0, c2 = 0;
+
     for(r of rsa){
         if (len(r) == 6)  ++c;
         if (len(r) == 4)  ++c4;
         if (len(r) == 2)  ++c2;
     }
     print("\nwith p-1 and q-1 factorizations (n=p*q):",
-          c)
+          c);
     var br = 6;
     var i=0;
+    assert(c == 25);
     var str = "";
-    for(r of rsa){
+    for(r of rsa_){
         if (has_factors_2(r))
             [l, n, p, q, pm1, qm1] = r;
         else if (has_factors(r))
@@ -472,7 +540,7 @@ function main(rsa){
         assert (l == digits(n) || l == bits(n));
 
         if (i > 0)
-            assert(n > rsa[i - 1][1]);
+            assert(n > rsa_[i - 1][1]);
 
         if (has_factors(r)){
             assert (n == p * q);
@@ -502,50 +570,27 @@ function main(rsa){
                 assert(powmod(65537n, dictprod_totient(pm1, qm1),
                                       primeprod_totient(p, q)     ) == 1n); 
         }
-        if(!has_factors_2(r) && has_factors_2(rsa[i - 1])){
+        if(!has_factors_2(r) && has_factors_2(rsa_[i - 1])){
             if (str != "")  { print(str); str=""; }
             print("\nwithout (p-1) and (q-1) factorizations, but p and q:",
                   c4);
             br = 3;
+            assert(c4 == 0);
         }
-        if (!has_factors(r) && has_factors(rsa[i - 1])){
+        if (!has_factors(r) && has_factors(rsa_[i - 1])){
             print("\nhave not been factored sofar:", 
                   c2);
             br = 3;
+            assert(c2 == 31);
         }
         str += (l<100n?" ":"") + l + (l == bits(n) ? " bits  " : " digits") +
-         (i < len(rsa) -1 ? "," : "(="+digits(rsa[len(rsa)-1][1])+" digits)\n");
-        if(i%7 == br || i == len(rsa) - 1)  { print(str); str=""; }
+         (i < len(rsa_) -1 ? "," : "(="+digits(rsa_[len(rsa_)-1][1])+" digits)\n");
+        if(i%7 == br || i == len(rsa_) - 1)  { print(str); str=""; }
 
         i += 1;
     }
 
-    i = [2n,1n,3n,2n,4n,1n];
-
-    var p = 1n;
-    for(j=0; j<len(i); j+=2){
-        p *= (i[j]**2n + i[j+1]**2n);
-    }
-    l = square_sums_(i);
-    for(t of l){
-        assert (t[0]**2n + t[1]**2n == p);
-    }
-    l = square_sums(i);
-    for(t of l){
-        assert (t[0]**2n + t[1]**2n == p);
-        assert (t[0] < t[1]);
-    }
-    for(j=0; j < len(l) - 1; ++j){
-        assert (l[j][0] < l[j+1][0]);
-    }
-    l = square_sums(i, true, true);
-    for(t of l){
-        assert (t[0]**2n + t[1]**2n == p);
-        assert (t[0] > t[1]);
-    }
-    for(j=0; j<len(l) - 1; ++j){
-        assert (l[j][0] > l[j+1][0]);
-    }
+    validate_squares();
 }
 
 // rsa array entries of form (n=p*q):
@@ -717,52 +762,113 @@ class RSA {
         for(let r of rsa)  if (has_factors(r, mod4))  a.push(r.slice(0,4));
         return a;
     }
-    factored_2(self){
+    factored_2(){
         var a=[];
         for(let r of rsa)  if (has_factors_2(r))  a.push(r);
         return a;
     }
+    unfactored(mod4=undefined){
+        var a=[];
+        for(let r of rsa)  if (without_factors(r, mod4))  a.push(r);
+        return a;
+    }
     totient(x){
-        r = this.get_(x);
+        var r = this.get_(x);
         assert(has_factors(r));
-        return primeprod_totient(r[2], r[3]);
+        var p,q;
+        [p,q] =r.slice(2,4);
+        return primeprod_totient(p, q);
     }
     reduced_totient(x){
-        r = this.get_(x);
+        var r = this.get_(x);
         assert(has_factors(r));
-        return primeprod_reduced_totient(r[2], r[3]);
+        var p,q;
+        [p,q] =r.slice(2,4);
+        return primeprod_reduced_totient(p, q);
     }
     totient_2(x){
-        r = this.get_(x);
+        var r = this.get_(x);
         assert(has_factors_2(r));
-        return dictprod_totient(r[4], r[5]);
+        var pm1,qm1;
+        [pm1,qm1] =r.slice(4,6);
+        return dictprod_totient(pm1, qm1);
     }
     reduced_totient_2(x){
-        r = this.get_(x);
+        var r = this.get_(x);
         assert(has_factors_2(r));
-        return dictprod_reduced_totient(r[4], r[5]);
+        var pm1,qm1;
+        [pm1,qm1] =r.slice(4,6);
+        return dictprod_reduced_totient(pm1, qm1);
     }
     square_diffs(x){
         var r = this.get_(x);
         assert(has_factors(r));
-        return [ [(r[2] + r[3]) >> 1n, abs(r[2] - r[3]) >> 1n], 
-                 [(r[1] +   1n) >> 1n,    (r[1] -   1n) >> 1n]
+        var n, p, q;
+        [n,p,q] = r.slice(1,4);
+        return [ [(p + q) >> 1n, abs(p - q) >> 1n], 
+                 [(n + 1n) >> 1n, (n -  1n) >> 1n]
                ];
     }
     square_sums(x){
         var r = this.get_(x);
         assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
+        var p,q;
+        [p,q] = r.slice(2,4);
+        assert(p % 4n == 1n && q % 4n == 1n);
         return square_sums(square_sum_prod(r));
     }
     square_sums_4(x){
-        var r = self.get_(x)
-        assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
-        var p = sq2(r[2])
-        var q = sq2(r[3])
-        return [ p[0]*q[0], p[1]*q[1], p[0]*q[1], p[1]*q[0] ];
+        var r = this.get_(x)
+        assert(has_factors(r));
+        var p,q;
+        [p,q] = r.slice(2,4);
+        assert(p % 4n == 1n && q % 4n == 1n);
+        var P = sq2(r[2])
+        var Q = sq2(r[3])
+        return [ P[0]*Q[0], P[1]*Q[1], P[0]*Q[1], P[1]*Q[0] ];
+    }
+    to_sqrtm1(xy, p){
+        return to_sqrtm1(xy, p);
+    }
+    to_squares_sum(sqrtm1, p){
+        return to_squares_sum(sqrtm1, p);
     }
     validate(){
-        main(rsa);
+        var r = this.factored_2()[len(this.factored_2())-1];
+        var l,n,p,q,pm1,qm1,a,b,c,d,xy,sqrtm1,xy2;
+        [l,n,p,q,pm1,qm1] = r;
+        assert((p - 1n) * (q - 1n) == this.totient(r));
+        assert(this.totient_2(r) == this.totient_2(l));
+        assert(this.totient_2(r) == dictprod_totient(pm1, qm1));
+        assert(powmod(65537n, this.reduced_totient_2(190n), this.reduced_totient(190n)) == 1n);
+        assert(len(this.factored())==25);
+        assert(len(this.factored_2())==25);
+
+        r=this.get(2048);
+        assert(r[0]==2048&&bits(r[1])==2048);
+        assert(r==this.get_(r));
+        assert(r == this.get_(2048));
+
+        assert(this.index(617)==len(rsa)-2);
+
+        r=this.get(250);
+
+        [[a,b],[c,d]]=this.square_diffs(r);
+        assert(r[0]==250n&&a*a-b*b==r[1]&&c*c-d*d==r[1]);
+
+        r=this.get(129);
+        [[a,b],[c,d]]=this.square_sums(r);
+        assert(r[0]==129n&&a*a+b*b==r[1]&&c*c+d*d==r[1]);
+        [a,b,c,d]=this.square_sums_4(r);
+        assert(a*a+b*b+c*c+d*d==r[1]);
+
+        xy=sq2(997n);
+        sqrtm1=this.to_sqrtm1(xy,997n);
+        assert(powmod(sqrtm1, 2n, 997n) == 997n - 1n);
+        xy2=to_squares_sum(sqrtm1,997n);
+        assert(xy2[0]==xy[0] && xy2[1]==xy[1]);
+
+        validate(rsa);
     }
 };
 
@@ -770,15 +876,7 @@ if (typeof navigator != 'undefined')
 {
     assert(typeof process == 'undefined');
 } else if ((process.argv.length > 1) && process.argv[1].endsWith("/RSA_numbers_factored.js")) {
-    R = new RSA();
-    r = R.factored_2()[len(R.factored_2())-1];
-    [l, n, p, q, pm1, qm1] = r;
-    assert((p - 1n) * (q - 1n) == R.totient(r));
-    assert(R.totient_2(r) == R.totient_2(l));
-    assert(R.totient_2(r) == dictprod_totient(pm1, qm1));
-    assert(powmod(65537n, R.reduced_totient_2(190n), R.reduced_totient(190n)) == 1n);
-
-    main(rsa)
+    new RSA().validate();
 } else {
     module.exports = {
         print: print,
@@ -830,7 +928,7 @@ if (typeof navigator != 'undefined')
         dict_totient: dict_totient,
         dictprod_totient: dictprod_totient,
         dictprod_reduced_totient: dictprod_reduced_totient,
-        main: main,
+        validate: validate,
         rsa: rsa,
 
         RSA: RSA
