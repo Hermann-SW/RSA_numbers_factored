@@ -583,7 +583,7 @@ to_sqrtm1(xy: Type[IntList2], n: int) → int
 
 **Args:**
  
- - <b>`xy`</b>:  xy[0]**2 + xy[1]**2 == p. 
+ - <b>`xy`</b>:  xy[0]**2 + xy[1]**2 == n. 
  - <b>`n`</b>:  number =1 (mod 4). 
 
 **Returns:**

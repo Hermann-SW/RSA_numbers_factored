@@ -584,7 +584,7 @@ else:
 def to_sqrtm1(xy: Type[IntList2], n: int) -> int:
     """
     Args:
-        xy: xy[0]**2 + xy[1]**2 == p.
+        xy: xy[0]**2 + xy[1]**2 == n.
         n: number =1 (mod 4).
     Returns:
         _: sqrt(-1) (mod n).
