@@ -811,7 +811,7 @@ class RSA {
     }
     square_sums(x){
         var r = this.get_(x);
-        assert(has_factors(r) && r[2] % 4n == 1n && r[3] % 4n == 1n);
+        assert(has_factors(r));
         var p,q;
         [p,q] = r.slice(2,4);
         assert(p % 4n == 1n && q % 4n == 1n);
@@ -823,8 +823,8 @@ class RSA {
         var p,q;
         [p,q] = r.slice(2,4);
         assert(p % 4n == 1n && q % 4n == 1n);
-        var P = sq2(r[2])
-        var Q = sq2(r[3])
+        var P = sq2(p)
+        var Q = sq2(q)
         return [ P[0]*Q[0], P[1]*Q[1], P[0]*Q[1], P[1]*Q[0] ];
     }
     to_sqrtm1(xy, p){
@@ -845,22 +845,24 @@ class RSA {
         assert(len(this.factored_2())==25);
 
         r=this.get(2048);
-        assert(r[0]==2048&&bits(r[1])==2048);
+        [l,n] = r.slice(0,2);
+        assert(l==2048&&bits(n)==2048);
         assert(r==this.get_(r));
         assert(r == this.get_(2048));
 
         assert(this.index(617)==len(rsa)-2);
 
         r=this.get(250);
-
+        [l,n] = r.slice(0,2);
         [[a,b],[c,d]]=this.square_diffs(r);
-        assert(r[0]==250n&&a*a-b*b==r[1]&&c*c-d*d==r[1]);
+        assert(l==250n&&a*a-b*b==n&&c*c-d*d==n);
 
         r=this.get(129);
+        [l,n] = r.slice(0,2);
         [[a,b],[c,d]]=this.square_sums(r);
-        assert(r[0]==129n&&a*a+b*b==r[1]&&c*c+d*d==r[1]);
+        assert(l==129n&&a*a+b*b==n&&c*c+d*d==n);
         [a,b,c,d]=this.square_sums_4(r);
-        assert(a*a+b*b+c*c+d*d==r[1]);
+        assert(a*a+b*b+c*c+d*d==n);
 
         xy=sq2(997n);
         sqrtm1=this.to_sqrtm1(xy,997n);
