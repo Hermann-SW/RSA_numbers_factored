@@ -581,21 +581,23 @@ else:
         return gen_to_python(V[1]), gen_to_python(M[1, 0])
 
 
-def to_sqrtm1(xy: Type[IntList2], p: int) -> int:
+def to_sqrtm1(xy: Type[IntList2], n: int) -> int:
     """
     Args:
         xy: xy[0]**2 + xy[1]**2 == p.
-        p: prime p =1 (mod 4).
+        n: number =1 (mod 4).
     Returns:
-        _: sqrt(-1) (mod p).
+        _: sqrt(-1) (mod n).
     Example:
     ```
-        >>> to_sqrtm1((6, -5), 61)
-        11
-        >>>
+        >>> to_sqrtm1((14,5),221)
+        47
+        >>> 47**2%221==221-1
+        True
+        >>> 
     ```
     """
-    return xy[0] * pow(xy[1], -1, p) % p
+    return xy[0] * pow(xy[1], -1, n) % n
 
 
 def SECTION3():
