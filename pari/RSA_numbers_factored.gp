@@ -7,7 +7,13 @@
 \\ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 \\ ```
 \\ 
-\\ (v1.11)
+\\ v1.11
+\\ - functional parity for Python, JavaScript/nodejs and PARI/GP implementations
+\\ - add RSA.unfactored(mod4=-1)
+\\ - add to_sqrtm1()
+\\ - add to_squares_sum()
+\\ - add p-1/q-1 factorization dictionaries for RSA-230..RSA-250 (.py/.js/.gp)
+\\ - make use of cypari2 if available, initially for using ".halfgcd(()"
 \\ - improve doc
 \\ - new RSA_svg.py demo
 \\ - improve markdown
