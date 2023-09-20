@@ -524,7 +524,6 @@ def sqtst(L: List[int], k: int, dbg: int = 0) -> None:
         (1, 2)
         [3, 2, 4, 1]
         [[5, 14], [10, 11]]
-        ...
         >>>
         >>> sqtst(smp1m4[0:20], 7)
         >>>
