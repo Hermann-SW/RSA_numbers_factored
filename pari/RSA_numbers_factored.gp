@@ -668,8 +668,15 @@ validate_squares() =
 \\
 validate(rsa_) =
 {
-    my(br,r,L,n,p,q,pm1,qm1,k);
+    my(br,r,L,n,p,q,pm1,qm1,k,isprimeflag=0);
+/*
+ sympy.ntheory.primetest.isprime(n) is different+faster than GP isprime.
 
+ isprime(x,{flag=0}): true(1) if x is a (proven) prime number, false(0) if not.
+ If flag is 0 or omitted, use a combination of algorithms. If flag is 1, the 
+ primality is certified by the Pocklington-Lehmer Test. If flag is 2, the 
+ primality is certified using the APRCL test. If flag is 3, use ECPP.
+*/  
     print("\nwith p-1 and q-1 factorizations (n=p*q): ",#[""|r<-rsa_,#r==6]);
     br=0;
     assert(#[""|r<-rsa_,#r==6]==25);
@@ -686,17 +693,17 @@ validate(rsa_) =
 
         if(has_factors(r),
             assert(n==p*q);
-            assert(isprime(p));
-            assert(isprime(q));
+            assert(isprime(p,isprimeflag));
+            assert(isprime(q,isprimeflag));
             assert(Mod(997,n)^primeprod_totient(p,q)==Mod(1,n));
             assert(Mod(997,n)^primeprod_reduced_totient(p, q)==Mod(1,n)));
 
         if(has_factors_2(r),
             foreach(pm1[,1],k,
-                assert(isprime(k)));
+                assert(isprime(k,isprimeflag)));
 
             foreach(qm1[,1],k,
-                assert(isprime(k)));
+                assert(isprime(k,isprimeflag)));
 
             assert(dict_int(pm1)==p-1);
             assert(dict_int(qm1)==q-1);
