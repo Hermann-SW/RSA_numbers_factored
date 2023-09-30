@@ -1,5 +1,18 @@
 readvec("RSA_numbers_factored.gp");
 
+myhalfgcd(a,b)=
+{
+  my(M=matid(2));
+  my(n = max(a,b));
+  while (b^2>=n,
+    my([q,r]=divrem(a,b));
+    [a,b] = [b,r];
+    M = [0,1;1,-q]*M;
+  );
+  [M,[a,b]~];
+}
+
+R(n) = { (10^n - 1) \ 9; }
 p = (10^10000 - 1) \ 3 - 10^6333;
 print(#digits(p), "-digit prime p");
 
@@ -8,12 +21,24 @@ sqrtm1 = 16933664365444374170754163686083819338009140426148144756832867364445957
 
 assert(Mod(sqrtm1^2, p) == Mod(p - 1, p), "sqrtm1", "not");
 
-print("gcd()");
+print("gcd(p, sqrtm1 + I)");
 g = gcd(p, sqrtm1 + I);
 ##
 assert(real(g)^2 + imag(g)^2 == p, "g", "not sum of squares");
 
-print("ggcd()");
+print("ggcd([p, 0], [sqrtm1, 1])");
 [x,y] = ggcd([p, 0], [sqrtm1, 1]);
 ##
 assert(x^2 + y^2 == p, "x,y", "not sum of squares");
+
+print("myhalfgcd(sqrtm1,p)");
+[M,V]=myhalfgcd(sqrtm1,p);
+##
+assert(V[2]^2 + M[2,1]^2 == p, "V[2],M[2,1]", " not sum of squares");
+
+print("halfgcd(sqrtm1,p)");
+[M,V]=halfgcd(sqrtm1,p);
+##
+assert(V[2]^2 + M[2,1]^2 == p, "V[2],M[2,1]", " not sum of squares");
+
+print("all asserts OK");

@@ -12,4 +12,5 @@ print("halfgcd(sqrtm1,p)");
 [M,V]=halfgcd(sqrtm1,p);
 ##
 assert(V[2]^2 + M[2,1]^2 == p, "V[2],M[2,1]", " not sum of squares");
-print("done");
+
+print("all asserts OK");
