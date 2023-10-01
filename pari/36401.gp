@@ -1,6 +1,6 @@
 readvec("RSA_numbers_factored.gp");
 
-myhalfgcd(a,b)=
+billshalfgcd(a,b)=
 {
   my(M=matid(2));
   my(n = max(a,b));
@@ -27,13 +27,18 @@ g = gcd(p, sqrtm1 + I);
 ##
 assert(real(g)^2 + imag(g)^2 == p, "g", "not sum of squares");
 
+print("qfbcornacchia(1, p)");
+[x,y] = qfbcornacchia(1, p);
+##
+assert(x^2 + y^2 == p, "x,y", " not sum of squares");
+
 print("ggcd([p, 0], [sqrtm1, 1])");
 [x,y] = ggcd([p, 0], [sqrtm1, 1]);
 ##
 assert(x^2 + y^2 == p, "x,y", "not sum of squares");
 
-print("myhalfgcd(sqrtm1,p)");
-[M,V]=myhalfgcd(sqrtm1,p);
+print("billshalfgcd(sqrtm1,p)");
+[M,V]=billshalfgcd(sqrtm1,p);
 ##
 assert(V[2]^2 + M[2,1]^2 == p, "V[2],M[2,1]", " not sum of squares");
 
