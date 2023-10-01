@@ -8,6 +8,10 @@
 \\ ```
 \\ 
 \\ v1.11
+\\ - add RSA.svg(), rewite RSA_svg demos
+\\ - make validate() functions to enable/disable output
+\\ - add RSA.sort_factors(), new demos
+\\ - complete Python doc for sections 4+5, new section 6
 \\ - functional parity for Python, JavaScript/nodejs and PARI/GP implementations
 \\ - add RSA.unfactored(mod4=-1)
 \\ - add to_sqrtm1()
@@ -142,6 +146,7 @@ digits_(N)=#digits(N);
 \\
 mods(a,n)=
 {
+\\  """returns "signed" a (mod n), in range -n//2..n//2"""
     assert(n>0,n," <=0");
     a=a%n;
     if(2*a>n,
@@ -151,6 +156,7 @@ mods(a,n)=
 
 powmods(a,r,n)=
 {
+\\  """returns "signed" a**r (mod n), in range -n//2..n//2"""
     my(out=1);
     while(r>0,
         if(r%2==1, 
@@ -162,12 +168,14 @@ powmods(a,r,n)=
 
 quos(a,n)=
 {
+\\  """returns equivalent of "a//n" for signed mod"""
     assert(n>0,n," <= 0");
     floor((a-mods(a, n))/n);
 }
 
 grem(w,z)=
 {
+\\  """returns remainder in Gaussian integers when dividing w by z"""
     my(w0,w1,z0,z1,n);
     [w0,w1]=w;
     [z0,z1]=z;
@@ -180,6 +188,7 @@ grem(w,z)=
 
 ggcd(w,z)=
 {
+\\  """returns greatest common divisor for gaussian integers"""
     while(z!=[0,0],
         [w,z]=[z, grem(w,z)];);
     w;
@@ -187,6 +196,7 @@ ggcd(w,z)=
 
 root4m1(p)=
 {
+\\  """returns sqrt(-1) (mod p)"""
     assert(p>1&&p%4==1,p," not 1 (mod 4)");
     my(k=p\4,j=2,a,b);
     while(1,
@@ -200,14 +210,19 @@ root4m1(p)=
 
 sq2(p)=
 {
+\\  """determine pair of numbers, their squares summing up to p"""
     assert(p>1&&p%4==1,p," not 1 (mod 4)");
     my(a=root4m1(p),x,y);
     [x,y]=ggcd([p,0],[a,1]);
     [abs(x),abs(y)];
 }
 
+\\  Functions dealing with representations of int as sum of two squares
+\\
+
 sq2d(p)=
 {
+\\  """determine pair of numbers, their squares difference being p"""
     assert(p>1&&isprime(p),p," not prime");
     [1+p\2,p\2];
 }
@@ -465,14 +480,8 @@ to_sqrtm1(xy,p)=
     return(lift(Mod(xy[1],p)/xy[2]));
 }
 
-/*
-def SECTION3():
-    """
-    Functions working on "rsa" list
-    """
-    return
-*/
-
+\\  Functions working on "rsa" list
+\\
 idx(rsa_,L)=
 {
 \\  """
@@ -503,11 +512,12 @@ has_factors(r,mod4=-1)=
         || (type(mod4)=="t_VEC"&&r[3]%4==mod4[1]&&r[4]%4==mod4[2])));
 }
 
-has_factors_2(r)=
+has_factors_2(r,mod4=-1)=
 {
 \\  """
 \\  Args:
 \\      r: an RSA number
+\\      mod4: optional restriction (remainder mod 4 for number or its both prime factors)
 \\  Returns:
 \\      _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
 \\  Example:
@@ -538,7 +548,10 @@ has_factors_2(r)=
 \\      ? 
 \\  ```
 \\  """
-    return(#r>=6);
+    return(#r>=6 && (
+        mod4==-1
+        || (type(mod4)=="t_INT"&&r[2]%4==mod4)
+        || (type(mod4)=="t_VEC"&&r[3]%4==mod4[1]&&r[4]%4==mod4[2])));
 }
 
 without_factors(r,mod4=-1)=
@@ -548,6 +561,7 @@ without_factors(r,mod4=-1)=
 \\      r: an RSA number
 \\  Returns:
 \\      _: RSA number has no known factors p and q
+\\  """
     return(#r==2 && (
         mod4==-1
         || (type(mod4)=="t_INT"&&r[2]%4==mod4)));
@@ -555,6 +569,7 @@ without_factors(r,mod4=-1)=
 
 \\  primeprod_f functions, passing p and q instead n=p*q much faster than sympy.f
 \\
+
 primeprod_totient(p,q)=
 {
 \\  """
@@ -580,6 +595,7 @@ primeprod_reduced_totient(p,q)=
 \\ Functions on factorization dictionaries.
 \\ [as returned by sympy.factorint() (in rsa[x][5] for p-1 and rsa[x][6] for q-1) ]
 \\
+
 dict_int(d) =
 {
 \\  """
@@ -632,6 +648,8 @@ dictprod_reduced_totient(d1,d2)=
     return(lcm(dict_totient(d1),dict_totient(d2)));
 }
 
+\\ Validation functions, rsa list
+\\
 validate_squares() =
 {
     my(s,p,L);
@@ -669,21 +687,22 @@ validate_squares() =
     assert(sq2(100049)[1]^2+sq2(100049)[2]^2==100049);
 }
 
-\\ Assert many identities to assure data consistency and generate demo output for
-\\ non RSA-class functionality.
-\\
-validate(rsa_) =
+validate(rsa_,doprint=0) =
 {
+\\  Assert many identities to assure data consistency and generate demo
+\\  output for non RSA-class functionality.
+\\
     my(br,r,L,n,p,q,pm1,qm1,k,isprimeflag=0);
 /*
- sympy.ntheory.primetest.isprime(n) is different+faster than GP isprime.
+ sympy.ntheory.primetest.isprime(n) is different+faster than GP isprime().
 
  isprime(x,{flag=0}): true(1) if x is a (proven) prime number, false(0) if not.
  If flag is 0 or omitted, use a combination of algorithms. If flag is 1, the 
  primality is certified by the Pocklington-Lehmer Test. If flag is 2, the 
  primality is certified using the APRCL test. If flag is 3, use ECPP.
 */  
-    print("\nwith p-1 and q-1 factorizations (n=p*q): ",#[""|r<-rsa_,#r==6]);
+    if(doprint,
+       print("\nwith p-1 and q-1 factorizations (n=p*q): ",#[""|r<-rsa_,#r==6]));
     br=0;
     assert(#[""|r<-rsa_,#r==6]==25);
     for(i=1,#rsa_,r=rsa_[i];
@@ -729,24 +748,27 @@ validate(rsa_) =
                     Mod(65537,primeprod_totient(p,q))^dictprod_totient(pm1,qm1)==Mod(1,primeprod_totient(p,q)))));
 
         if(!has_factors_2(r)&&has_factors_2(rsa_[i-1]),
-            print(
-                "\n\nwithout (p-1) and (q-1) factorizations, but p and q: ",
-                #[""|r<-rsa_,#r==4]);
-            br=3;
+            if(doprint,
+                print(
+                    "\n\nwithout (p-1) and (q-1) factorizations, but p and q: ",
+                    #[""|r<-rsa_,#r==4]));
+            br=4;
             assert(#[""|r<-rsa_,#r==4]==0));
 
         if(!has_factors(r)&&has_factors(rsa_[i-1]),
-            print(
-                "\nhave not been factored sofar: ",
-                #[""|r<-rsa_,#r==2]);
-            br = 3;
+            if(doprint,
+                print(
+                    "\nhave not been factored sofar: ",
+                    #[""|r<-rsa_,#r==2]));
+            br = 4;
             assert(#[""|r<-rsa_,#r==2]==31));
 
-        printf("%3d %s%s%s",L,
-            if(L==bits(n),"bits  ","digits"),
-            if(i<#rsa_,",",concat(concat("(=",digits_(rsa_[i][2]))," digits)\n")),
-            if(i%7==br||i==#rsa_,"\n",""));
-    );
+        if(doprint,
+            printf("%3d %s%s%s",L,
+                if(L==bits(n),"bits  ","digits"),
+                if(i<#rsa_,",",concat(concat("(=",digits_(rsa_[i][2]))," digits)\n")),
+                if(i%7==br||i==#rsa_,"\n",""));
+        ));
 
     validate_squares();
 
@@ -1413,7 +1435,7 @@ rsa = [\
 ];
 
 
-\\ RSA convenience class.
+\\ RSA convenience class (emulate as good as possible, since GP has no classes)
 \\
 
 RSA.index_=x->{
@@ -1477,14 +1499,14 @@ RSA.factored=(mod4=-1)->{
     return([r[1..4]|r<-rsa,has_factors(r,mod4)]);
 }
 
-RSA.factored_2=()->{
+RSA.factored_2=(mod4=-1)->{
 \\  """
 \\  Args:
-\\      _: none.
+\\      mod4: optional restriction (remainder mod 4 for number or its both prime factors).
 \\  Returns:
 \\      _: list of RSA_number with factorization dictionaries.
 \\  """
-    return([r|r<-rsa,has_factors_2(r)]);
+    return([r|r<-rsa,has_factors_2(r,mod4)]);
 }
 
 RSA.unfactored=(mod4=-1)->{
@@ -1517,7 +1539,7 @@ RSA.totient=x->{
 \\      x: RSA number length or RSA_number.
 \\  Returns:
 \\      _: totient(x).
-\\        """
+\\  """
     my(r=self.get_(x));
     assert(has_factors(r));
     my([,,p,q]=r);
@@ -1643,19 +1665,93 @@ RSA.square_sums_4=x->{
     return([P[1]*Q[1],P[2]*Q[2],P[1]*Q[2],P[2]*Q[1]]);
 }
 
+RSA.to_sqrtm1=to_sqrtm1;
+\\  """ shortcut """
+
 RSA.to_squares_sum=(sqrtm1, p)->{
 \\  """ shortcut """
     to_squares_sum(sqrtm1, p);
 }
 
-RSA.to_sqrtm1=to_sqrtm1;
-\\  """ shortcut """
+RSA.svg=(n, scale)->{
+\\      """ Generate prime factors svg.  """
+        my(r=self.get_(n),p,q,X,Y,s,col);
+        if(len(r)<4,
+            return(""));
+        [p,q]=r[3..4];
+        X=bits(q)-1;
+        Y=bits(p)-1;
+        s=concat("<svg width=\"",
+          concat(scale * bits(q),
+          concat("\" height=\"",
+          concat(scale * bits(p),
+          concat("\" viewBox=\"",
+          concat("0 0 ",
+          concat(bits(q),
+          concat(" ",
+          concat(bits(q),
+              "\" xmlns=\"http://www.w3.org/2000/svg\">")))))))));
+        for(y=0,Y,
+            for(x=0,X,
+                if(bittest(p,Y-y)!=0 && bittest(q,X-x)!=0,
+                    col="blue",col="cyan");
+                s=concat(s,
+                concat("<rect x=\"",
+                concat(x,
+                concat("\" y=\"",
+                concat(y,
+                concat("\" width=\"1\" height=\"1\" fill=\"",
+                concat(col,
+                    "\" stroke-width=\"0\"/>")))))))));
+        s=concat(s,"</svg>");
+        return(s);
+}
 
-RSA.validate=()->{
+RSA.sort_factors=()->{
+\\  """make p the bigger of factors by switching if needed"""
+    my(p,q,pm1,qm1);
+    for(i=1,len(rsa),
+        if(len(rsa[i])>2&&rsa[i][3]<rsa[i][4],
+            [p,q]=rsa[i][3..4];
+            rsa[i][3]=q;
+            rsa[i][4]=p;
+            if(len(rsa[i])>4,
+                [pm1,qm1]=rsa[i][5..6];
+                rsa[i][5]=qm1;
+                rsa[i][6]=pm1;)));
+}
+
+RSA.validate=(doprint=0)->{
 \\  """
 \\  Assert many identities to assure data consistency and generate demo output
 \\        (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
+\\  Example:
+\\  ```
+\\      $ validate=1 doprint=1 gp -q < RSA_numbers_factored.gp 
+\\      
+\\      with p-1 and q-1 factorizations (n=p*q): 25
+ \\      59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
+\\      140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
+\\      190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,230 digits,
+\\      232 digits,768 bits  ,240 digits,250 digits,
+\\      
+\\      without (p-1) and (q-1) factorizations, but p and q: 0
+\\      
+\\      have not been factored sofar: 31
+\\      260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
+\\      1024 bits  ,310 digits,320 digits,330 digits,340 digits,350 digits,360 digits,
+\\      370 digits,380 digits,390 digits,400 digits,410 digits,420 digits,430 digits,
+\\      440 digits,450 digits,460 digits,1536 bits  ,470 digits,480 digits,490 digits,
+\\      500 digits,617 digits,2048 bits  (=617 digits)
+\\      
+\\      3511ms
+\\      $
+\\  ```
 \\  """
+    for(i=1,4,
+        assert(last(self.factored([1,1]))[i]==last(self.factored_2([1,1]))[1..4][i]);
+        assert(last(self.factored(3))[i]==last(self.factored_2(3))[1..4][i]););
+
     my(r=last(self.factored_2()),[l,n,p,q,pm1,qm1]=r,xy,sqrtm1);
     assert((p-1)*(q-1)==self.totient(r));
     assert(self.totient_2(r)==self.totient_2(l));
@@ -1687,9 +1783,13 @@ RSA.validate=()->{
     assert(Mod(sqrtm1,997)^2==Mod(-1,997));
     assert(self.to_squares_sum(sqrtm1,997)==xy);
 
-    validate(rsa);
+    validate(rsa,doprint);
 }
 
 
-\\if __name__ == "__main__":
-\\    RSA().validate()
+{
+    if (getenv("validate"),
+        gettime();
+        RSA.validate(getenv("doprint"));
+        write("/dev/stderr",gettime(),"ms"));
+}

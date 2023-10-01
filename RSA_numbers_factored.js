@@ -7,6 +7,10 @@
 // RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 // ```
 // v1.11
+// - add RSA.svg(), rewite RSA_svg demos
+// - make validate() functions to enable/disable output
+// - add RSA.sort_factors(), new demos
+// - complete Python doc for sections 4+5
 // - functional parity for Python, JavaScript/nodejs and PARI/GP implementations
 // - add RSA.unfactored(mod4=-1)
 // - add to_sqrtm1()
@@ -110,6 +114,14 @@ function print(){ _p_.apply(null, arguments); }
 function print_(){
   for(a in arguments)  { _term_.innerHTML += arguments[a] + " "; }
   _term_.innerHTML += "\n";
+}
+
+function print__(){
+  var str="";
+  for(a in arguments)  { str += arguments[a] + " "; }
+  str += "\n";
+  _term_.innerHTML += str;
+  console.log(str);
 }
 
 function assert(condition, message) {
@@ -439,8 +451,12 @@ function has_factors(r, mod4){
          ((typeof mod4 == 'object') && (r[2] % 4n == mod4[0]) && (r[3] % 4n == mod4[1]))
         );
 }
-function has_factors_2(r){
-    return (len(r) >= 6);
+function has_factors_2(r, mod4){
+    return (len(r) >= 6) && (
+          (typeof mod4 == 'undefined')  ||
+         ((typeof mod4 == 'bigint') && (r[1] % 4n == mod4))  ||
+         ((typeof mod4 == 'object') && (r[2] % 4n == mod4[0]) && (r[3] % 4n == mod4[1]))
+        );
 }
 function without_factors(r, mod4){
     return (len(r) == 2) && (
@@ -526,7 +542,7 @@ function validate_squares(){
     assert(sq2(100049n)[0]**2n + sq2(100049n)[1]**2n == 100049n);
 }
 
-function validate(rsa_){
+function validate(rsa_, doprint=false){
     var c = 0, c4 = 0, c2 = 0;
 
     for(r of rsa){
@@ -534,8 +550,10 @@ function validate(rsa_){
         if (len(r) == 4)  ++c4;
         if (len(r) == 2)  ++c2;
     }
-    print("\nwith p-1 and q-1 factorizations (n=p*q):",
-          c);
+    if(doprint){
+        print("\nwith p-1 and q-1 factorizations (n=p*q):",
+              c);
+    }
     var br = 6;
     var i=0;
     assert(c == 25);
@@ -582,21 +600,25 @@ function validate(rsa_){
                                       primeprod_totient(p, q)     ) == 1n); 
         }
         if(!has_factors_2(r) && has_factors_2(rsa_[i - 1])){
-            if (str != "")  { print(str); str=""; }
-            print("\nwithout (p-1) and (q-1) factorizations, but p and q:",
-                  c4);
+            if (str != "" && doprint)  { print(str); str=""; }
+	    if(doprint){
+                print("\nwithout (p-1) and (q-1) factorizations, but p and q:",
+                      c4);
+	    }
             br = 3;
             assert(c4 == 0);
         }
         if (!has_factors(r) && has_factors(rsa_[i - 1])){
-            print("\nhave not been factored sofar:", 
-                  c2);
+	    if(doprint){
+                print("\nhave not been factored sofar:", 
+                      c2);
+	    }
             br = 3;
             assert(c2 == 31);
         }
         str += (l<100n?" ":"") + l + (l == bits(n) ? " bits  " : " digits") +
          (i < len(rsa_) -1 ? "," : "(="+digits(rsa_[len(rsa_)-1][1])+" digits)\n");
-        if(i%7 == br || i == len(rsa_) - 1)  { print(str); str=""; }
+        if(doprint && (i%7 == br || i == len(rsa_) - 1))  { print(str); str=""; }
 
         i += 1;
     }
@@ -773,9 +795,9 @@ class RSA {
         for(let r of rsa)  if (has_factors(r, mod4))  a.push(r.slice(0,4));
         return a;
     }
-    factored_2(){
+    factored_2(mod4=undefined){
         var a=[];
-        for(let r of rsa)  if (has_factors_2(r))  a.push(r);
+        for(let r of rsa)  if (has_factors_2(r, mod4))  a.push(r);
         return a;
     }
     unfactored(mod4=undefined){
@@ -844,8 +866,61 @@ class RSA {
     to_squares_sum(sqrtm1, p){
         return to_squares_sum(sqrtm1, p);
     }
-    validate(){
-        var r = this.factored_2()[len(this.factored_2())-1];
+    svg(n, scale){
+        var r = this.get_(n);
+        if(r.length < 4)
+            return "";
+        var p, q;
+        [p,q] = r.slice(2,4);
+        var X = bits(q) - 1n;
+        var Y = bits(p) - 1n;
+        var s = '<svg width="'.concat(
+            (scale*bits(q)).toString().concat(
+            '" height="'.concat(
+            (scale*bits(p)).toString().concat(
+            '" viewBox="'.concat(
+            '0 0 '.concat(
+            bits(p).toString().concat(
+            ' '.concat(
+            bits(q).toString().concat(
+            '" xmlns="http://www.w3.org/2000/svg">')))))))));
+
+        for(var y=bits(p) - 1n; y>-1n; y-=1n)
+            for(var x=bits(q) - 1n; x>-1n; x-=1n){
+                var col = (p & (1n << y)) != 0n && (q & (1n << x)) != 0n ? "blue" : "cyan";
+                s = s.concat(
+		    '<rect x="'.concat(
+                    (X - x).toString().concat(
+                    '" y="'.concat(
+                    (Y - y).toString().concat(
+                    '" width="1" height="1" fill="'.concat(
+                    col.concat(
+                    '" stroke-width="0"/>')))))));
+            }
+
+        s=s.concat("</svg>");
+        return s;
+    }
+
+    sort_factors(){
+        for(i=0; i<len(rsa); ++i){
+            if(len(rsa[i]) > 2 && rsa[i][2] < rsa[i][3]){
+                [p,q] = rsa[i].slice(2,4);
+                rsa[i].splice(2,2,q,p);
+                if(len(rsa[i]) > 4){
+                    [pm1,qm1] = rsa[i].slice(4,6);
+                    rsa[i].splice(4,6,qm1,pm1);
+		}
+	    }
+	}
+    }
+
+    validate(doprint=false){
+	for(var i=0; i<4; ++i){
+            assert(last(this.factored([1,1]))[i] == last(this.factored_2([1,1])).slice(0,4)[i]);
+            assert(last(this.factored(3n))[i] == last(this.factored_2(3n)).slice(0,4)[i]);
+        }
+        var r = last(this.factored_2());
         var l,n,p,q,pm1,qm1,a,b,c,d,xy,sqrtm1,xy2;
         [l,n,p,q,pm1,qm1] = r;
         assert((p - 1n) * (q - 1n) == this.totient(r));
@@ -881,7 +956,7 @@ class RSA {
         xy2=to_squares_sum(sqrtm1,997n);
         assert(xy2[0]==xy[0] && xy2[1]==xy[1]);
 
-        validate(rsa);
+        validate(rsa, doprint);
     }
 };
 
@@ -889,7 +964,7 @@ if (typeof navigator != 'undefined')
 {
     assert(typeof process == 'undefined');
 } else if ((process.argv.length > 1) && process.argv[1].endsWith("/RSA_numbers_factored.js")) {
-    new RSA().validate();
+    new RSA().validate("doprint");
 } else {
     module.exports = {
         print: print,

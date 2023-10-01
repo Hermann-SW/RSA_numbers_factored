@@ -22,6 +22,10 @@ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 ```
 
 v1.11
+- add RSA.svg(), rewite RSA_svg demos
+- make validate() functions to enable/disable output
+- add RSA.sort_factors(), new demos
+- complete Python doc for sections 4+5, new section 6
 - functional parity for Python, JavaScript/nodejs and PARI/GP implementations
 - add RSA.unfactored(mod4=-1)
 - add to_sqrtm1()
@@ -598,7 +602,7 @@ def to_sqrtm1(xy: Type[IntList2], n: int) -> int:
         47
         >>> 47**2%221==221-1
         True
-        >>> 
+        >>>
     ```
     """
     return xy[0] * pow(xy[1], -1, n) % n
@@ -642,10 +646,13 @@ def has_factors(
     )
 
 
-def has_factors_2(r: Type[RSA_number]) -> bool:
+def has_factors_2(
+    r: Type[RSA_number], mod4: Union[None, int, Tuple[int, int]] = None
+) -> bool:
     """
     Args:
         r: an RSA number
+        mod4: optional restriction (remainder mod 4 for number or its both prime factors)
     Returns:
         _: RSA number has factors p and q, and factorization dictionaries of p-1 and q-1
     Example:
@@ -665,7 +672,11 @@ def has_factors_2(r: Type[RSA_number]) -> bool:
         >>>
     ```
     """
-    return len(r) >= 6
+    return len(r) >= 6 and (
+        mod4 is None
+        or (isinstance(mod4, int) and r[1] % 4 == mod4)
+        or (isinstance(mod4, tuple) and r[2] % 4 == mod4[0] and r[3] % 4 == mod4[1])
+    )
 
 
 def without_factors(r: Type[RSA_number], mod4: Union[None, int] = None) -> bool:
@@ -687,7 +698,7 @@ def SECTION4():
     """
 
 
-def primeprod_totient(p, q):
+def primeprod_totient(p: int, q: int) -> int:
     """
     Args:
         p,q: odd primes.
@@ -697,7 +708,7 @@ def primeprod_totient(p, q):
     return (p - 1) * (q - 1)
 
 
-def primeprod_reduced_totient(p, q):
+def primeprod_reduced_totient(p: int, q: int) -> int:
     """
     Args:
         p,q: odd primes.
@@ -716,7 +727,7 @@ def SECTION5():
     return
 
 
-def dict_int(d):
+def dict_int(d: Dict[int, int]) -> int:
     """
     Args:
         d: factorization dictionary.
@@ -730,7 +741,7 @@ def dict_int(d):
     return p
 
 
-def dict_totient(d):
+def dict_totient(d: Dict[int, int]) -> int:
     """
     Args:
         d: factorization dictionary.
@@ -746,7 +757,7 @@ def dict_totient(d):
 
 # functions on pair of factorization dictionaries
 #
-def dictprod_totient(d1, d2):
+def dictprod_totient(d1: Dict[int, int], d2: Dict[int, int]) -> int:
     """
     Args:
         d1,d2: factorization dictionaries.
@@ -756,7 +767,7 @@ def dictprod_totient(d1, d2):
     return dict_totient(d1) * dict_totient(d2)
 
 
-def dictprod_reduced_totient(d1, d2):
+def dictprod_reduced_totient(d1: Dict[int, int], d2: Dict[int, int]) -> int:
     """
     Args:
         d1,d2: factorization dictionaries.
@@ -766,7 +777,14 @@ def dictprod_reduced_totient(d1, d2):
     return int(lcm(dict_totient(d1), dict_totient(d2)))
 
 
-def validate_squares():
+def SECTION6():
+    """
+    Validation functions, rsa list
+    """
+    return
+
+
+def validate_squares() -> None:
     """avoid R0915 pylint too-many-statements warning for validate()"""
     s = [2, 1, 3, 2, 4, 1]  # 1105 = 5 * 13 * 17 = (2² + 1²) * (3² + 2²) * (4² + 1²)
 
@@ -802,17 +820,18 @@ def validate_squares():
     assert sq2(100049)[0] ** 2 + sq2(100049)[1] ** 2 == 100049
 
 
-def validate(rsa_):
+def validate(rsa_, doprint: bool = False) -> None:
     """
     Assert many identities to assure data consistency and generate demo output for non RSA-class
     functionality. Gets executed by [RSA().validate()](#function-validate-1).
     Args:
         rsa_: list of rsa entries.
     """
-    print(
-        "\nwith p-1 and q-1 factorizations (n=p*q):",
-        len(["" for r in rsa_ if len(r) == 6]),
-    )
+    if doprint:
+        print(
+            "\nwith p-1 and q-1 factorizations (n=p*q):",
+            len(["" for r in rsa_ if len(r) == 6]),
+        )
     br = 6
     assert len(["" for r in rsa_ if len(r) == 6]) == 25
     for i, r in enumerate(rsa_):
@@ -864,31 +883,34 @@ def validate(rsa_):
                 )
 
         if not has_factors_2(r) and has_factors_2(rsa_[i - 1]):
-            print(
-                "\n\nwithout (p-1) and (q-1) factorizations, but p and q:",
-                len(["" for r in rsa_ if len(r) == 4]),
-            )
+            if doprint:
+                print(
+                    "\n\nwithout (p-1) and (q-1) factorizations, but p and q:",
+                    len(["" for r in rsa_ if len(r) == 4]),
+                )
             br = 3
             assert len(["" for r in rsa_ if len(r) == 4]) == 0
 
         if not has_factors(r) and has_factors(rsa_[i - 1]):
-            print(
-                "\nhave not been factored sofar:",
-                len(["" for r in rsa_ if len(r) == 2]),
-            )
+            if doprint:
+                print(
+                    "\nhave not been factored sofar:",
+                    len(["" for r in rsa_ if len(r) == 2]),
+                )
             br = 3
             assert len(["" for r in rsa_ if len(r) == 2]) == 31
 
-        print(
-            f"{L:3d}",
-            ("bits  " if L == bits(n) else "digits")
-            + (
-                ","
-                if i < len(rsa_) - 1
-                else "(=" + str(digits(rsa_[-1][1])) + " digits)\n"
-            ),
-            end="\n" if i % 7 == br or i == len(rsa_) - 1 else "",
-        )
+        if doprint:
+            print(
+                f"{L:3d}",
+                ("bits  " if L == bits(n) else "digits")
+                + (
+                    ","
+                    if i < len(rsa_) - 1
+                    else "(=" + str(digits(rsa_[-1][1])) + " digits)\n"
+                ),
+                end="\n" if i % 7 == br or i == len(rsa_) - 1 else "",
+            )
 
     validate_squares()
 
@@ -1629,14 +1651,16 @@ class RSA:
         """
         return [r[0:4] for r in rsa if has_factors(r, mod4)]
 
-    def factored_2(self) -> List[RSA_number]:
+    def factored_2(
+        self, mod4: Union[None, int, Tuple[int, int]] = None
+    ) -> List[RSA_number]:
         """
         Args:
-            _: none.
+            mod4: optional restriction (remainder mod 4 for number or its both prime factors).
         Returns:
             _: list of RSA_number with factorization dictionaries.
         """
-        return [r for r in rsa if has_factors_2(r)]
+        return [r for r in rsa if has_factors_2(r, mod4)]
 
     def unfactored(self, mod4: Union[None, int] = None) -> Type[IntList2]:
         """
@@ -1796,21 +1820,69 @@ class RSA:
         """shortcut"""
         return to_squares_sum(sqrtm1, p)
 
-    def validate(self) -> None:
+    def svg(self, n: Union[int, RSA_number], scale: int) -> str:
         """
-        Assert many identities to assure data consistency and generate demo output
+        Generate prime factors svg.
+        """
+        r = self.get_(n)
+        if len(r) < 4:
+            return ""
+        p, q = r[2:4]
+        X = bits(q) - 1
+        Y = bits(p) - 1
+        s = (
+            '<svg width="'
+            + str(scale * bits(q))
+            + '" height="'
+            + str(scale * bits(p))
+            + '" viewBox="'
+            + "0 0 "
+            + str(bits(q))
+            + " "
+            + str(bits(q))
+            + '" xmlns="http://www.w3.org/2000/svg">'
+        )
+        for y in range(bits(p) - 1, -1, -1):
+            for x in range(bits(q) - 1, -1, -1):
+                col = "blue" if (p & (1 << y) != 0 and q & (1 << x) != 0) else "cyan"
+                s += (
+                    '<rect x="'
+                    + str(X - x)
+                    + '" y="'
+                    + str(Y - y)
+                    + '" width="1" height="1" fill="'
+                    + col
+                    + '" stroke-width="0"/>'
+                )
+        s += "</svg>"
+        return s
+
+    def sort_factors(self) -> None:
+        """make p the bigger of factors by switching if needed"""
+        for i in range(len(rsa)):
+            if len(rsa[i]) > 2 and rsa[i][2] < rsa[i][3]:
+                [p,q] = rsa[i][2:4]
+                rsa[i][2:4] = [q,p]
+                if len(rsa[i]) > 4:
+                    [pm1,qm1] = rsa[i][4:6]
+                    rsa[i][4:6] = [qm1,pm1]
+
+
+    def validate(self, doprint: bool = False) -> None:
+        """
+        Assert many identities to assure data consistency and optionally generate demo output
               (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
         Example:
         ```
             $ python RSA_numbers_factored.py
 
-            with p-1 and q-1 factorizations (n=p*q): 20
+            with p-1 and q-1 factorizations (n=p*q): 25
              59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
             140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
-            190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,
+            190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,230 digits,
+            232 digits,768 bits  ,240 digits,250 digits,
 
-            without (p-1) and (q-1) factorizations, but p and q: 5
-            230 digits,232 digits,768 bits  ,240 digits,250 digits,
+            without (p-1) and (q-1) factorizations, but p and q: 0
 
             have not been factored sofar: 31
             260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
@@ -1822,6 +1894,9 @@ class RSA:
             $
         ```
         """
+        assert(self.factored((1,1))[-1] == self.factored_2((1,1))[-1][0:4])
+        assert(self.factored(3)[-1] == self.factored_2(3)[-1][0:4])
+
         r = self.factored_2()[-1]
         l, _n, p, q, pm1, qm1 = r
         assert (p - 1) * (q - 1) == self.totient(r)
@@ -1853,8 +1928,8 @@ class RSA:
         assert pow(sqrtm1, 2, 997) == 997 - 1
         assert self.to_squares_sum(sqrtm1, 997) == xy
 
-        validate(rsa)
+        validate(rsa, doprint)
 
 
 if __name__ == "__main__":
-    RSA().validate()
+    RSA().validate("doprint")
