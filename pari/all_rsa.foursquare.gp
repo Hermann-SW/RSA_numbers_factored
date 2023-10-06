@@ -1,7 +1,8 @@
 readvec("RSA_numbers_factored.gp");
 
+\\ from Bill's posting:
+\\ https://pari.math.u-bordeaux.fr/archives/pari-users-2310/msg00012.html
 threesquare(n)=abs(qfsolve(matdiagonal([1,1,1,-n]))[1..3]);
-
 foursquarep(n)=
 {
   for(i=1,sqrtint(n),
