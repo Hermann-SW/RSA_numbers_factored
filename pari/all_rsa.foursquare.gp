@@ -8,7 +8,7 @@ foursquarep(n)=
   for(i=1,sqrtint(n),
     my(P=n-i^2);
     if(P%8!=7 && ispseudoprime(P),return(concat(i,threesquare(P)))))
-}
+};
 
 {
   foreach(rsa,r,[l,n]=r;
