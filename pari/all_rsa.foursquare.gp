@@ -14,7 +14,8 @@ foursquarep(n)=
   foreach(rsa,r,[l,n]=r;
     my(F=foursquarep(n));
     print(l," ",F);
-    assert(vecsum([x^2|x<-F])==n))
+    assert(vecsum([x^2|x<-F])==n);
+    if(n%4==1,assert(F[4]==0)));
 }
 ##
 
