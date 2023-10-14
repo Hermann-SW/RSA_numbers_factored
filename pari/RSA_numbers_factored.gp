@@ -311,7 +311,7 @@ square_sums(L,revt=0,revl=0,uniq=0)=
 \\      ? 
 \\  ```
 \\  """
-    r=square_sums_(L);
+    my(r=square_sums_(L));
     r=[vecsort(t,,4*revt)|t<-r];
     r=vecsort(r,1,4*revl+8*uniq);
     return(r);
