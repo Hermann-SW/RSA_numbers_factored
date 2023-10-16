@@ -133,6 +133,8 @@ len(v)=#v;
 
 last(v)=v[#v];
 
+jacobi_symbol(a,n)=kronecker(a,n);
+
 bits(N)=#binary(N);
 
 digits_(N)=#digits(N);

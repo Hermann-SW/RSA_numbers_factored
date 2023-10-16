@@ -231,6 +231,25 @@ function modular_inverse(a, n){
     return t;
 }
 
+// ported from https://www.rosettacode.org/wiki/Jacobi_symbol#C
+//
+function kronecker(a, n) { return jacobi_symbol(a, n); }
+function jacobi_symbol(a, n) {
+    if (a >= n) a %= n;
+    var result = 1n;
+    while (a) {
+        while ((a & 1n) == 0n) {
+            a >>= 1n;
+            if ((n & 7n) == 3n || (n & 7n) == 5n) result = -result;
+        }
+        var b=a; a=n; n=b;
+        if ((a & 3n) == 3n && (n & 3n) == 3n) result = -result;
+        a %= n;
+    }
+    if (n == 1n) return result;
+    return 0n;
+}
+
 // from itertools import combinations, combinations_with_replacement, chain
 //
 // from https://stackoverflow.com/a/54385026/5674289

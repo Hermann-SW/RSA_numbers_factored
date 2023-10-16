@@ -134,7 +134,8 @@ Global variable descriptions:
 from math import log2, log10
 from itertools import combinations, chain
 from typing import Tuple, List, Union, Dict, NewType, Type
-from sympy.ntheory import isprime
+from sympy.ntheory import isprime, jacobi_symbol
+from sympy.ntheory import jacobi_symbol as kronecker
 from sympy import lcm, gcd, I
 
 try:
