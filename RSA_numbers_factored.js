@@ -1001,6 +1001,8 @@ if (typeof navigator != 'undefined')
         _test: _test,
         mr: mr,
         isprime: isprime,
+        kronecker: kronecker,
+        jacobi_symbol: jacobi_symbol,
 
         gcd: gcd,
         lcm: lcm, 
