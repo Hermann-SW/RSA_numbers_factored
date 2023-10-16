@@ -1246,7 +1246,7 @@ Generate prime factors svg.
 ### <kbd>function</kbd> `to_sqrtm1`
 
 ```python
-to_sqrtm1(xy: int, p: int) → Type[IntList2]
+to_sqrtm1(xy: Type[IntList2], p: int) → int
 ```
 
 shortcut 
@@ -1258,7 +1258,7 @@ shortcut
 ### <kbd>function</kbd> `to_squares_sum`
 
 ```python
-to_squares_sum(sqrtm1: Type[IntList2], p: int) → int
+to_squares_sum(sqrtm1: int, p: int) → Type[IntList2]
 ```
 
 shortcut 

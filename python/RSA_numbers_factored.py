@@ -1813,11 +1813,11 @@ class RSA:
         Q = sq2(q)
         return P[0] * Q[0], P[1] * Q[1], P[0] * Q[1], P[1] * Q[0]
 
-    def to_sqrtm1(self, xy: int, p: int) -> Type[IntList2]:
+    def to_sqrtm1(self, xy: Type[IntList2], p: int) -> int:
         """shortcut"""
         return to_sqrtm1(xy, p)
 
-    def to_squares_sum(self, sqrtm1: Type[IntList2], p: int) -> int:
+    def to_squares_sum(self, sqrtm1: int, p: int) -> Type[IntList2]:
         """shortcut"""
         return to_squares_sum(sqrtm1, p)
 
