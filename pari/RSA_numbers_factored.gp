@@ -1,7 +1,7 @@
 \\ RSA_numbers_factored.gp
-\\
-\\ vim: syntax=gp
-\\
+/*
+vim: syntax=gp
+*/
 \\ RSA number n = RSA-l:
 \\ ```
 \\ RSA_unfactored:  [l,n]
