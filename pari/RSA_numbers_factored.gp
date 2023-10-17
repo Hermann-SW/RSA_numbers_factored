@@ -1,6 +1,6 @@
 \\ RSA_numbers_factored.gp
 /*
-vim: syntax=gp
+syntax=gp
 */
 \\ RSA number n = RSA-l:
 \\ ```
