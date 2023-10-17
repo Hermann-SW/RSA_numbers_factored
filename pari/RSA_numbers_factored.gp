@@ -1,7 +1,5 @@
 \\ RSA_numbers_factored.gp
-/*
-syntax=gp
-*/
+\\
 \\ RSA number n = RSA-l:
 \\ ```
 \\ RSA_unfactored:  [l,n]
