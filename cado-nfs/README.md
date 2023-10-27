@@ -34,16 +34,25 @@ Here only runtimes [h] for AMD Ryzen 5 7600X CPU:
 
 After RSA-100 was factored in less than 8min(!!) with 12 threads on six-core 7600X CPU (down from 1.5h with msieve), I started factoring RSA-129. That completed in 3:11:10h, leaving me puzzled. I started writing this page and factored missing numbers below RSA-129 as well, and later up to RSA-140.
 
-| RSA | runtime [h] |  
-|----:|------------:|  
-|  59 |    (0:00:27)|  
-|  79 |     0:01:09 |
-| 100 |     0:07:42 |
-| 110 |     0:14:50 |
-| 120 |     0:57:19 |
-| 129 |     3:11:10 |
-| 130 |     3:35:51 |
-| 140 |    11:04:51 |
+In this forum posting I added to 2018 statement and i7-12700 measurements:  
+https://mersenneforum.org/showthread.php?p=641331#post641331  
+My new AMD 7950X PC is double as fast as AMD 7600X PC:  
+|   |           |Intel   | AMD	  | Intel(2CPU)| AMD     |
+|---|-----------|--------|--------|--------|-------------|
+|   | 2018 stmt |i7-12700| 7600X  | E5 6126| 7950X       |
+|   |         |12C/20T | 6C/12T | 24C/48T|     16C/32T |
+|RSA|  |       | 515$   |  (PC price) |     890$    |
+| |
+|100|           |0:07:25 | 0:07:42| 0:07:37| 0:05:01    |
+|110|           |0:27:45 | 0:14:50| 0:12:51| 0:07:41    |
+|120|           |0:54:01 | 0:57:19| 0:45:58| 0:28:16    |
+|129|           |        | 3:11:10| 2:29:53| 1:45:57    |
+|130| days      |        | 3:35:51| 2:32:22| 1:47:48     |
+|140| 10+ days  |        |11:04:51| 8:15:36|             |
+|150| month+    |        |        |38:26:27| running |
+|   |
+|Passmark| list| 30,934| 28,739 |2\*19,233|  63,287    |
+|CPUmark|   measured|        | 27,531 |  30,549|  52,361     |
 
 
 ### RSA-x double logarithmic quadratic regression x/log₂(factoring runtime)
