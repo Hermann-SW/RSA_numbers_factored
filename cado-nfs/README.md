@@ -52,7 +52,7 @@ My new AMD 7950X PC is double as fast as AMD 7600X PC:
 |150| month+    |   —    |    —   |38:26:27|26:41:57 |
 |   |
 |Passmark| list| 30,934| 28,739 |2\*19,233|  63,287    |
-|CPUmark|   measured|        | 27,531 |  30,549|  52,361     |
+|CPUmark|   measured|   —    | 27,531 |  30,549|  52,361     |
 
 
 ### RSA-x double logarithmic quadratic regression x/log₂(factoring runtime)
