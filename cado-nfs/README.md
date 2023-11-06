@@ -39,7 +39,7 @@ https://mersenneforum.org/showthread.php?p=641331#post641331
 Factoring runtimes [h]; my new AMD 7950X PC is double as fast as my AMD 7600X PC:  
 |   |           |Intel    | AMD	   |Intel(2CPU)| AMD       |
 |:-:|:---------:|:-------:|:------:|:---------:|:---------:|
-|   | 2018 stmt |i7-12700 | 7600X  | E5 6126   | 7950X     |
+|   | 2018 stmt |i7-12700 | 7600X  | XEON 6126   | 7950X     |
 |   |           |12C/20T  | 6C/12T | 24C/48T   |   16C/32T |
 |RSA|           |         | 515$    |(PC price)|   890$    |
 |   |
