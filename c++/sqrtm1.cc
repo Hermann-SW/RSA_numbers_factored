@@ -19,8 +19,9 @@
 //  6: 388342-digit  https://t5k.org/primes/page.php?id=122213
 //  7:         2165  10^999999+308267*10^292000+1     1000000 CH10  2021
 //                   https://t5k.org/primes/lists/all.txt
-//  8:            9  10223*2^31172165+1               9383761 SB12  2016
-// >8: 2^n+9 isprime https://oeis.org/A057196
+//  8:           10  10223*2^31172165+1               9383761 SB12  2016
+//  9:         4794  456551^98304-456551^49152+1      556351 L4142 2017
+// >9: 2^n+9 isprime https://oeis.org/A057196
 struct row { std::string f; unsigned b, e, a; } r[] = {
     { "65516468355", 2, 333333, 1 },    // 100355-digit
     { "3756801695685", 2, 666669, 1 },  // 200700-digit
@@ -99,8 +100,13 @@ int main(int argc, char *argv[]) {
             a += 1;
             break;
         }
+        case 9: {
+            mpz_ui_pow_ui(b.get_mpz_t(), 456551, 49152);
+            a = b*b - b + 1;
+            break;
+        }
         default: {
-            assert(u > 8 || !"wrong selection (0-8, >8)");
+            assert(u > 9 || !"wrong selection (0-9, >9)");
             mpz_ui_pow_ui(a.get_mpz_t(), 2, u);
             a += 9;
             break;
