@@ -37,8 +37,8 @@ After RSA-100 was factored in less than 8min(!!) with 12 threads on six-core 760
 In this forum posting I added to 2018 statement and i7-12700 measurements:  
 https://mersenneforum.org/showthread.php?p=641331#post641331  
 Factoring runtimes [h]; my new AMD 7950X PC is double as fast as my AMD 7600X PC:  
-|   |           |Intel    | AMD	   |Intel(2CPU)| AMD       |
-|:-:|:---------:|:-------:|:------:|:---------:|:---------:|
+|   |           |Intel    | AMD	   |Intel(2CPU)| AMD       |      |
+|:-:|:---------:|:-------:|:------:|:---------:|:---------:|:----:|
 |   | 2018 stmt |i7-12700 | 7600X  | XEON 6126   | 7950X     |
 |   |           |12C/20T  | 6C/12T | 24C/48T   |   16C/32T |
 |RSA|           |         | 515$    |(PC price)|   890$    |
@@ -47,12 +47,12 @@ Factoring runtimes [h]; my new AMD 7950X PC is double as fast as my AMD 7600X PC
 |110|    —      | 0:27:45 |  0:14:50|  0:12:51 |  0:07:41  |
 |120|    —      | 0:54:01 |  0:57:19|  0:45:58 |  0:28:16  |
 |129|    —      |    —    |  3:11:10|  2:29:53 |  1:45:57  |
-|130| days      |    —    |  3:35:51|  2:32:22 |  1:47:48  |
-|140| 10+ days  |    —    | 11:04:51|  8:15:36 |  5:21:57  |
-|150| month+    |    —    |    —    | 38:26:27 | 26:41:57  |
+|130| days      |    —    |  3:35:51|  2:32:22 |  1:47:48  | optimized |
+|140| 10+ days  |    —    | 11:04:51|  8:15:36 |  5:21:57  | [c150.params](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) |
+|150| month+    |    —    |    —    | 38:26:27 | 26:41:57  | 13:31:36 | 
 |   |
 |Passmark|  list| 30,934  | 28,739  |2\*19,233 |  63,287   |
-|CPUmark|measured|   —    | 27,531  |  30,549  |  52,361   |
+|CPUmark|measured|   —    | 27,531  |  30,549  |  52,361   | 56,836 |  
 
 https://www.cpubenchmark.net/high_end_cpus.html
 
