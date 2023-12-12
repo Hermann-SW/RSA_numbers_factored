@@ -52,7 +52,7 @@ Factoring runtimes [h]; my new AMD 7950X PC is double as fast as my AMD 7600X PC
 |150| month+    |    —    |    —    |    —    | 38:26:27 | 26:41:57  | [13:31:36](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) |
 |   |
 |Passmark|  list|  2,493  | 30,934  | 28,739  |2\*19,233 |  63,287   |
-|CPUmark|measured| 2,692  |   —    | 27,531  |  30,549  |  52,361   | 56,836 |  
+|CPUmark|measured| 2,630  |   —    | 27,531  |  30,549  |  52,361   | 56,836 |  
 
 https://www.cpubenchmark.net/high_end_cpus.html
 
