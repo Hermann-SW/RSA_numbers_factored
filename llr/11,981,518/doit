@@ -1,0 +1,21 @@
+#!/bin/bash
+cp ../sllr64 .
+taskset -c 0-7,16-23 ./sllr64 -t16 -d -q"516693^2097152-516693^1048576+1" 2>err
+../gp_verify_2 "-516693^1048576"
+#
+# as of 2/15/2024:
+# https://t5k.org/primes/lists/all.txt
+# -----  ------------------------------- -------- ----- ---- --------------
+#  rank  description                     digits   who   year comment
+# -----  ------------------------------- -------- ----- ---- --------------
+#     1  2^82589933-1                    24862048 G16   2018 Mersenne 51??
+#     2  2^77232917-1                    23249425 G15   2018 Mersenne 50??
+#     3  2^74207281-1                    22338618 G14   2016 Mersenne 49??
+#     4  2^57885161-1                    17425170 G13   2013 Mersenne 48
+#     5  2^43112609-1                    12978189 G10   2008 Mersenne 47
+#     6  2^42643801-1                    12837064 G12   2009 Mersenne 46
+#     7e Phi(3,-516693^1048576)          11981518 L4561 2023 Generalized unique
+#     8  Phi(3,-465859^1048576)          11887192 L4561 2023 Generalized unique
+#
+# sqrt(-1) (mod p) determination for rank 8 prime p done here:
+# https://github.com/Hermann-SW/11887192-digit-prime
