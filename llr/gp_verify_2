@@ -1,0 +1,2 @@
+#!/bin/bash
+gp -q < <(echo "p=polcyclo(3,$1);x=$(tail -3 err | head -1 | cut -f2 -d:);x^2%p==p-1")

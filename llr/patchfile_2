@@ -1,0 +1,57 @@
+--- Llr.c	2023-11-01 17:28:50.000000000 +0100
++++ Llr.c.new	2024-02-15 00:37:28.976575702 +0100
+@@ -12195,6 +12195,18 @@
+ 	return (-1);
+ }
+ 
++uint32_t *__a = NULL;
++void gwnum2stderr(gwhandle *gwdata, long i, gwnum x)
++{
++  long l;
++  // suffices for 128,000,000 bit number,
++  // far larger than largest known (Mersenne) prime
++  if (! __a)  { __a = malloc(sizeof(uint32_t) * 4000000); }
++  l  = gwtobinary(gwdata, x, __a, 4000000);
++  fprintf(stderr, "\\\\ %ld: 0x", i);
++  for(--l; l>=0; --l)  fprintf(stderr, "%08x", __a[l]);
++  fprintf(stderr, "\n");
++}
+ 
+ int plusminustest ( 
+ 	char *sgk,
+@@ -12516,7 +12528,9 @@
+ 	gwset_larger_fftlen_count(gwdata, (char)IniGetInt(INI_FILE, "FFT_Increment", 0));
+ 	if (incr == +1) {
+                 gwsetmaxmulbyconst (gwdata, a);
+-                divg (gb, tmp);                                 // tmp = (N-1)/base
++                a = 616139;
++                fprintf(stderr,"foobar a=%ld\n",a);
++                gshiftright (1, tmp);  /* Init tmp = (N-1)/2 to compute a^(N-1)/2 mod N */
+                 explen = bitlen (tmp);
+                 if (format == ABCDN && n == ndiff) {		// Batalov 31/05/23
+                         dk = 1.0;
+@@ -12727,6 +12741,8 @@
+ 	iters = 0;
+ 	
+ 	while (bit < explen) {
++                if (bit > (Nlen-100))
++                        gwnum2stderr(gwdata, bit, x);
+ 
+ /* Error check the first and last 50 iterations, before writing an */
+ /* intermediate file (either user-requested stop or a */
+@@ -12860,6 +12876,15 @@
+ 		}
+ 	}
+ 
++        fprintf(stderr, "after loop:\n");
++        gwnum2stderr(gwdata, bit, x);
++
++        sprintf (buf, "\n  Time : "); 
++        end_timer (1);
++        write_timer (buf+strlen(buf), 1, TIMER_CLR | TIMER_NL); 
++        OutputBoth (buf);
++        exit(0);
++
+ 	clearline (100);
+ 	lasterr_point = 0;		// Reset last error point.
+ 
