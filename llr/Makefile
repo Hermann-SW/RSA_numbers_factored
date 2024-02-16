@@ -39,4 +39,4 @@ endif
 
 clean:
 	rm -rf llr38lsrc llr405src llr405src.zip
-	rm -f sllr64 err lresults.txt llr.ini z* ?temp.npg
+	rm -f sllr64 err lresults.txt llr.ini z* ?temp.npg tsqrtm1_9441050
