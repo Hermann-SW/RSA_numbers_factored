@@ -10,6 +10,13 @@ nohup ./doit
 ... measured consuming 34.37KWh (167.5W on average) with electricity meter in basement computing center:  
 ![IMG_20240223_175233_MP.10pc.jpg](IMG_20240223_175233_MP.10pc.jpg)  
 
+Details of computation:  
+```
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ gzip -dc nohup.out.gz | sed "s/\xd/\n/g"  | wc --lines
+5755
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
+```
+
 Phi(3,-516693^1048576) is largest prime =1 (mod 4) since 9/2023:  
 
 https://t5k.org/primes/lists/all.txt
