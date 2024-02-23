@@ -1,13 +1,20 @@
+## 8.55 days computation
 
-Computing of sqrtm1=sqrt(-1) (mod p) of 11,981,518-digit prime p:  
+Computed with patched LLR 4.0.5 software with 16 threads on AMD 7950X CPU forced onto chiplet0.  
+
+Computation of sqrtm1=sqrt(-1) (mod p) of 11,981,518-digit prime p done with ...  
 ```
 nohup ./doit
 ```
 
+... measured consuming 34.37KWh with electricity meter in basement computing center:  
+![IMG_20240223_175233_MP.10%.jpg](IMG_20240223_175233_MP.10%.jpg)  
+
 Phi(3,-516693^1048576) is largest prime =1 (mod 4) since 9/2023:  
-```
-as of 2/15/2024:
+
 https://t5k.org/primes/lists/all.txt
+```
+as of 2/15/2024
 -----  ------------------------------- -------- ----- ---- --------------
  rank  description                     digits   who   year comment
 -----  ------------------------------- -------- ----- ---- --------------
