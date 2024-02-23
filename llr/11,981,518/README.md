@@ -7,7 +7,7 @@ Computation of sqrtm1=sqrt(-1) (mod p) of 11,981,518-digit prime p done with ...
 nohup ./doit
 ```
 
-... measured consuming 34.37KWh with electricity meter in basement computing center:  
+... measured consuming 34.37KWh (167.5W on average) with electricity meter in basement computing center:  
 ![IMG_20240223_175233_MP.10pc.jpg](IMG_20240223_175233_MP.10pc.jpg)  
 
 Phi(3,-516693^1048576) is largest prime =1 (mod 4) since 9/2023:  
