@@ -8,7 +8,7 @@ nohup ./doit
 ```
 
 ... measured consuming 34.37KWh with electricity meter in basement computing center:  
-![IMG_20240223_175233_MP.10%.jpg](IMG_20240223_175233_MP.10%.jpg)  
+![IMG_20240223_175233_MP.10pc.jpg](IMG_20240223_175233_MP.10pc.jpg)  
 
 Phi(3,-516693^1048576) is largest prime =1 (mod 4) since 9/2023:  
 
