@@ -76,23 +76,57 @@ hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$
 ```
 
 ## Validation of sqrtm1.gp and sos.gp
+
+PARI/GP:  
 ```
 hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ cat validate.gp 
 p=polcyclo(3,-516693^1048576);
+##
+print()
 
 s=readvec("sqrtm1.gp")[1];
+##
 s^2%p==p-1
 ##
 
 [x,y]=readvec("sos.gp")[1];
+##
 x^2+y^2==p
 ##
-hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$
 hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ gp -q < validate.gp 
+  ***   last result: cpu time 105 ms, real time 118 ms.
+
+  ***   last result: cpu time 49 ms, real time 57 ms.
 1
   ***   last result: cpu time 305 ms, real time 317 ms.
+  ***   last result: cpu time 53 ms, real time 53 ms.
 1
   ***   last result: cpu time 68 ms, real time 68 ms.
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
+```
+
+[validate.py](validate.py), Python with gmpy2:  
+```
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ time ./validate.py 
+True
+True
+
+real	0m1.771s
+user	0m1.663s
+sys	0m0.108s
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
+```
+
+[validate.js](validate.js), Node with BigInt:  
+```
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ time ./validate.js 
+true
+true
+
+real	0m1.984s
+user	0m1.926s
+sys	0m0.072s
 hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
 ```
 
