@@ -130,6 +130,20 @@ sys	0m0.072s
 hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
 ```
 
+[validate.cc](validate.cc), C++ with libgmpxx:  
+```
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ make validate
+g++ -O3 validate.cc -lgmpxx -lgmp -o validate.cc.out
+./validate.cc.out
+11981518 decimal digits prime p
+0.008523s for mpz_set_str() of 7462826 hexadecimal digits sqrt(-1) (mod p)
+1.56775s for computing powm(_, sqrtm1, 2, p)
+1 (sqrtm1*sqrtm1 % p == p-1)
+0.00625s for mpz_set_str() of x and y
+1 (x*x + y*y == p)
+hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ 
+```
+
 ## determining sum of squares from sqrtm1 in 174ms
 ```
 hermann@7950x:~/RSA_numbers_factored/llr/11,981,518$ gp -q < sqrtm12sos.gp 
