@@ -1,3 +1,33 @@
+## 347ms computation
+
+Leaving below for history.  
+Currently patched LLR 4.0.5 software is not needed.  
+Reason is that p=Phi(3,_) genrelized unique primes allow for instantaneous
+computation of sqrt(-1) (mod p):  
+https://mersenneforum.org/showthread.php?p=651499#post651499
+
+Here detrmination for largest know 11,981,518 decimal digits prime p=1 (mod 4):  
+```
+? {
+b=516693;
+e=1048576;
+p=polcyclo(3,-b^e);
+s=b^(e*3/2);
+[M,V]=halfgcd(s,p);
+[x,y]=[V[2],M[2,1]];
+}
+? ##
+  ***   last result: cpu time 347 ms, real time 347 ms.
+? x^2+y^2==p
+%19 = 1
+? s^2%p==p-1
+%20 = 1
+? #digits(p)
+%21 = 11981518
+?
+```
+
+
 ## 8.55 days computation
 
 Computed with patched LLR 4.0.5 software with 16 threads on AMD 7950X CPU forced onto chiplet0.  
