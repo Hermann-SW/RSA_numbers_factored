@@ -6,7 +6,7 @@ Reason is that p=Phi(3,_) generalized unique primes allow for instantaneous
 computation of sqrt(-1) (mod p):  
 https://mersenneforum.org/showthread.php?p=651499#post651499
 
-Here detrmination for largest know 11,981,518 decimal digits prime p=1 (mod 4):  
+Here determination for largest know 11,981,518 decimal digits prime p=1 (mod 4):  
 ```
 ? {
 b=516693;
