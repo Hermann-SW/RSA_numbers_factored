@@ -1,8 +1,8 @@
 ## 347ms computation
 
 Leaving below for history.  
-Currently patched LLR 4.0.5 software is not needed.  
-Reason is that p=Phi(3,_) genrelized unique primes allow for instantaneous
+Currently patched LLR 4.0.5 software is not needed — use original LLR 4.0.5 instead for Proth primes.  
+Reason is that p=Phi(3,_) generalized unique primes allow for instantaneous
 computation of sqrt(-1) (mod p):  
 https://mersenneforum.org/showthread.php?p=651499#post651499
 
