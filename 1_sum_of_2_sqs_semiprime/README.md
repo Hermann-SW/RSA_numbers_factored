@@ -28,7 +28,11 @@ This challenge number has 261 decimal digits to make sure no factoring method li
 
 ## Related forum and mailing list threads
 
-- [Challenge: find prime factors of 261 decimal digit semiprime given one sum of squares representation](https://www.mersenneforum.org/node/1058748)
+- mersenneforum.org > Math Stuff > Computer Science & Computational Number Theory  
+  https://www.mersenneforum.org/node/1058748
+- math.stackexchange.com  
+  https://math.stackexchange.com/questions/4990964/challenge-find-prime-factors-of-261-decimal-digit-semiprime-given-one-sum-of-tw
+  
 
 ## Challenge creation
 
