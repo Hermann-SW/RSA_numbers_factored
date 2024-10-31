@@ -18,13 +18,27 @@ Send prime factorization as well as method used to <a href="mailto:challenge@sta
 The first correct submission will receive 100 USD price money.  
 Preferable let me know to which paypal account I should transfer the price money to.
 
-These two threads suggest that knowing one sum of two squares representation of semiprime does not help in factoring (the first posting demonstrates how easy prime factorization is if both sum of two squares for a semiprime are known):  
+These two threads suggest that knowing one sum of two squares representation of semiprime does not help in factoring:  
 - https://math.stackexchange.com/questions/4655361/eulers-factorization-needs-two-different-sums-of-squares-what-if-only-one-sum
 - https://math.stackexchange.com/questions/2294749/finding-other-representations-for-a-sum-of-two-squares
 
 This challenge is to give a little incentive to find a method if it exists.  
 The biggest number factored sofar was RSA-250, and the factorization did need 2700 CPU core years.  
 This challenge number has 261 decimal digits to make sure no factoring method like cado-nfs can help.
+
+Only if both factors of a semiprime are "=1 (mod 4)", the semiprime has two sum of two squares representations. Knowing both Euler factorization easily factors the semiprime. Biggest such factored sofar RSA number is RSA-768, as demonstration:
+```
+hermann@j4105:~/RSA_numbers_factored/pari$ gp -q RSA_numbers_factored.gp
+? [,n]=RSA.get(768);
+? [e,f]=RSA.square_sums(768);[a,b]=e;[c,d]=f;
+? #digits(n)
+232
+? a^2+b^2==n && c^2+d^2==n && #Set([a,b,c,d])==4
+1
+? #digits(gcd(n,(a+c)^2+(b+d)^2))
+116
+?
+```
 
 ## Related forum and mailing list threads
 
