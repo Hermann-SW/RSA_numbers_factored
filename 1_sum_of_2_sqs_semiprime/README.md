@@ -85,3 +85,10 @@ factor: ****************************************************
 pi@raspberrypi5:~/RSA_numbers_factored/1_sum_of_2_sqs_semiprime $ 
 ```
 
+### Challenge creation with PARI/GP only
+
+I learned on pari-users mailing list how to do secret input with PARI/GP input() and system("stty -echo"). Additional script [challenge2.gp](challenge2.gp) does the same as the other scripts, but completely in PARI/GP. The string of asterisks appears only after input has completed, and epoch time resolution is milliseconds instead of nanoseconds with Python. Just do  
+```
+gp -q challenge2.gp
+```
+and then input a factor.
