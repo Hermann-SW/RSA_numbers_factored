@@ -40,7 +40,7 @@ hermann@j4105:~/RSA_numbers_factored/pari$ gp -q RSA_numbers_factored.gp
 ?
 ```
 
-For semiprime 65=5\*13, gaussian integers are a=7+4\*I and b=8+1\*I. From a+b   get another with conj(a+b), get another two by -x and another 4 by conj(-I\*conj(x)). Here the 8 possibilities with constant a are shown with their norml2() values, indicating the prime that will result when applying gcd() with n:  
+For semiprime 65=5\*13, gaussian integers are a=7+4\*I and b=8+1\*I. From b get another summand to a with conj(b), get another two by -x and another 4 by conj(-I\*conj(x)). Here the 8 resulting additions are shown with their norml2() values, indicating the prime that will result when applying gcd() with n:  
 ![gaussian_integer.addition.norml2.png](gaussian_integer.addition.norml2.png)
 
 ## Related forum and mailing list threads
