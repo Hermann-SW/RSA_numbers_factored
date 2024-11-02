@@ -44,6 +44,8 @@ hermann@j4105:~/RSA_numbers_factored/pari$ gp -q RSA_numbers_factored.gp
 
 - mersenneforum.org > Math Stuff > Computer Science & Computational Number Theory  
   https://www.mersenneforum.org/node/1058748
+- pari-users mailing list  
+  https://pari.math.u-bordeaux.fr/archives/pari-users-2411/msg00002.html
 
 
 ## Challenge creation
