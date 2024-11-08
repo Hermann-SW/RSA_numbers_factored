@@ -1,6 +1,6 @@
 # Factoring semiprime given one sum of two squares representation
 
-## Challenge and price money
+## Challenge and prize money
 
 ```
 pi@raspberrypi5:~/RSA_numbers_factored/1_sum_of_2_sqs_semiprime $ gp -q
@@ -15,8 +15,8 @@ Determine prime factorization of 261 decimal digits semiprime <kbd>n = p * q</kb
 
 Send prime factorization as well as method used to <a href="mailto:challenge@stamm-wilbrandt.de">challenge@stamm-wilbrandt.de</a>.
 
-The first correct submission will receive 100 USD price money.  
-Preferable let me know to which paypal account I should transfer the price money to.
+The first correct submission will receive 100 USD prize money.  
+Preferable let me know to which paypal account I should transfer the prize money to.
 
 These two threads suggest that knowing one sum of two squares representation of semiprime does not help in factoring:  
 - https://math.stackexchange.com/questions/4655361/eulers-factorization-needs-two-different-sums-of-squares-what-if-only-one-sum
