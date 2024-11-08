@@ -56,7 +56,8 @@ For semiprime 65=5\*13, gaussian integers are a=4+7\*I and b=8+1\*I. From b get 
   https://www.mersenneforum.org/node/1058748
 - pari-users mailing list  
   https://pari.math.u-bordeaux.fr/archives/pari-users-2411/msg00002.html
-
+- Raspberry Pi forum  
+  https://forums.raspberrypi.com/viewtopic.php?p=2266836#p2266836
 
 ## Challenge creation
 
