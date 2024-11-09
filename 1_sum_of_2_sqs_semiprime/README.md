@@ -107,4 +107,13 @@ I learned on pari-users mailing list how to do secret input with PARI/GP input()
 ```
 gp -q challenge2.gp
 ```
-and then input a factor.
+and then input a factor. Using factor 1 (PARI/GP setrand() does not allow for value 0) always generates same output for a given value of L. This is different to challenge.py and challenge2.py, but PARI/GP and Python random generators are different anyway.
+
+### Challenge creation with Python only
+
+Additional script [challenge2.py](challenge2.py) does the same as the other scripts, but completely in Python. Just do  
+```
+./challenge2.gp
+```
+and then input a factor. Using factor 0 always generates same output for a given value of L.
+

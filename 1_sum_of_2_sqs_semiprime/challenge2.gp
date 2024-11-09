@@ -4,7 +4,7 @@ readvec("../pari/RSA_numbers_factored.gp");
 print1("factor: ");system("stty -echo");s=input();
 system("stty echo");for(i=1,#digits(s),print1("*"));print();
 
-setrand(getwalltime() * eval(s));
+setrand(if(eval(s)==1,1,getwalltime() * eval(s)));
 
 L=432;
 
