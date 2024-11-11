@@ -1,6 +1,6 @@
 # pylinted and blacked
 #
-""" p=x²+y² (x > y) for all primes p=1 (mod 4) less than int(argv[0]) """
+""" p=x²+y² (x even) for all primes p=1 (mod 4) less than int(argv[0]) """
 from sys import argv
 from math import sqrt
 from matplotlib import pyplot as plt
@@ -14,8 +14,12 @@ Y = []
 for p in primerange(5, int(argv[1])):
     if p % 4 == 1:
         x, y = sq2(p)
-        X.append(max(x, y))
-        Y.append(min(x, y))
+        if x % 2 == 0:
+            X.append(x)
+            Y.append(y)
+        else:
+            X.append(y)
+            Y.append(x)
 
 D = 64
 A = [X[0]]
@@ -37,7 +41,7 @@ for i in range(1, len(X)):
 ax = plt.gca()
 
 ax.set_title(
-    "p=x²+y² (x > y) for all primes p=1 (mod 4) less than "
+    "p=x²+y² (x even) for all primes p=1 (mod 4) less than "
     + argv[1]
     + " (variable radius arcs)"
 )
