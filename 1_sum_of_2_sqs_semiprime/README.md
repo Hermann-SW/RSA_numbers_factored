@@ -113,7 +113,7 @@ and then input a factor. Using factor 1 (PARI/GP setrand() does not allow for va
 
 Additional script [challenge2.py](challenge2.py) does the same as the other scripts, but completely in Python. Just do  
 ```
-./challenge2.gp
+./challenge2.py
 ```
 and then input a factor. Using factor 0 always generates same output for a given value of L.
 
