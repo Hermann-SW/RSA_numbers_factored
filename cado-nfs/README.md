@@ -52,8 +52,8 @@ This is different to Jean Penne's LLR software PRP(M_52) computation: it outperf
 |130| days      |    —    |    —    |  3:35:51|  2:32:22 |     —     |  1:47:48  | [01:21:46](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) |
 |140| 10+ days  |    —    |    —    | 11:04:51|  8:15:36 |     —     |  5:21:57  | [04:05:55](https://www.mersenneforum.org/showthread.php?t=24274&&p=513167) |
 |150| month+    |    —    |    —    |    —    | 38:26:27 |     —     | 26:41:57  | [13:31:36](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) |
-|155|     —     |    —    |    —    |    —    |    —     |     —     |    —      | tbd, <24h |
-|   |
+|155|     —     |    —    |    —    |    —    |    —     |     —     |    —      | [25:13h](https://gist.github.com/Hermann-SW/4aefd5b12ff179700bb6594ba25f9646?permalink_comment_id=5697014#gistcomment-5697014) | | |
+
 |Passmark|  list|  2,493  | 30,934  | 28,739  |2\*19,233 |2\*17,619  |  63,287   |
 |CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  30,549  |  29,622 |  52,361   | 56,836 |  
 
