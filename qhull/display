@@ -1,0 +1,5 @@
+#!/bin/bash
+if [[ $(($1 % 4)) -ne 1 ]]; then echo "n=1 (mod 4) is required"; exit; fi
+if [[ $(n=$1 gp -q < square-free.gp) -eq 0 ]]; then\
+  echo "n must be square-free"; exit; fi 
+n=$1 gp -q < nbox.gp | qconvex G TO tmp; geomview tmp

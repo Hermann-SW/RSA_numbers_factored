@@ -1,0 +1,11 @@
+#!/bin/bash
+n=$1 gp -q < nbox.gp | qconvex o | tail -n+3 | grep "^[0-9]" > tmp
+
+echo "vertex degrees"
+cut -f2- -d\  tmp | sed "s/ \([0-9]\)/\n\1/g;s/ [ ]*//g" | sort -n | uniq -c |\
+  cut -b-7 | sed "s/[ ]*//" | sort -n | uniq -c |\
+    sed "s/\([0-9]\) /\1×/;s/[ ]*//"
+
+echo -e "\nface lengths"
+cut -f1 -d\  tmp | sort -n | uniq -c |\
+  sed "s/\([0-9]\) /\1×/;s/[ ]*//"
