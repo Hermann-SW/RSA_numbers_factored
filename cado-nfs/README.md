@@ -39,22 +39,22 @@ https://mersenneforum.org/showthread.php?p=641331#post641331
 Factoring runtimes [h]; my AMD 7950X PC is double as fast as my AMD 7600X PC.  
 My new 2×Intel XEON 2680v4 server (89$ ebay spot price, no RAM/no HDDs) worse than 6126.  
 This is different to Jean Penne's LLR software PRP(M_52) computation: it outperforms i6126 and 7950X(!):  
-|   |           |(Pi5) ARM|Intel    | AMD    |Intel(2CPU)| AMD       |      |Intel(8CPU)|
-|:-:|:---------:|:-------:|:-------:|:------:|:---------:|:---------:|:----:|:---------:|
-|   | 2018 stmt |A76-3GHz |i7-12700 | 7600X  |XEON 2680v4| 7950X     |      |XEON 8880v3|
-|   |           |4C/4T    |12C/20T  | 6C/12T |   28C/56T |   16C/32T | optimized | 144C/288T |
-|RSA|           |60$      |(PC price)| 515$   |    89$    |  890$     | params.X | 399€ |
+|   |           |(Pi5) ARM|Intel    | AMD    |Intel(2CPU)| AMD       | <--    |Intel(8CPU)| <--
+|:-:|:---------:|:-------:|:-------:|:------:|:---------:|:---------:|:----:|:---------:|:----------:|
+|   | 2018 stmt |A76-3GHz |i7-12700 | 7600X  |XEON 2680v4| 7950X     |      |XEON 8880v3|XEON 8890v4|
+|   |           |4C/4T    |12C/20T  | 6C/12T |   28C/56T |   16C/32T | optimized | 144C/288T | 192C/384T |
+|RSA|           |60$      |(PC price)| 515$   |    89$    |  890$     | params.X | 399€ | +178€ |
 |   | 
-|100|     —     | 0:13:30 | 0:07:25 |  0:07:42| 0:07:25  |  0:04:06  |          |    —  |
-|110|    —      | 1:27:27 | 0:27:45 |  0:14:50| 0:12:48  |  0:07:32  |          |    —  |
-|120|    —      | 5:05:17 | 0:54:01 |  0:57:19| 0:47:22  |  0:27:42  |          | 0:43:31 |
-|129|     —     |    —    |    —    |  3:11:10| 2:54:39  |  1:45:57  | [01:03:09](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | 1:02:10 |
-|130| days      |    —    |    —    |  3:35:51|    —     |  1:47:48  | [01:21:46](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | — |
-|140| 10+ days  |    —    |    —    | 11:04:51|     —     |  5:21:57  | [04:05:55](https://www.mersenneforum.org/showthread.php?t=24274&&p=513167) | 3:29:25 |
-|150| month+    |    —    |    —    |    —    |     —     | 26:41:57  | [13:31:36](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) | — |
-|155|     —     |    —    |    —    |    —    |     —     |    —      | [25:13h](https://gist.github.com/Hermann-SW/4aefd5b12ff179700bb6594ba25f9646?permalink_comment_id=5697014#gistcomment-5697014) |—|
-|Passmark|  list|  2,493  | 30,934  | 28,739  |2\*17,619  |  63,287   |         | 78,078 |
-|CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  29,622 |  52,361   | 56,836 | 80,593 | 
+|100|     —     | 0:13:30 | 0:07:25 |  0:07:42| 0:07:25  |  0:04:06  |          |    —  |  —    |
+|110|    —      | 1:27:27 | 0:27:45 |  0:14:50| 0:12:48  |  0:07:32  |          |    —  |  —    |
+|120|    —      | 5:05:17 | 0:54:01 |  0:57:19| 0:47:22  |  0:27:42  |          | 0:43:31 | 0:41:53 |
+|129|     —     |    —    |    —    |  3:11:10| 2:54:39  |  1:45:57  | [01:03:09](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | 1:02:10 | 0:57:08 |
+|130| days      |    —    |    —    |  3:35:51|    —     |  1:47:48  | [01:21:46](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | — | — |
+|140| 10+ days  |    —    |    —    | 11:04:51|     —     |  5:21:57  | [04:05:55](https://www.mersenneforum.org/showthread.php?t=24274&&p=513167) | 3:29:25 | 3:15:07 |
+|150| month+    |    —    |    —    |    —    |     —     | 26:41:57  | [13:31:36](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) | — | — |
+|155|     —     |    —    |    —    |    —    |     —     |    —      | [25:13h](https://gist.github.com/Hermann-SW/4aefd5b12ff179700bb6594ba25f9646?permalink_comment_id=5697014#gistcomment-5697014) |—|—|
+|Passmark|  list|  2,493  | 30,934  | 28,739  |2\*17,619  |  63,287   |         | 78,078 | 102,411 |
+|CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  29,622 |  52,361   | 56,836 | 80,593 | 102,411 |
 
 https://www.cpubenchmark.net/high_end_cpus.html
 
