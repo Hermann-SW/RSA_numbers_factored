@@ -49,7 +49,7 @@ This is different to Jean Penne's LLR software PRP(M_52) computation: it outperf
 |110|    —      | 1:27:27 | 0:27:45 |  0:14:50| 0:12:48  |  0:07:32  |          |    —  |  —    |
 |120|    —      | 5:05:17 | 0:54:01 |  0:57:19| 0:47:22  |  0:27:42  |          | 0:43:31 | 0:41:53 |
 |129|     —     |    —    |    —    |  3:11:10| 2:54:39  |  1:45:57  | [01:03:09](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | 1:02:10 | 0:57:08 |
-|130| days      |    —    |    —    |  3:35:51|    —     |  1:47:48  | [01:21:46](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | — | — |
+|130| days      |    —    |    —    |  3:35:51|    —     |  1:47:48  | [01:21:46](https://www.mersenneforum.org/showthread.php?t=24274&p=513167) | — | 1:09:40 |
 |140| 10+ days  |    —    |    —    | 11:04:51|     —     |  5:21:57  | [04:05:55](https://www.mersenneforum.org/showthread.php?t=24274&&p=513167) | 3:29:25 | 3:15:07 |
 |150| month+    |    —    |    —    |    —    |     —     | 26:41:57  | [13:31:36](https://www.mersenneforum.org/showthread.php?t=27315&page=4&p=642545) | — | — |
 |155|     —     |    —    |    —    |    —    |     —     |    —      | [25:13h](https://gist.github.com/Hermann-SW/4aefd5b12ff179700bb6594ba25f9646?permalink_comment_id=5697014#gistcomment-5697014) |—|—|
