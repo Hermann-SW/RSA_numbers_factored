@@ -8,6 +8,7 @@ cppcheck --enable=all --suppress=missingIncludeSystem 2graph.cpp --check-config
 #include <sstream>
 #include <cassert>
 #include <algorithm>
+#include <vector>
 
 typedef std::pair<int, int> pii;
 #define ADD(v, a, b) v.push_back(a < b?pii(a, b):pii(b, a))
