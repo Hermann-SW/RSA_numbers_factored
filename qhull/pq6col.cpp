@@ -1,7 +1,11 @@
 /*
-g++ -O3 -Wall -Wextra -pedantic 6col.cpp -o 6col
-cpplint --filter=-legal/copyright,-runtime/references 6col.cpp 
-cppcheck --enable=all --suppress=missingIncludeSystem 6col.cpp --check-config
+   show 6 face colors convex hull of integer points x,y,z with n=p*q=x^2+y^2+z^2
+   $ ./pq6col 5 13
+
+   f=pq6col
+   g++ -O3 -Wall -Wextra -pedantic $f.cpp -o $f
+   cpplint --filter=-legal/copyright,-runtime/references $f.cpp 
+   cppcheck --enable=all --suppress=missingIncludeSystem $f.cpp --check-config
 */
 #include <math.h>
 
@@ -69,6 +73,7 @@ int main(int argc, char *argv[]) {
 
   std::vector<v3i> v;
   std::vector<v3i> vs;
+  std::vector<int> cF(f);
 
   for (int i = 0; i < f; ++i) {
     int l, x, y, z;
@@ -84,8 +89,10 @@ int main(int argc, char *argv[]) {
     }
     ADD(v, y, x, i);
     vs.push_back(F);
+    cF[F.size()]++;
   }
 
+  // O(n*log(n)), but avoids need for planar embeddimg algorithm
   std::sort(v.begin(), v.end(), v3ile);
 
 
@@ -104,10 +111,15 @@ int main(int argc, char *argv[]) {
   // vertex six-coloring of D is face coloring of polyhedron
   std::vector<int> col = six_coloring(D);
 
+
   // statistics
   std::cout << n_faces_planar(D) << " vertices, " << n_edges(D) << " edges, " \
             << n_vertices(D) << " faces (" \
-            << *std::max_element(col.begin(), col.end()) + 1 << " colors)\n";
+            << *std::max_element(col.begin(), col.end()) + 1 << " colors)\n" \
+            << "\nface lengths\n";
+  for (int l = 0; l < f; ++l) {
+    if (cF[l] > 0)  std::cout << cF[l] << "×" << l << "\n";
+  }
 
 
   // create OFF file for geomview to display, with at most 6 face colors
@@ -115,8 +127,6 @@ int main(int argc, char *argv[]) {
 
   os <<        // -edge does not display edges, not needed by face 6-coloring
     "{appearance {-edge -evert linewidth 2} LIST #  | qconvex G TO tmp\n";
-
-  std::vector<int> cF(f);
 
   for (int v = 0; v < f; ++v) {
     os << "{ OFF " << vs[v].size() << " 1 1 #\n";
@@ -127,19 +137,10 @@ int main(int argc, char *argv[]) {
     os << vs[v].size();
     for (unsigned i = 0; i < vs[v].size(); ++i)  os << " " << i;
     os << " " << rgb[col[v]] << " 1.0 }\n";
-
-    cF[vs[v].size()]++;
   }
 
   os << "}\n";
   os.close();
-
-
-  // more statistics
-  std::cout << "\nface lengths\n";
-  for (int l = 0; l < f; ++l) {
-    if (cF[l] > 0)  std::cout << cF[l] << "×" << l << "\n";
-  }
 
 
   // display polyhedron with geomview
