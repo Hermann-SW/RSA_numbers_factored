@@ -1,5 +1,5 @@
 /*
-   show 6 face colors convex hull of integer points x,y,z with n=p*q=x^2+y^2+z^2
+   show 6 face colors convex hull; integer x,y,z points with n=p*q=x^2+y^2+z^2
    $ ./pq6col 5 13
 
    f=pq6col
@@ -23,8 +23,6 @@ typedef std::vector<int> v3i;
 bool v3ile(v3i& l, v3i& r) {
   return l[0] < r[0] || (l[0] == r[0] && l[1] < r[1]);
 }
-void OUT(v3i& p)  { std::cout << p[0] << " " << p[1] << " " << p[2] << "\n"; }
-
 int d2i(double d) { return static_cast<int>(round(d)); }
 
 bool is_odd_prime(int n) {
@@ -49,6 +47,7 @@ int main(int argc, char *argv[]) {
   int d, n, f, m, N = atoi(argv[1]) * atoi(argv[2]);
   double x, y, z;
 
+  //                  blue     green    red      cyan     orange     azure
   std::string rgb[]={"0 0 1", "0 1 0", "1 0 0", "0 1 1", "1 0.5 0", "0 0.5 1"};
 
 
