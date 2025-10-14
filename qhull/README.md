@@ -28,9 +28,9 @@ Points on equator with all ± and permutations possible, postive:
 $ ./display 13*17
 ```
 ![](display_13\*17.png)  
-See [GP demo](https://stamm-wilbrandt.de/en/#GPdemo) and following "long-term objective" on why equator of sum of three squares polyhedron are of interest to me ...
-
-
+See [GP demo](https://stamm-wilbrandt.de/en/#GPdemo) and following "long-term objective" on why equator of sum of three squares polyhedron is of interest to me ...
+   
+   
 No edges needed if neighboring face colors different enough.   
 [pq6col.cpp](pq6col.cpp) does 6-coloring of faces created by qconvex.   
 Creates OFF file with edges turned off, and finally displays with geomview:   
