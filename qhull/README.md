@@ -27,7 +27,7 @@ Points on equator with all ± and permutations possible, postive:
 ```
 $ ./display 13*17
 ```
-![](display_13\*17.png)
+![](display_13\*17.png)  
 See [GP demo](https://stamm-wilbrandt.de/en/#GPdemo) and following "long-term objective" on why equator of sum of three squares polyhedron are of interest to me ...
 
 
