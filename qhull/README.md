@@ -27,7 +27,7 @@ Points on equator with all ± and permutations possible, postive:
 ```
 $ ./display 13*17
 ```
-![](display.13_17.png)
+![](display_13\*17.png)
 
 
 No edges needed if neighboring face colors different enough.   
