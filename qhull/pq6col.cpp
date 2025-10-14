@@ -20,8 +20,6 @@
 #include "planar_graph_playground/c++/undirected_graph.hpp"
 
 typedef std::vector<int> v3i;
-#define ADD(v, a, b, i) \
-  { v3i X = {a, b, i}; v3i Y = {b, a, i}; v.push_back(a < b?X:Y); }
 bool v3ile(v3i& l, v3i& r) {
   return l[0] < r[0] || (l[0] == r[0] && l[1] < r[1]);
 }
@@ -67,7 +65,6 @@ int main(int argc, char *argv[]) {
   std::vector<std::vector<int>> XYZ;
   for (int i = 0; i < n; ++i) {
     is >> x >> y >> z;
-    std::vector<int> p = {d2i(x), d2i(y), d2i(z)};
     XYZ.push_back({d2i(x), d2i(y), d2i(z)});
   }
 
@@ -83,11 +80,11 @@ int main(int argc, char *argv[]) {
     F.push_back(x);
     for (int k = 1; k < l; ++k) {
       is >> z;
-      ADD(v, y, z, i);
+      v.push_back({std::min(y, z), std::max(y, z), i});
       F.push_back(z);
       y = z;
     }
-    ADD(v, y, x, i);
+    v.push_back({std::min(y, x), std::max(y, x), i});
     vs.push_back(F);
     cF[F.size()]++;
   }
@@ -113,8 +110,8 @@ int main(int argc, char *argv[]) {
 
 
   // statistics
-  std::cout << n_faces_planar(D) << " vertices, " << n_edges(D) << " edges, " \
-            << n_vertices(D) << " faces (" \
+  std::cout << "n=" << N << ": " << n_faces_planar(D) << " vertices, " \
+            << n_edges(D) << " edges, " << n_vertices(D) << " faces (" \
             << *std::max_element(col.begin(), col.end()) + 1 << " colors)\n" \
             << "\nface lengths\n";
   for (int l = 0; l < f; ++l) {
