@@ -1,7 +1,8 @@
 /*
-g++ -O3 -Wall -Wextra -pedantic 2graph.cpp -o 2graph
-cpplint --filter=-legal/copyright,-runtime/references 2graph.cpp 
-cppcheck --enable=all --suppress=missingIncludeSystem 2graph.cpp --check-config
+   f=2graph
+   g++ -O3 -Wall -Wextra -pedantic $f.cpp -o $f
+   cpplint --filter=-legal/copyright,-runtime/references $f.cpp 
+   cppcheck --enable=all --suppress=missingIncludeSystem $f.cpp --check-config
 */
 #include <iostream>
 #include <fstream>
