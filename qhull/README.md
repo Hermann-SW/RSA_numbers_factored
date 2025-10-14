@@ -36,6 +36,12 @@ No edges needed if neighboring face colors different enough.
 Creates OFF file with edges turned off, and finally displays with geomview:   
 ```
 $ ./pq6col 13 277
+n=3601: 480 vertices, 1128 edges, 650 faces (6 colors)
+
+face lengths
+408×3
+210×4
+32×6
 ```
 
 The 6 colors used are blue, green, red, cyan, orange and azure.   
