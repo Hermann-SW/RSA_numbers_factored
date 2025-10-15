@@ -95,7 +95,7 @@ int main(int argc, char *argv[]) {
   // create dual graph of polyhedron
   graph D;
 
-  for (int k = 0; k < f; ++k)  new_vertex(D);
+  for (int k = 0; k < f; ++k)  assert(k == new_vertex(D));
 
   for (unsigned i = 0; i < v.size(); i+=2) {
     assert(v[i][0] == v[i+1][0]);
