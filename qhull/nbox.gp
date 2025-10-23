@@ -1,8 +1,12 @@
 \\ similar to qhull rbox
 
+\\ from https://pari.math.u-bordeaux.fr/archives/pari-users-2510/msg00012.html
+\\
+classno(n)=quadclassunit(n).no;
+
 \\ for square-free n>4
 \\
-r3(n)=if(n%8==7,0,if(n%8==3,24*qfbclassno(-n),12*qfbclassno(-4*n)));
+r3(n)=if(n%8==7,0,if(n%8==3,24*classno(-n),12*classno(-4*n)));
 
 n=eval(getenv("n"));
 
