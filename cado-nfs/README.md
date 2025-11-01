@@ -37,8 +37,8 @@ After RSA-100 was factored in less than 8min(!!) with 12 threads on six-core 760
 In this forum posting I added to 2018 statement and i7-12700 measurements:  
 https://mersenneforum.org/showthread.php?p=641331#post641331  
 Factoring runtimes [h]; my AMD 7950X PC is double as fast as my AMD 7600X PC.  
-My new 2×Intel XEON 2680v4 server (89$ ebay spot price, no RAM/no HDDs) worse than 6126.  
-This is different to Jean Penne's LLR software PRP(M_52) computation: it outperforms i6126 and 7950X(!):  
+8-socket Lenovo x3950 X6 server more than twice as fast as AMD 7950X PC for RSA-155.
+
 |   |           |(Pi5) ARM|Intel    | AMD    |Intel(2CPU)| AMD       | Intel(8CPU)| <--
 |:-:|:---------:|:-------:|:-------:|:------:|:---------:|:---------:|:---------:|:----------:|
 |   | 2018 stmt |A76-3GHz |i7-12700 | 7600X  |XEON 2680v4| 7950X     |XEON 8880v3|XEON 8890v4|
@@ -53,10 +53,12 @@ This is different to Jean Penne's LLR software PRP(M_52) computation: it outperf
 |140| 10+ days  |    —    |    —    | 11:04:51|     —     |  4:05:55 | 3:29:25 | 3:15:07 |
 |150| month+    |    —    |    —    |    —    |     —     | 13:31:36 | — | 7:18:06 |
 |155|     —     |    —    |    —    |    —    |     —     |  25:13   |—| 11:52:54 |
-|Passmark|  list|  2,493  | 30,934  | 28,739  |2\*17,619  |  63,287  | 78,078 | [102,411](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Xeon+E7-8890+v4+%40+2.20GHz&id=4840&cpuCount=8) |
-|CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  29,622 |  56,836   | [80,593](https://www.passmark.com/baselines/V11/display.php?id=510191142032) | 102,411 |
+|160|     —     |    —    |    —    |    —    |     —     |      —   |—| running |
+|Passmark|  list|  2,493  | 30,934  | 28,739  |2\*17,619  |  63,287  | 78,078 | 102,411
+|CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  29,622 |  56,836   | [80,593](https://www.passmark.com/baselines/V11/display.php?id=510191142032) | [102,411](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Xeon+E7-8890+v4+%40+2.20GHz&id=4840&cpuCount=8) |
 
-https://www.cpubenchmark.net/high_end_cpus.html
+https://www.cpubenchmark.net/multithread/   
+https://www.cpubenchmark.net/multi_cpu.html
 
 
 ### RSA-x double logarithmic quadratic regression x/log₂(factoring runtime)
