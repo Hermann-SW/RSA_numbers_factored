@@ -222,3 +222,64 @@ Info:root: Cleaning up computation data in /tmp/cado.jpv0ybws
 6264200187401285096151654948264442219302037178623509019111660653946049 3398717423028438554530123627613875835633986495969597423490929302771479
 hermann@7600x:~/cado-nfs$
 ```
+
+### Factorization of RSA-160
+
+During the run I copied these two lines from "top", demonstrating 13446/12397 %CPU.   #
+The 8-socket server has 192C/384T:
+``` 
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 388888 hermann   20   0   18.5g   4.2g   6184 S 13446   0.4     70,57 krylov
+``` 
+``` 
+    PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
+ 919461 hermann   20   0   22.2g   7.8g   6208 S 12397   0.8    6d+14h mksol
+``` 
+
+``` 
+Info:root: Using default parameter file ./parameters/factor/params.c160
+Info:root: No database exists yet
+Info:root: Created temporary directory /tmp/cado.vy0fwirc
+Info:Database: Database URI is db:sqlite3:///tmp/cado.vy0fwirc/c160.db
+Info:Database: Opened connection to database /tmp/cado.vy0fwirc/c160.db
+Info:root: Setting tasks.linalg.bwc.threads=192 based on detected physical cores
+Info:root: Setting tasks.threads=384 based on detected logical cpus
+Info:root: Setting tasks.sqrt.threads=1 in order to avoid RAM issues. You might want to set tasks.sqrt.threads=<something else> according to what your computer can do.
+Info:root: tasks.threads = 384 [via tasks.threads]
+Info:root: tasks.polyselect.threads = 2 [via tasks.polyselect.threads]
+Info:root: tasks.sieve.las.threads = 2 [via tasks.sieve.las.threads]
+Info:root: tasks.linalg.bwc.threads = 192 [via tasks.linalg.bwc.threads]
+Info:root: tasks.sqrt.threads = 1 [via tasks.sqrt.threads]
+Info:root: slaves.scriptpath is /home/hermann/cado-nfs/build/x3950-X6
+Info:root: Command line parameters: ./cado-nfs.py 2152741102718889701896015201312825429257773588845675980170497676778133145218859135673011059773491059602497907111585214302079314665202840140619946994927570407753
+Info:root: If this computation gets interrupted, it can be resumed with ./cado-nfs.py /tmp/cado.vy0fwirc/c160.parameters_snapshot.0
+Info:Server Launcher: Adding x3950-X6 to whitelist to allow clients on localhost to connect
+Info:API server: server whitelist is ['127.0.0.1/32', '127.0.1.1/32']
+Info:API server: Running from werkzeug (1 thread(s))
+Info:Lattice Sieving: param rels_wanted is 225000000
+Info:Complete Factorization / Discrete logarithm: Factoring 2152741102718889701896015201312825429257773588845675980170497676778133145218859135673011059773491059602497907111585214302079314665202840140619946994927570407753
+Info:API server: Running on https://localhost:43853 (Press CTRL+C to quit))
+Info:API server: You can start additional cado-nfs-client.py scripts with parameters: --server=https://localhost:43853 --certsha1=9842d8a11b992f7283ed85e17546972c5c713e74
+Info:API server: If you want to start additional clients, remember to add their hosts to server.whitelist
+Info:Client Launcher: Starting client id localhost on host localhost
+Info:werkzeug: 127.0.0.1 - - [01/Nov/2025 22:40:50] "GET /workunit HTTP/1.1" 404 -
+...
+Info:Quadratic Characters: Total cpu/real time for characters: 295.7/42.3016
+Info:Lattice Sieving: Aggregate statistics:
+Info:Lattice Sieving: Total number of relations: 225049229
+Info:Lattice Sieving: Average J: 8050.61 for 1942997 special-q, max bucket fill -bkmult 1.0,1s:1.074820
+Info:Lattice Sieving: Total time: 7.46507e+06s
+Info:Polynomial Selection (root optimized): Aggregate statistics:
+Info:Polynomial Selection (root optimized): Total time: 21972.7
+Info:Polynomial Selection (root optimized): Rootsieve time: 22091.1
+Info:Square Root: Total cpu/real time for sqrt: 5127.54/553.24
+Info:Linear Algebra: Total cpu/real time for bwc: 2.1763e+06/18302.4
+Info:Linear Algebra: Aggregate statistics:
+Info:Linear Algebra: Krylov: CPU time 1467530.84, WCT time 11738.25, iteration CPU time 0.04, COMM 0.01, cpu-wait 0.02, comm-wait 0.0 (155000 iterations)
+Info:Linear Algebra: Lingen CPU time 14807.12, WCT time 214.05
+Info:Linear Algebra: Mksol: CPU time 629025.1,  WCT time 5662.69, iteration CPU time 0.04, COMM 0.01, cpu-wait 0.02, comm-wait 0.0 (80000 iterations)
+Info:API server: Shutting down server
+Info:Complete Factorization / Discrete logarithm: Total cpu/elapsed time for entire Complete Factorization 1.74831e+07/70048.9 [19:27:29]
+Info:root: Cleaning up computation data in /tmp/cado.vy0fwirc
+45427892858481394071686190649738831656137145778469793250959984709250004157335359 47388090603832016196633832303788951973268922921040957944741354648812028493909367
+```
