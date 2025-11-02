@@ -225,7 +225,7 @@ hermann@7600x:~/cado-nfs$
 
 ### Factorization of RSA-160
 
-During the run I copied these two lines from "top", demonstrating 13446/12397 %CPU.   #
+During the run I copied these two lines from "top", demonstrating 13446/12397 %CPU.   
 The 8-socket server has 192C/384T:
 ``` 
     PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
