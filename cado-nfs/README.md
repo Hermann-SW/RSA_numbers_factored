@@ -226,7 +226,8 @@ hermann@7600x:~/cado-nfs$
 ### Factorization of RSA-160
 
 During the run I copied these two lines from "top", demonstrating 13446/12397 %CPU.   
-The 8-socket server has 192C/384T:
+Server power consumption was 2.7KW.   
+Done on Lenovo x3950 X6 8-socket server, details in above table:   
 ``` 
     PID USER      PR  NI    VIRT    RES    SHR S  %CPU  %MEM     TIME+ COMMAND
  388888 hermann   20   0   18.5g   4.2g   6184 S 13446   0.4     70,57 krylov
