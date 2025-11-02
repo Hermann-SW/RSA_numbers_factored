@@ -53,7 +53,7 @@ Factoring runtimes [h]; my AMD 7950X PC is double as fast as my AMD 7600X PC.
 |140| 10+ days  |    —    |    —    | 11:04:51|     —     |  4:05:55 | 3:29:25 | 3:15:07 |
 |150| month+    |    —    |    —    |    —    |     —     | 13:31:36 | — | 7:18:06 |
 |155|     —     |    —    |    —    |    —    |     —     |  25:13   |—| 11:52:54 |
-|160|     —     |    —    |    —    |    —    |     —     |      —   |—| running |
+|160|     —     |    —    |    —    |    —    |     —     |      —   |—| 19:27:29 |
 |Passmark|  list|  2,493  | 30,934  | 28,739  |2\*17,619  |  63,287  | 78,078 | 102,411
 |CPUmark|measured| [2,630](https://www.passmark.com/baselines/V11/display.php?id=505363423814)  |   —    | 27,531  |  29,622 |  56,836   | [80,593](https://www.passmark.com/baselines/V11/display.php?id=510191142032) | [102,411](https://www.cpubenchmark.net/cpu.php?cpu=Intel+Xeon+E7-8890+v4+%40+2.20GHz&id=4840&cpuCount=8) |
 
