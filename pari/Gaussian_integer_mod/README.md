@@ -1,8 +1,6 @@
 modulus for Gaussian integers, short demo:
 ```
 $ gp -q gimod.gp 
-? sq2=19+4*I
-19 + 4*I
 ? sq2=19+4*I;
 ? a=19+19*I;
 ? a=gimod(a^2,sq2)
