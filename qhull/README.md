@@ -1,4 +1,4 @@
-qhull from [qhull.org](qhull.org) needs to be installed, as well as [geomview](http://www.qhull.org/html/index.htm#geomview) and [PARI/GP](https://pari.math.u-bordeaux.fr/).
+qhull from [qhull.org](http://qhull.org) needs to be installed, as well as [geomview](http://www.qhull.org/html/index.htm#geomview) and [PARI/GP](https://pari.math.u-bordeaux.fr/).
 
 [square-free.gp](square-free.gp) is auxiliary GP script.
 
