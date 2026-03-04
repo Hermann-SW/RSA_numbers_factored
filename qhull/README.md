@@ -74,3 +74,9 @@ int
 22 23 0
 pi@raspberrypi5:~/RSA_numbers_factored/qhull $ 
 ```
+
+
+P.S:   
+Before using geomview, I used jscad.app for displaying such polyhedrons:   
+[JSCAD app share link](https://jscad.app/#https://raw.githubusercontent.com/Hermann-SW/lattice_sphere_cmp/refs/heads/main/lattice_sphere_cmp.jscad)   
+![](jscad_app.png)
