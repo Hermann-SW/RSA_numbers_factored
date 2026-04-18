@@ -75,6 +75,20 @@ int
 pi@raspberrypi5:~/RSA_numbers_factored/qhull $ 
 ```
 
+2graph can be used together with equator.shortest_path:  
+
+   $ ./2graph 116561 > 116561.u 
+   $ ./equator.shortest_path 116561.u
+   N=116561
+   found1 31 340 0  2315
+   found2 119 320 0  2839
+   4224 vertices, 10776 edges
+   distance(2839) = 6
+   max distance = 49
+   $
+
+Zoomed in part from display of ```./pq6col 229 509``` showing distance 6 between the two verties on (horizontal, middle) equator:  
+![](equator.shortest_path.6.png)
 
 P.S:   
 Before using geomview, I used jscad.app for displaying such polyhedrons:   
