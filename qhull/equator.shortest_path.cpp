@@ -109,9 +109,8 @@ int main(int, char*argv[]) {
     std::cout << n << " vertices, " << m << " edges\n";
     std::cout << "distance(" << v1 << ") = " << d[v1] << "\n";
 
-    int mx = 0;
-    for (int i=0; i < n; ++i)  if (mx < d[i]) { mx= d[i]; }
-    std::cout << "max distance = " << mx << "\n";
+    std::cout << "max distance = "
+              << *std::max_element(d.begin(), d.end()) << "\n";
 
     return EXIT_SUCCESS;
 }
