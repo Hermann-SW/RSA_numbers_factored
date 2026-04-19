@@ -90,6 +90,22 @@ pi@raspberrypi5:~/RSA_numbers_factored/qhull $
 Zoomed in part from display of ```./pq6col 229 509``` showing distance 6 between the two verties on (horizontal, middle) equator (left and right):  
 ![](equator.shortest_path.6.png)
 
+Single source shortest path really fast for n=1001470441=20021*50021 resulting on a graph with 249K vertices and 735K edges:  
+```
+hermann@8840hs:~/RSA_numbers_factored/qhull$ time ./equator.shortest_path 1001470441.u 
+N=1001470441
+found1 11896 29325 0  170603
+found2 17755 26196 0  194135
+248928 vertices, 735408 edges
+distance(194135) = 24
+max distance = 317
+
+real	0m0.278s
+user	0m0.225s
+sys	0m0.053s
+hermann@8840hs:~/RSA_numbers_factored/qhull$ 
+```
+
 P.S:   
 Before using geomview, I used jscad.app for displaying such polyhedrons:   
 [JSCAD app share link](https://jscad.app/#https://raw.githubusercontent.com/Hermann-SW/lattice_sphere_cmp/refs/heads/main/lattice_sphere_cmp.jscad)   
