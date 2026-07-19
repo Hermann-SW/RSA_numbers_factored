@@ -25,7 +25,7 @@ For example $n=85=5\cdot 17$ and $7+6i$ with $norml2(7+6i)=85$ results in $sqrt(
 1
 ? 
 ```
-Replacing $i$ in eg. $x\mapsto x^2+1+i$ function over $\mathbb{Z}[i]/<7+4i>$ of Pollard Rho algorithm
+Replacing $i$ in eg. $x\mapsto x^2+1+i$ function over $\mathbb{Z}[i]/<7+6i>$ of Pollard Rho algorithm
 has isomorphic $x\mapsto x^2+73$ over $\mathbb{Z}_{85}$.
 So nothing new is gained by Pollard-Rho on factor module instead of "modulo $n$".
 
