@@ -94,6 +94,6 @@ digraph scc_map {
 $
 ```
 
-Edge ```"-1+5i" -> "4+2i"``` from cycle in ```cluster_4``` results in Pollard-Roh difference $(4+2i)-(-1+5i)=5-3i$. Now $gcd(5-3i,7+6i)=4+i$ and therefore $norml2(4+i)=17$ is a factor of $n$ identified by Pollard-Rho algorithm.
+Edge ```"-1+5i" -> "4+2i"``` from cycle in ```cluster_4``` results in Pollard-Rho difference $(4+2i)-(-1+5i)=5-3i$. Now $gcd(5-3i,7+6i)=4+i$ and therefore $norml2(4+i)=17$ is a factor of $n=85$ identified by Pollard-Rho algorithm if that edge is traversed.
 
 ![graphviz.50pc.png](graphviz.50pc.png)
