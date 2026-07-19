@@ -26,7 +26,7 @@ For example $n=85=5\cdot 17$ and $7+6i$ with $norml2(7+6i)=85$ results in $sqrt(
 ? 
 ```
 Replacing $i$ in eg. $x\mapsto x^2+1+i$ function over $\mathbb{Z}[i]/<7+4i>$ of Pollard Rho algorithm
-has isomorphic $x\mapsto x^2+73$ over $\mathbb{Z}_{65}$.
+has isomorphic $x\mapsto x^2+73$ over $\mathbb{Z}_{85}$.
 So nothing new is gained by Pollard-Rho on factor module instead of "modulo $n$".
 
 So the graph obtained by [gi_polrho.cpp](gi_polrho.cpp)
@@ -94,4 +94,4 @@ digraph scc_map {
 $
 ```
 
-<img width="960" height="891" alt="image" src="https://github.com/user-attachments/assets/06c3623f-4486-4b46-bb08-ea7f581974a5" />
+![graphviz.50pc.png](graphviz.50pc.png)
