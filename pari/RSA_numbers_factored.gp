@@ -7,6 +7,10 @@
 \\ RSA_factored_2:  [l,n,p,q,pm1,qm1]   (n = p * q, Xm1 factorization dict of X-1)
 \\ ```
 \\ 
+\\
+\\ v1.12
+\\ - add factorization of RSA-260
+\\
 \\ v1.11
 \\ - add RSA.svg(), rewite RSA_svg demos
 \\ - make validate() functions to enable/disable output
@@ -706,7 +710,7 @@ validate(rsa_,doprint=0) =
     if(doprint,
        print("\nwith p-1 and q-1 factorizations (n=p*q): ",#[""|r<-rsa_,#r==6]));
     br=0;
-    assert(#[""|r<-rsa_,#r==6]==25);
+    assert(#[""|r<-rsa_,#r==6]==26);
     for(i=1,#rsa_,r=rsa_[i];
         if(has_factors_2(r),
             [L,n,p,q,pm1,qm1]=r,
@@ -763,7 +767,7 @@ validate(rsa_,doprint=0) =
                     "\nhave not been factored sofar: ",
                     #[""|r<-rsa_,#r==2]));
             br = 4;
-            assert(#[""|r<-rsa_,#r==2]==31));
+            assert(#[""|r<-rsa_,#r==2]==30));
 
         if(doprint,
             printf("%3d %s%s%s",L,
@@ -1312,7 +1316,22 @@ rsa = [\
     ],\
     [\
         260,\
-        22112825529529666435281085255026230927612089502470015394413748319128822941402001986512729726569746599085900330031400051170742204560859276357953757185954298838958709229238491006703034124620545784566413664540684214361293017694020846391065875914794251435144458199\
+        22112825529529666435281085255026230927612089502470015394413748319128822941402001986512729726569746599085900330031400051170742204560859276357953757185954298838958709229238491006703034124620545784566413664540684214361293017694020846391065875914794251435144458199,\
+        4397328654844826923795068102505872571721883526553349659561256924505973939597593482272505698004801207988043088656411102133523080581,\
+        5028695206842569864686141618253083416610081090075366674776775706538324961364412200138116378509733307971876652984898985905923678379,\
+        [\
+            2, 2;\
+            5, 1;\
+            11, 1;\
+            19987857522021940562704855011390329871463106938878862088914804202299881543625424919420480445476369127218377675710959555152377639, 1\
+        ],\
+        [\
+            2, 1;\
+            19, 1;\
+            23, 1;\
+            55490827648974011312246680304682893006627, 1;\
+            103686610685751471113808170606356534480418626763371083628618877141603566510935973816811, 1\
+        ]\
     ],\
     [\
         270,\
@@ -1486,9 +1505,9 @@ RSA.factored=(mod4=-1)->{
 \\      ? #rsa
 \\      56
 \\      ? #RSA.factored()
-\\      25
+\\      26
 \\      ? #RSA.factored(3)
-\\      13
+\\      14
 \\      ? #RSA.factored(1)
 \\      12
 \\      ? #RSA.factored([1,1])
@@ -1522,13 +1541,13 @@ RSA.unfactored=(mod4=-1)->{
 \\      ? #rsa
 \\      56
 \\      ? #RSA.factored()
-\\      25
+\\      26
 \\      ? #RSA.unfactored()
-\\      31
+\\      30
 \\      ? #RSA.unfactored(1)
 \\      17
 \\      ? #RSA.unfactored(3)
-\\      14
+\\      13
 \\      ? 
 \\  ```
 \\  """
@@ -1595,7 +1614,7 @@ RSA.square_diffs=x->{
 \\      _: two differences of squares resulting in x.
 \\  Example:
 \\  ```
-\\      ? t=RSA.get(250);
+\\      ? t=RSA.get(260);
 \\      ? n=t[2];
 \\      ? [e,f]=RSA.square_diffs(t);[a,b]=e;[c,d]=f;
 \\      ? (a^2-b^2)==n&&(c^2-d^2)==n
@@ -1729,25 +1748,25 @@ RSA.validate=(doprint=0)->{
 \\        (executed if \\_\\_name\\_\\_ == "\\_\\_main\\_\\_").
 \\  Example:
 \\  ```
-\\      $ validate=1 doprint=1 gp -q < RSA_numbers_factored.gp 
+\\      $ validate=1 doprint=1 gp -q RSA_numbers_factored.gp
 \\      
-\\      with p-1 and q-1 factorizations (n=p*q): 25
- \\      59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
+\\      with p-1 and q-1 factorizations (n=p*q): 26
+\\      59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
 \\      140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
 \\      190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,230 digits,
-\\      232 digits,768 bits  ,240 digits,250 digits,
+\\      232 digits,768 bits  ,240 digits,250 digits,260 digits,
 \\      
 \\      without (p-1) and (q-1) factorizations, but p and q: 0
 \\      
-\\      have not been factored sofar: 31
-\\      260 digits,270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
+\\      have not been factored sofar: 30
+\\      270 digits,896 bits  ,280 digits,290 digits,300 digits,309 digits,
 \\      1024 bits  ,310 digits,320 digits,330 digits,340 digits,350 digits,360 digits,
 \\      370 digits,380 digits,390 digits,400 digits,410 digits,420 digits,430 digits,
 \\      440 digits,450 digits,460 digits,1536 bits  ,470 digits,480 digits,490 digits,
 \\      500 digits,617 digits,2048 bits  (=617 digits)
 \\      
-\\      3511ms
-\\      $
+\\      3470ms
+\\      ?
 \\  ```
 \\  """
     for(i=1,4,
@@ -1759,8 +1778,8 @@ RSA.validate=(doprint=0)->{
     assert(self.totient_2(r)==self.totient_2(l));
     assert(self.totient_2(r)==dictprod_totient(pm1, qm1));
     assert(Mod(65537,self.reduced_totient(190))^self.reduced_totient_2(190)==Mod(1,self.reduced_totient(190)));
-    assert(len(self.factored())==25);
-    assert(len(self.factored_2())==25);
+    assert(len(self.factored())==26);
+    assert(len(self.factored_2())==26);
 
     r=self.get(2048);
     assert(r[1]==2048&&bits(r[2])==2048);
