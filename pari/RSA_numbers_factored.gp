@@ -8,6 +8,10 @@
 \\ ```
 \\ 
 \\
+\\ v1.13
+\\ - add factorization of RSA-896 (270 decimal digits)
+\\ - add qfb_sums() that works for all factored RSA numbers unlike square_sums
+\\
 \\ v1.12
 \\ - add factorization of RSA-260
 \\
@@ -233,6 +237,63 @@ sq2d(p)=
     [1+p\2,p\2];
 }
 
+
+qfb_sums(t)=
+{
+\\  """
+\\  Args:
+\\      t: int or RSA_number.
+\\  Returns:
+\\      _: int list with discriminant, qfb, two pairs of integers.
+\\  Example:
+\\      For RSA-896.
+\\  ```
+\\      ? n=RSA.get(896)[2];
+\\      ? [D,Q,s1,s2]=qfb_sums(896);
+\\      ? qfeval(Q,s1)==n&&qfeval(Q,s2)==n
+\\      1
+\\      ? p=gcd(qfeval(Q,s1+s2),n); 1<p&&p<n&&n%p==0
+\\      1
+\\      ?
+\\  ```
+\\  """
+    if(type(t)!="t_VEC", t = RSA.get(t));
+
+    [,n,p,q] = t;
+
+    \\ following is result of a very long chat with Gemini
+    forstep(d = -3, -100000, -1,
+        my(D = if(d % 4 == 1 || d % 4 == 0, d, 4*d));
+        if (!isfundamental(D), next);
+        if (kronecker(D, p) != 1 || kronecker(D, q) != 1, next);
+
+        my(bp = Vec(qfbprimeform(D, p))[2]);
+        my(bq = Vec(qfbprimeform(D, q))[2]);
+
+        \\ Root (+bp, +bq)
+        my(B1 = lift(chinese(Mod(bp, 2*p), Mod(bq, 2*q))));
+        if ((B1^2 - D) % (4*n) != 0, B1 += 2*n);
+        my(res1 = qfbredsl2(Qfb(n, B1, (B1^2 - D)/(4*n))));
+
+        \\ Root (+bp, -bq)
+        my(B2 = lift(chinese(Mod(bp, 2*p), Mod(-bq, 2*q))));
+        if ((B2^2 - D) % (4*n) != 0, B2 += 2*n);
+        my(res2 = qfbredsl2(Qfb(n, B2, (B2^2 - D)/(4*n))));
+
+        \\ Check if both roots reduce to the EXACT SAME form Q
+        if (res1[1] == res2[1],
+            my(M1_inv = res1[2]^-1, M2_inv = res2[2]^-1);
+            my(s1 = Vec(M1_inv[,1]));
+            my(s2 = Vec(M2_inv[,1]));
+
+            \\ Check linear independence over Z
+            if (s1 != s2 && s1 != -s2,
+                return([D, res1[1], s1~, s2~]);
+            );
+        );
+    );
+    error("No suitable discriminant found in search range");
+}
 
 square_sum_prod(n)=
 {
@@ -1339,7 +1400,23 @@ rsa = [\
     ],\
     [\
         896,\
-        412023436986659543855531365332575948179811699844327982845455626433876445565248426198098870423161841879261420247188869492560931776375033421130982397485150944909106910269861031862704114880866970564902903653658867433731720813104105190864254793282601391257624033946373269391\
+        412023436986659543855531365332575948179811699844327982845455626433876445565248426198098870423161841879261420247188869492560931776375033421130982397485150944909106910269861031862704114880866970564902903653658867433731720813104105190864254793282601391257624033946373269391,\
+        636606729769440499166579950236036751749912014371509557713570027508971809534551913252252094954941974952859310861988904737359709200557919,\
+        647218161102195448058768698177623951380616936266986989243011933572862870905830904361851542450154852431416136790787107595965374752513489,\
+        [\
+            2, 1;\
+            677, 1;\
+            3323861, 1;\
+            32458857239, 1;\
+            1072345038459692265342780852400349274577, 1;\
+            4063889912054235888879690043949467011271502094886324848208994037298637426449, 1\
+        ],\
+        [\
+            2, 4;\
+            8352070036294289039797, 1;\
+            95879507967770832594522580117, 1;\
+            50513887003617905380104375788665972998240478616473495993884702029090119377924069157, 1\
+        ]\
     ],\
     [\
         280,\
@@ -1653,6 +1730,28 @@ RSA.square_sums=x->{
     my([,,p,q]=r);
     assert(p%4==1&&q%4==1);
     return(square_sums(square_sum_prod(r)));
+}
+
+RSA.qfb_sums=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: int list with discriminant, qfb, two pairs of integers.
+\\  Example:
+\\  ```
+\\      ? n=RSA.get(896)[2];
+\\      ? [D,Q,s1,s2]=qfb_sums(896);
+\\      ? qfeval(Q,s1)==n&&qfeval(Q,s2)==n
+\\      1
+\\      ? p=gcd(qfeval(Q,s1+s2),n); 1<p&&p<n&&n%p==0
+\\      1
+\\      ?
+\\  ```
+\\  """
+    my(r=self.get_(x));
+    assert(has_factors(r));
+    return(qfb_sums(r));
 }
 
 RSA.square_sums_4=x->{
