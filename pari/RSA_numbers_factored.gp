@@ -259,7 +259,7 @@ qfb_sums(t)=
 \\  """
     if(type(t)!="t_VEC", t = RSA.get(t));
 
-    [,n,p,q] = t;
+    my([,n,p,q] = t);
 
     \\ following is result of a very long chat with Gemini
     forstep(d = -3, -100000, -1,
