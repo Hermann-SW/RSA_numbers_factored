@@ -244,7 +244,7 @@ qfb_sums(t)=
 \\  Args:
 \\      t: int or RSA_number.
 \\  Returns:
-\\      _: int list with discriminant, qfb, two pairs of integers.
+\\      _: list with discriminant, qfb, two pairs of integers.
 \\  Example:
 \\      For RSA-896.
 \\  ```
@@ -1740,7 +1740,7 @@ RSA.qfb_sums=x->{
 \\  Args:
 \\      x: RSA number length or RSA_number.
 \\  Returns:
-\\      _: int list with discriminant, qfb, two pairs of integers.
+\\      _: list with discriminant, qfb, two pairs of integers.
 \\  Example:
 \\  ```
 \\      ? n=RSA.get(896)[2];
