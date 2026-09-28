@@ -288,7 +288,10 @@ qfb_sums(t)=
 
             \\ Check linear independence over Z
             if (s1 != s2 && s1 != -s2,
-                return([D, res1[1], s1~, s2~]);
+                \\ Check for monic diagonal binary quadratic forms
+                if (Vec(res1[1])[2]==0 && Vec(res1[1])[1]==1,
+                    return([D, res1[1], s1~, s2~]);
+                );
             );
         );
     );
