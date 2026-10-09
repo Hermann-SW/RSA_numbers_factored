@@ -244,7 +244,7 @@ qfb_sums(t)=
 \\  Args:
 \\      t: int or RSA_number.
 \\  Returns:
-\\      _: list with discriminant, qfb, two pairs of integers.
+\\      _: list with discriminant, monic diagonal qfb, two pairs of integers.
 \\  Example:
 \\      For RSA-896.
 \\  ```
@@ -265,33 +265,35 @@ qfb_sums(t)=
     forstep(d = -3, -100000, -1,
         my(D = if(d % 4 == 1 || d % 4 == 0, d, 4*d));
         if (!isfundamental(D), next);
+
+        \\ Both p and q must split
         if (kronecker(D, p) != 1 || kronecker(D, q) != 1, next);
 
-        my(bp = Vec(qfbprimeform(D, p))[2]);
-        my(bq = Vec(qfbprimeform(D, q))[2]);
+        \\ Get the principal binary quadratic form for discriminant D
+        my(Q = qfbprimeform(D, 1));
 
-        \\ Root (+bp, +bq)
-        my(B1 = lift(chinese(Mod(bp, 2*p), Mod(bq, 2*q))));
-        if ((B1^2 - D) % (4*n) != 0, B1 += 2*n);
-        my(res1 = qfbredsl2(Qfb(n, B1, (B1^2 - D)/(4*n))));
+        \\ Require a monic diagonal form (a=1, b=0)
+        if (Vec(Q)[1] != 1 || Vec(Q)[2] != 0, next);
 
-        \\ Root (+bp, -bq)
-        my(B2 = lift(chinese(Mod(bp, 2*p), Mod(-bq, 2*q))));
-        if ((B2^2 - D) % (4*n) != 0, B2 += 2*n);
-        my(res2 = qfbredsl2(Qfb(n, B2, (B2^2 - D)/(4*n))));
+        \\ qfbsolve takes the form, the factorization matrix, and flag 1
+        my(S = qfbsolve(Q, [p, 1; q, 1], 1));
 
-        \\ Check if both roots reduce to the EXACT SAME form Q
-        if (res1[1] == res2[1],
-            my(M1_inv = res1[2]^-1, M2_inv = res2[2]^-1);
-            my(s1 = Vec(M1_inv[,1]));
-            my(s2 = Vec(M2_inv[,1]));
+        \\ We need at least two solutions to find linearly independent representations
+        if (length(S) >= 2,
+            my(s1 = S[1]);
+            my(s2 = 0);
 
-            \\ Check linear independence over Z
-            if (s1 != s2 && s1 != -s2,
-                \\ Check for monic diagonal binary quadratic forms
-                if (Vec(res1[1])[2]==0 && Vec(res1[1])[1]==1,
-                    return([D, res1[1], s1~, s2~]);
-                );
+            \\ Scan for a structurally distinct representation (x-values must differ)
+            for (i = 2, length(S),
+                if (abs(S[i][1]) != abs(s1[1]),
+                    s2 = S[i];
+                    break;
+                )
+            );
+
+            \\ If we successfully found a distinct representation, return them
+            if (s2 != 0,
+                return([D, Q, s1, s2]);
             );
         );
     );
@@ -1743,7 +1745,7 @@ RSA.qfb_sums=x->{
 \\  Args:
 \\      x: RSA number length or RSA_number.
 \\  Returns:
-\\      _: list with discriminant, qfb, two pairs of integers.
+\\      _: list with discriminant, monic diagonal qfb, two pairs of integers.
 \\  Example:
 \\  ```
 \\      ? n=RSA.get(896)[2];
