@@ -280,7 +280,7 @@ qfb_sums(t)=
         my(S = qfbsolve(Q, [p, 1; q, 1], 1));
 
         \\ We need at least two solutions to find linearly independent representations
-if (length(S) >= 2,
+        if (length(S) >= 2,
             my(s1 = S[1]);
             my(s2 = 0);
             my(C = Vec(Q)[3]);
