@@ -252,7 +252,8 @@ qfb_sums(t)=
 \\      ? [D,Q,s1,s2]=qfb_sums(896);
 \\      ? qfeval(Q,s1)==n&&qfeval(Q,s2)==n
 \\      1
-\\      ? p=gcd(qfeval(Q,s1+s2),n); 1<p&&p<n&&n%p==0
+\\      ? p=gcd(qfeval(Q,s1+s2),n); if(p==1||p==n,p=gcd(qfeval(Q,s1-s2),n));
+\\      ? 1<p&&p<n&&n%p==0
 \\      1
 \\      ?
 \\  ```
@@ -1753,7 +1754,8 @@ RSA.qfb_sums=x->{
 \\      ? [D,Q,s1,s2]=qfb_sums(896);
 \\      ? qfeval(Q,s1)==n&&qfeval(Q,s2)==n
 \\      1
-\\      ? p=gcd(qfeval(Q,s1+s2),n); 1<p&&p<n&&n%p==0
+\\      ? p=gcd(qfeval(Q,s1+s2),n); if(p==1||p==n,p=gcd(qfeval(Q,s1-s2),n));
+\\      ? 1<p&&p<n&&n%p==0
 \\      1
 \\      ?
 \\  ```
