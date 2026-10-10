@@ -279,19 +279,20 @@ qfb_sums(t)=
         my(S = qfbsolve(Q, [p, 1; q, 1], 1));
 
         \\ We need at least two solutions to find linearly independent representations
-        if (length(S) >= 2,
+if (length(S) >= 2,
             my(s1 = S[1]);
             my(s2 = 0);
+            my(C = Vec(Q)[3]);
 
-            \\ Scan for a structurally distinct representation (x-values must differ)
+            \\ Force structural distinctness.
+            \\ If C=1 (D=-4), explicitly prevent selecting the [y, x] permutation.
             for (i = 2, length(S),
-                if (abs(S[i][1]) != abs(s1[1]),
+                if (abs(S[i][1]) != abs(s1[1]) && (C != 1 || abs(S[i][1]) != abs(s1[2])),
                     s2 = S[i];
                     break;
                 )
             );
 
-            \\ If we successfully found a distinct representation, return them
             if (s2 != 0,
                 return([D, Q, s1, s2]);
             );
