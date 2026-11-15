@@ -1,0 +1,23 @@
+Recently RSA-260, then 270 decimal digits RSA-896 and now RSA-270 have been factored and added:  
+```bash
+hermann@8840hs:~/RSA_numbers_factored/pari$ validate=1 doprint=1 gp -q < RSA_numbers_factored.gp 
+
+with p-1 and q-1 factorizations (n=p*q): 28
+ 59 digits, 79 digits,100 digits,110 digits,120 digits,129 digits,130 digits,
+140 digits,150 digits,155 digits,160 digits,170 digits,576 bits  ,180 digits,
+190 digits,640 bits  ,200 digits,210 digits,704 bits  ,220 digits,230 digits,
+232 digits,768 bits  ,240 digits,250 digits,260 digits,270 digits,896 bits  ,
+
+
+without (p-1) and (q-1) factorizations, but p and q: 0
+
+have not been factored sofar: 28
+280 digits,290 digits,300 digits,309 digits,
+1024 bits  ,310 digits,320 digits,330 digits,340 digits,350 digits,360 digits,
+370 digits,380 digits,390 digits,400 digits,410 digits,420 digits,430 digits,
+440 digits,450 digits,460 digits,1536 bits  ,470 digits,480 digits,490 digits,
+500 digits,617 digits,2048 bits  (=617 digits)
+
+9739ms
+hermann@8840hs:~/RSA_numbers_factored/pari$ 
+```
