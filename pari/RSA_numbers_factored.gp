@@ -302,6 +302,33 @@ qfb_sums(t)=
     error("No suitable discriminant found in search range");
 }
 
+discriminant_candidates(t)=
+{
+\\  """
+\\  Args:
+\\      t: int or RSA_number.
+\\  Returns:
+\\      _: list with discriminant candidates.
+\\  Example:
+\\      For RSA-896.
+\\  ```
+\\      ? n=RSA.get(896)[2];
+\\      ? Ds=discriminant_candidates(896);
+\\      ? #Ds
+\\      1
+\\      ?
+\\  ```
+\\  """
+    if(type(t)!="t_VEC", t = RSA.get(t));
+
+    my(n = t[2]);
+
+    \\ Candidates with 50% chance of split both unknown p and q.
+    \\ With principal binary quadratic form of D being monic diagonal.
+    return([D | C<-[2..44]; D<-[-4*C]; Q<-[qfbprimeform(D,1)],
+                kronecker(D,n)==1 && Vec(Q)[1]==1 && Vec(Q)[2]==0]);
+}
+
 square_sum_prod(n)=
 {
 \\  """
@@ -1763,6 +1790,28 @@ RSA.qfb_sums=x->{
     my(r=self.get_(x));
     assert(has_factors(r));
     return(qfb_sums(r));
+}
+
+RSA.discriminant_candidates=x->{
+\\  """
+\\  Args:
+\\      x: RSA number length or RSA_number.
+\\  Returns:
+\\      _: list with discriminant candidates.
+\\  Example:
+\\  ```
+\\      ? n=RSA.get(896)[2];
+\\      ? [D,Q,s1,s2]=qfb_sums(896);
+\\      ? qfeval(Q,s1)==n&&qfeval(Q,s2)==n
+\\      1
+\\      ? p=gcd(qfeval(Q,s1+s2),n); if(p==1||p==n,p=gcd(qfeval(Q,s1-s2),n));
+\\      ? 1<p&&p<n&&n%p==0
+\\      1
+\\      ?
+\\  ```
+\\  """
+    my(r=self.get_(x));
+    return(discriminant_candidates(r));
 }
 
 RSA.square_sums_4=x->{
