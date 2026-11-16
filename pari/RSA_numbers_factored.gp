@@ -315,7 +315,7 @@ discriminant_candidates(t)=
 \\      ? n=RSA.get(896)[2];
 \\      ? Ds=discriminant_candidates(896);
 \\      ? #Ds
-\\      1
+\\      20
 \\      ?
 \\  ```
 \\  """
